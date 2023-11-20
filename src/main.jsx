@@ -3,8 +3,11 @@ import * as ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { ColorModeScript } from "@chakra-ui/color-mode";
+import { extendTheme } from "@chakra-ui/theme-utils";
 import { mode } from "@chakra-ui/theme-tools";
+import { BrowserRouter } from "react-router-dom";
 
 const styles = {
     global: (props) => ({
@@ -16,14 +19,14 @@ const styles = {
 };
 
 const config = {
-    inititalColorMode: "dark",
+    initialColorMode: "dark",
     useSystemColorMode: true,
 };
 
 const colors = {
     gray: {
-        ligth: "#616161",
-        dark: "#1e1e1e1",
+        light: "#616161",
+        dark: "#1e1e1e",
     },
 };
 
@@ -32,9 +35,11 @@ const theme = extendTheme({ config, styles, colors });
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-        <ChakraProvider theme={theme}>
-            <ColorModeScript inititalColorMode={theme.config.inititalColorMode} />
-            <App />
-        </ChakraProvider>
+        <BrowserRouter>
+            <ChakraProvider theme={theme}>
+                <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                <App />
+            </ChakraProvider>
+        </BrowserRouter>
     </React.StrictMode>,
 );

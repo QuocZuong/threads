@@ -4,8 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "nodemon --env-file .env server.js",
+        "start": "node --env-file .env server.js"
     },
+    "type": "module",
     "author": "",
     "license": "ISC",
     "dependencies": {
@@ -15,5 +17,8 @@
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.0.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
     }
 }

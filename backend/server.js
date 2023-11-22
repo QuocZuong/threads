@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5050;
 
 app.use(express.json()); // to parse json data from req.body
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser()); // to parse cookies from req.cookies
 
 // Routes
 app.use("/api/users", userRoutes);

@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 connectDB();
 
@@ -15,6 +16,7 @@ app.use(cookieParser()); // to parse cookies from req.cookies
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(PORT, () => {
     console.log(`Hey server started at port ${PORT}!`);

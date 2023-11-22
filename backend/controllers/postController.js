@@ -148,7 +148,9 @@ const getFeedPost = async (req, res) => {
 
         const following = user.following;
 
+        // get posts of the users that the logged in user is following and his posts
         const feedPosts = await Post.find({ postedBy: { $in: [...following, userId] } }).sort({ createdAt: -1 });
+        res.status(200).json({ message: "Feed posts found", feedPosts });
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log("error in replyToPost " + error.message);

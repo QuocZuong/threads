@@ -1,5 +1,6 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
+import mongoose from "mongoose";
 
 const createPost = async (req, res) => {
     const maxLength = 500;
@@ -39,6 +40,20 @@ const createPost = async (req, res) => {
 
 const getPost = async (req, res) => {
     try {
+        const id = req.params.id;
+
+        // // check if the id and send user to not found page
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+        //     return res.redirect("/not-found");
+        // }
+
+        const post = await Post.findById(id);
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        return res.status(200).json({ message: "Post found!", post });
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log("error in getPost user " + error.message);

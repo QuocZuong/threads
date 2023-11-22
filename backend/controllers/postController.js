@@ -34,7 +34,7 @@ const createPost = async (req, res) => {
         res.status(201).json({ message: "Post created", newPost });
     } catch (error) {
         res.status(500).json({ message: error.message });
-        console.log("error in createPost user " + error.message);
+        console.log("error in createPost  " + error.message);
     }
 };
 
@@ -56,7 +56,7 @@ const getPost = async (req, res) => {
         return res.status(200).json({ message: "Post found!", post });
     } catch (error) {
         res.status(500).json({ message: error.message });
-        console.log("error in getPost user " + error.message);
+        console.log("error in getPost  " + error.message);
     }
 };
 
@@ -74,8 +74,38 @@ const deletePost = async (req, res) => {
         return res.status(200).json({ message: "Post deleted" });
     } catch (error) {
         res.status(500).json({ message: error.message });
-        console.log("error in deletePost user " + error.message);
+        console.log("error in deletePost " + error.message);
     }
 };
 
-export { createPost, getPost, deletePost };
+const likeUnlikePost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+        const userId = req.user._id;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const isUserLikedPost = post.likes.includes(userId);
+
+        // if user already liked the post then unlike it
+        if (isUserLikedPost) {
+            await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+            res.status(200).json({ message: "Post unliked successfully" });
+        }
+        // if user didn't like the post then like it
+        else {
+            post.likes.push(userId);
+            await post.save();
+            res.status(200).json({ message: "Post liked successfully" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+        console.log("error in likeUnLikePost post " + error.message);
+    }
+};
+
+export { createPost, getPost, deletePost, likeUnlikePost };

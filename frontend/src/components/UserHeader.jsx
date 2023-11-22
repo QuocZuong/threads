@@ -1,23 +1,19 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, VStack, Flex, Text, Link } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { useToast } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import { Portal } from "@chakra-ui/portal";
 import { BsInstagram } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
+import useShowToast from "../hooks/useShowToast";
 const UserHeader = () => {
-    const toast = useToast();
+    const showToast = useShowToast();
 
     /* copy function when click on button */
     const copyURL = () => {
         const currentURL = window.location.href;
         navigator.clipboard.writeText(currentURL).then(() => {
-            toast({
-                title: "Profile copied.",
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-            });
+            showToast("Profile copied.", "", "success");
         });
     };
 
@@ -30,7 +26,13 @@ const UserHeader = () => {
                     </Text>
                     <Flex gap={2} alignItems={"center"}>
                         <Text fontSize={"sm"}>zuong</Text>
-                        <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
+                        <Text
+                            fontSize={"xs"}
+                            bg={useColorModeValue("gray.300", "gray.dark")}
+                            color={"gray.light"}
+                            p={1}
+                            borderRadius={"full"}
+                        >
                             threads.net
                         </Text>
                     </Flex>

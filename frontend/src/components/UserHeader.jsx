@@ -6,9 +6,8 @@ import { Portal } from "@chakra-ui/portal";
 import { BsInstagram } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
 import useShowToast from "../hooks/useShowToast";
-const UserHeader = () => {
+const UserHeader = ({ user }) => {
     const showToast = useShowToast();
-
     /* copy function when click on button */
     const copyURL = () => {
         const currentURL = window.location.href;
@@ -22,10 +21,10 @@ const UserHeader = () => {
             <Flex justifyContent={"space-between"} w={"full"}>
                 <Box>
                     <Text fontSize={"2xl"} fontWeight={"bold"}>
-                        Quoc Zuong
+                        {user?.name}
                     </Text>
                     <Flex gap={2} alignItems={"center"}>
-                        <Text fontSize={"sm"}>zuong</Text>
+                        <Text fontSize={"sm"}>{user?.username}</Text>
                         <Text
                             fontSize={"xs"}
                             bg={useColorModeValue("gray.300", "gray.dark")}
@@ -44,15 +43,15 @@ const UserHeader = () => {
                             md: "xl",
                         }}
                         name={"Zuong"}
-                        src="/zuck-avatar.png"
+                        src={user?.profilePic}
                     />
                 </Box>
             </Flex>
 
-            <Text>adlkfjasldfkj asdlkfj aslkdjf laskdjf</Text>
+            <Text>{user?.bio}</Text>
             <Flex w={"full"} justifyContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>
-                    <Text color={"gray.light"}>3.2k followers</Text>
+                    <Text color={"gray.light"}>{user?.followers.length} followers</Text>
                     <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
                     <Link color={"gray.light"} cursor={"pointer"}>
                         instagram.com

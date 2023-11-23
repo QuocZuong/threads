@@ -7,7 +7,7 @@ const Header = () => {
                 cursor={"pointer"}
                 alt="logo"
                 w={6}
-                src={colorMode === "dark" ? "/public/light-logo.svg" : "/public/dark-logo.svg"}
+                src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                 onClick={toggleColorMode}
             ></Image>
         </Flex>

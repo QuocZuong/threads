@@ -12,7 +12,7 @@ const UserPost = ({ postImg, postTitle, likes, replies }) => {
         <Link to={"/zuong/post/1"}>
             <Flex gap={3} mb={4} py={5}>
                 <Flex flexDirection={"column"} alignItems={"center"}>
-                    <Avatar size={"md"} name={"Zuong"} src="/public/zuck-avatar.png" />
+                    <Avatar size={"md"} name={"Zuong"} src="/zuck-avatar.png" />
                     <Box w={0.5} h={"full"} bg={"gray.light"} my={2}></Box>
                     <Box position={"relative"} w={"full"}>
                         <Avatar

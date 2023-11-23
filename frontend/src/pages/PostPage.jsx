@@ -27,7 +27,7 @@ const PostPage = () => {
             </Flex>
             <Text my={3}>Let&apos;s talk about Threads</Text>
             <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-                <Image src={"/public/post1.png"} w={"full"} />
+                <Image src={"/post1.png"} w={"full"} />
             </Box>
             <Flex gap={3} my={3}>
                 <Actions liked={liked} setLiked={setLiked} />

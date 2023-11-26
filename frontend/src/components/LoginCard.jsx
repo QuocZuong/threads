@@ -22,6 +22,7 @@ import userAtom from "../atoms/userAtom";
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const setAuthScreen = useSetRecoilState(authScreenAtom);
     const showToast = useShowToast();
     const setUser = useSetRecoilState(userAtom);
@@ -32,6 +33,7 @@ export default function Login() {
     });
 
     const handleLogin = async () => {
+        setIsLoading(true);
         try {
             const res = await fetch("/api/users/login", {
                 method: "POST",
@@ -51,8 +53,11 @@ export default function Login() {
             setUser(data);
         } catch (error) {
             showToast("An error occurred.", error, "error");
+        } finally {
+            setIsLoading(false);
         }
     };
+
     return (
         <Flex align={"center"} justify={"center"}>
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
@@ -104,6 +109,7 @@ export default function Login() {
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button
+                                isLoading={isLoading}
                                 loadingText="Submitting"
                                 size="lg"
                                 bg={useColorModeValue("gray.600", "gray.700")}

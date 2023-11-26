@@ -20,6 +20,7 @@ export default function UpdateProfilePage() {
     const [user, setUser] = useRecoilState(userAtom);
     const fileRef = useRef(null);
     const { handleImageChange, imgUrl } = usePreviewImg();
+    const [updating, setUpdating] = useState(false);
     const showToast = useShowToast();
 
     const [inputs, setInputs] = useState({
@@ -33,6 +34,7 @@ export default function UpdateProfilePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setUpdating(true);
         try {
             const res = await fetch(`/api/users/${user._id}`, {
                 method: "PATCH",
@@ -52,6 +54,8 @@ export default function UpdateProfilePage() {
             localStorage.setItem("user-threads", JSON.stringify(data));
         } catch (error) {
             showToast("Error", error.message, "error");
+        } finally {
+            setUpdating(false);
         }
     };
 
@@ -145,7 +149,7 @@ export default function UpdateProfilePage() {
                         />
                     </FormControl>
                     <Stack spacing={6} direction={["column", "row"]}>
-                        <Button
+                        {/* <Button
                             bg={"red.400"}
                             color={"white"}
                             w="full"
@@ -154,7 +158,7 @@ export default function UpdateProfilePage() {
                             }}
                         >
                             Cancel
-                        </Button>
+                        </Button> */}
                         <Button
                             bg={"green.400"}
                             color={"white"}
@@ -163,6 +167,7 @@ export default function UpdateProfilePage() {
                                 bg: "green.500",
                             }}
                             type="submit"
+                            isLoading={updating}
                         >
                             Submit
                         </Button>

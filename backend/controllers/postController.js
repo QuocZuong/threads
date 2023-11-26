@@ -1,6 +1,5 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
-import mongoose from "mongoose";
 
 const createPost = async (req, res) => {
     const maxLength = 500;

@@ -8,7 +8,6 @@ const UserPage = () => {
     const [user, setUser] = useState(null);
     const { username } = useParams();
     const showToast = useShowToast();
-
     useEffect(() => {
         const getUser = async () => {
             try {
@@ -25,7 +24,9 @@ const UserPage = () => {
             }
         };
         getUser();
-    }, [username]);
+    }, [username, showToast]);
+
+    if (!user) return null;
 
     return (
         <>

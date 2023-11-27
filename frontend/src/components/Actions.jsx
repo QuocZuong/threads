@@ -1,7 +1,94 @@
 /* eslint-disable react/prop-types */
-import { Flex } from "@chakra-ui/react";
+import {
+    Flex,
+    Text,
+    Box,
+    Modal,
+    Button,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    FormControl,
+    Input,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import useShowToast from "../hooks/useShowToast";
+const Actions = ({ post: post_ }) => {
+    const user = useRecoilValue(userAtom);
+    const showToast = useShowToast();
+    const [liked, setLiked] = useState(post_?.likes.includes(user?._id));
+    const [reply, setReply] = useState("");
+    const [post, setPost] = useState(post_);
+    const [isLiking, setIsLiking] = useState(false);
+    const [isReplying, setIsReplying] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-const Actions = ({ liked, setLiked }) => {
+    const handleLikeAndUnlike = async () => {
+        if (!user) return showToast("Error", "You must be logged in to like a post", "error");
+        if (isLiking) return;
+        setIsLiking(true);
+        try {
+            const res = await fetch("/api/posts/like/" + post._id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await res.json();
+            if (data.error) {
+                showToast("Error", data.error, "error");
+                return;
+            }
+            if (!liked) {
+                setPost({ ...post, likes: [...post.likes, user._id] });
+            } else {
+                setPost({ ...post, likes: post.likes.filter((id) => id !== user._id) });
+                setLiked(false);
+            }
+
+            setLiked(!liked);
+        } catch (error) {
+            showToast("Error", error, "error");
+        } finally {
+            setIsLiking(false);
+        }
+    };
+
+    const handleReply = async () => {
+        if (!user) return showToast("Error", "You must be logged in to reply a post", "error");
+        if (isReplying) return;
+        setIsReplying(true);
+        try {
+            const res = await fetch("/api/posts/reply/" + post._id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ text: reply }),
+            });
+            const data = await res.json();
+            if (data.error) {
+                showToast("Error", data.error, "error");
+                return;
+            }
+
+            setPost({ ...post, replies: [...post.replies, data.reply] });
+            showToast("Success", "Reply successfully", "success");
+            onClose();
+            setReply("");
+        } catch (error) {
+            showToast("Error", error, "error");
+        } finally {
+            setIsReplying(false);
+        }
+    };
     return (
         <Flex flexDirection="column">
             <Flex gap={3} my={1} onClick={(e) => e.preventDefault()} className="">
@@ -11,7 +98,7 @@ const Actions = ({ liked, setLiked }) => {
                     fill={liked ? "rgb(237, 73, 86)" : "transparent"}
                     role="img"
                     viewBox="0 0 24 22"
-                    onClick={() => setLiked(!liked)}
+                    onClick={handleLikeAndUnlike}
                     className="icon-container"
                 >
                     <path
@@ -21,7 +108,15 @@ const Actions = ({ liked, setLiked }) => {
                     ></path>
                 </svg>
 
-                <svg aria-label="Comment" color="" fill="" role="img" viewBox="0 0 24 24" className="icon-container">
+                <svg
+                    aria-label="Comment"
+                    color=""
+                    fill=""
+                    role="img"
+                    viewBox="0 0 24 24"
+                    className="icon-container"
+                    onClick={onOpen}
+                >
                     <title>Comment</title>
                     <path
                         d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
@@ -35,6 +130,39 @@ const Actions = ({ liked, setLiked }) => {
                 <RepostSVG />
                 <ShareSVG />
             </Flex>
+
+            <Flex gap={2} alignItems={"center"}>
+                <Text color={"gray.light"} fontSize="sm">
+                    {post?.replies?.length} replies
+                </Text>
+                <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+                <Text color={"gray.light"} fontSize="sm">
+                    {post?.likes?.length} likes
+                </Text>
+            </Flex>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Reply</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody pb={6}>
+                        <FormControl>
+                            <Input
+                                placeholder="Reply goes here..."
+                                value={reply}
+                                onChange={(e) => setReply(e.target.value)}
+                            ></Input>
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" size={"sm"} mr={3} onClick={handleReply} isLoading={isReplying}>
+                            Reply
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Flex>
     );
 };

@@ -9,7 +9,8 @@ import { formatDistanceToNow } from "date-fns";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-const Post = ({ post, postedBy }) => {
+
+const Post = ({ post, postedBy, setPosts }) => {
     const [user, setUser] = useState(null);
     const showToast = useShowToast();
     const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Post = ({ post, postedBy }) => {
                 showToast("Error", data.error, "error");
                 return;
             }
+            setPosts((pre) => pre.filter((p) => p._id !== post._id));
             showToast("Success", "Post deleted", "success");
         } catch (error) {
             showToast("Error", error, "error");
@@ -66,7 +68,7 @@ const Post = ({ post, postedBy }) => {
 
     if (!post) return null;
     return (
-        <Link to={`${user.username}/post/${post._id}`}>
+        <Link to={`/${user.username}/post/${post._id}`}>
             <Flex gap={3} mb={4} py={5}>
                 <Flex flexDirection={"column"} alignItems={"center"}>
                     <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />

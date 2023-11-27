@@ -89,6 +89,7 @@ const Actions = ({ post: post_ }) => {
             setIsReplying(false);
         }
     };
+
     return (
         <Flex flexDirection="column">
             <Flex gap={3} my={1} onClick={(e) => e.preventDefault()} className="">

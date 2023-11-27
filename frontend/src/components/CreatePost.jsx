@@ -21,9 +21,11 @@ import {
     CloseButton,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
+import { useRecoilState, useRecoilValue } from "recoil";
+import postsAtom from "../atoms/postsAtom";
+
 import { BsFillImageFill } from "react-icons/bs";
 import userAtom from "../atoms/userAtom";
-import { useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 
 const MAX_CHAR = 500;
@@ -34,6 +36,7 @@ const CreatePost = () => {
     const [postText, setPostText] = useState("");
     const [typedChar, setTypedChar] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [posts, setPosts] = useRecoilState(postsAtom);
 
     const imgRef = useRef(null);
     const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
@@ -73,6 +76,7 @@ const CreatePost = () => {
             }
 
             showToast("Create post success", "", "success");
+            setPosts([data, ...posts]);
             onClose();
         } catch (error) {
             showToast("Error", error, "error");
@@ -86,12 +90,15 @@ const CreatePost = () => {
             <Button
                 position={"fixed"}
                 bottom={10}
-                right={10}
-                leftIcon={<AddIcon />}
+                right={5}
                 bg={useColorModeValue("gray.300", "gray.dark")}
+                size={{
+                    base: "sm",
+                    sm: "md",
+                }}
                 onClick={onOpen}
             >
-                Post
+                <AddIcon />
             </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>

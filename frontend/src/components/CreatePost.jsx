@@ -73,6 +73,7 @@ const CreatePost = () => {
             }
 
             showToast("Create post success", "", "success");
+            onClose();
         } catch (error) {
             showToast("Error", error, "error");
         } finally {

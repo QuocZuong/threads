@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
 const Post = ({ post, postedBy }) => {
-    const [liked, setLiked] = useState(false);
     const [user, setUser] = useState(null);
     const showToast = useShowToast();
     const navigate = useNavigate();
@@ -47,38 +46,39 @@ const Post = ({ post, postedBy }) => {
                     <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />
                     <Box w={0.5} h={"full"} bg={"gray.light"} my={2}></Box>
                     <Box position={"relative"} w={"full"}>
-                        {post.replies.length === 0 && <Text textAlign={"center"}>😴</Text>}
-
+                        {post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
                         {post.replies[0] && (
                             <Avatar
-                                size={"xs"}
-                                name="Segun Adebayo"
-                                src={post?.replies[0]?.userProfilePic}
+                                size="xs"
+                                name={post.replies[0].username}
+                                src={post.replies[0].userProfilePic}
                                 position={"absolute"}
                                 top={"0px"}
-                                left={"15px"}
+                                left="15px"
                                 padding={"2px"}
                             />
                         )}
+
                         {post.replies[1] && (
                             <Avatar
-                                size={"xs"}
-                                name="Segun Adebayo"
-                                src={post?.replies[1]?.userProfilePic}
+                                size="xs"
+                                name={post.replies[1].username}
+                                src={post.replies[1].userProfilePic}
                                 position={"absolute"}
-                                top={"0px"}
-                                left={"15px"}
+                                bottom={"0px"}
+                                right="-5px"
                                 padding={"2px"}
                             />
                         )}
+
                         {post.replies[2] && (
                             <Avatar
-                                size={"xs"}
-                                name="Segun Adebayo"
-                                src={post?.replies[2]?.userProfilePic}
+                                size="xs"
+                                name={post.replies[2].username}
+                                src={post.replies[2].userProfilePic}
                                 position={"absolute"}
-                                top={"0px"}
-                                left={"15px"}
+                                bottom={"0px"}
+                                left="4px"
                                 padding={"2px"}
                             />
                         )}
@@ -106,17 +106,7 @@ const Post = ({ post, postedBy }) => {
                         </Box>
                     )}
                     <Flex>
-                        <Actions liked={liked} setLiked={setLiked} />
-                    </Flex>
-
-                    <Flex gap={2} alignItems={"center"}>
-                        <Text color={"gray.light"} fontSize="sm">
-                            {post?.replies?.length} replies
-                        </Text>
-                        <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
-                        <Text color={"gray.light"} fontSize="sm">
-                            {post?.likes?.length + (liked ? 1 : 0)} likes
-                        </Text>
+                        <Actions post={post} />
                     </Flex>
                 </Flex>
             </Flex>

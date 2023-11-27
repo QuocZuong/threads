@@ -14,7 +14,7 @@ import { useState } from "react";
 const UserHeader = ({ user }) => {
     const showToast = useShowToast();
     const currentUser = useRecoilValue(userAtom);
-    const [following, setFollowing] = useState(user?.followers.includes(currentUser._id));
+    const [following, setFollowing] = useState(user?.followers.includes(currentUser?._id));
     const [updating, setUpdating] = useState(false);
 
     /* copy function when click on button */
@@ -47,11 +47,11 @@ const UserHeader = ({ user }) => {
             }
 
             if (following) {
-                showToast("Success", `Unfollowed ${user.name}`, "success");
+                showToast("Success", `Unfollowed ${user?.name}`, "success");
                 user.followers.pop();
             } else {
-                showToast("Success", `Followed ${user.name}`, "success");
-                user.followers.push(currentUser._id);
+                showToast("Success", `Followed ${user?.name}`, "success");
+                user.followers.push(currentUser?._id);
             }
 
             setFollowing((prev) => !prev);
@@ -96,13 +96,13 @@ const UserHeader = ({ user }) => {
 
             <Text>{user?.bio}</Text>
 
-            {currentUser._id === user._id && (
+            {currentUser?._id === user._id && (
                 <Link as={RouterLink} to="/update">
                     <Button>Update profile</Button>
                 </Link>
             )}
 
-            {currentUser._id !== user._id && (
+            {currentUser?._id !== user._id && (
                 <Button onClick={handleFollowUnfollow} isLoading={updating}>
                     {following ? "Unfollow" : "Follow"}
                 </Button>

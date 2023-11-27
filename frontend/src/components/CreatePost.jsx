@@ -23,7 +23,7 @@ import {
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-
+import { useParams } from "react-router-dom";
 import { BsFillImageFill } from "react-icons/bs";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
@@ -37,7 +37,7 @@ const CreatePost = () => {
     const [typedChar, setTypedChar] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useRecoilState(postsAtom);
-
+    const { username } = useParams();
     const imgRef = useRef(null);
     const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 
@@ -76,7 +76,9 @@ const CreatePost = () => {
             }
 
             showToast("Create post success", "", "success");
-            setPosts([data, ...posts]);
+            if (username === user.username) {
+                setPosts([data, ...posts]);
+            }
             onClose();
         } catch (error) {
             showToast("Error", error, "error");

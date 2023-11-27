@@ -16,7 +16,6 @@ const Post = ({ post, postedBy }) => {
     const currentUser = useRecoilValue(userAtom);
 
     const handleNavigate = (e) => {
-        console.log("hi");
         e.preventDefault();
         navigate(`/${user.username}`);
     };
@@ -63,9 +62,9 @@ const Post = ({ post, postedBy }) => {
         getUser();
     }, [postedBy, showToast]);
 
-    if (!user) {
-        return null;
-    }
+    if (!user) return null;
+
+    if (!post) return null;
     return (
         <Link to={`${user.username}/post/${post._id}`}>
             <Flex gap={3} mb={4} py={5}>
@@ -124,7 +123,9 @@ const Post = ({ post, postedBy }) => {
                                 {formatDistanceToNow(new Date(post.createdAt))} ago
                             </Text>
 
-                            {currentUser?._id === user?._id && <DeleteIcon size={20} onClick={handleDeletePost} />}
+                            {currentUser?._id === user?._id && (
+                                <DeleteIcon size={20} onClick={handleDeletePost} cursor={"pointer"} />
+                            )}
                         </Flex>
                     </Flex>
 

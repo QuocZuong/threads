@@ -4,33 +4,15 @@ import UserHeader from "../components/UserHeader";
 import useShowToast from "../hooks/useShowToast.js";
 import { Spinner, Flex } from "@chakra-ui/react";
 import Post from "../components/Post.jsx";
+import useGetUserProfile from "../hooks/useGetUserProfile.js";
 
 const UserPage = () => {
-    const [user, setUser] = useState(null);
+    const { isLoading, user } = useGetUserProfile();
     const { username } = useParams();
     const showToast = useShowToast();
-    const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [fetchingPost, setFetchingPost] = useState(true);
     useEffect(() => {
-        const getUser = async () => {
-            setIsLoading(true);
-            try {
-                const res = await fetch(`/api/users/${username}`);
-                const data = await res.json();
-
-                if (data.error) {
-                    showToast("Error", data.error, "error");
-                    return;
-                }
-                setUser(data);
-            } catch (error) {
-                showToast("Error", error.message, "error");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         const getPosts = async () => {
             setFetchingPost(true);
             try {
@@ -47,7 +29,6 @@ const UserPage = () => {
             }
         };
 
-        getUser();
         getPosts();
     }, [username, showToast]);
 
@@ -72,7 +53,7 @@ const UserPage = () => {
                 </Flex>
             )} */}
 
-            {posts.map((post) => (
+            {posts?.map((post) => (
                 <Post key={post._id} post={post} postedBy={post.postedBy} />
             ))}
         </>

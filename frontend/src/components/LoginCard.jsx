@@ -110,7 +110,7 @@ export default function Login() {
                         <Stack spacing={10} pt={2}>
                             <Button
                                 isLoading={isLoading}
-                                loadingText="Submitting"
+                                loadingText="Logging in"
                                 size="lg"
                                 bg={useColorModeValue("gray.600", "gray.700")}
                                 color={"white"}

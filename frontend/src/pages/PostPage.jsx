@@ -35,7 +35,7 @@ const PostPage = () => {
                 showToast("Error", error, "error");
             }
         };
-
+        document.title = "Post";
         getPost();
     }, [showToast, pid, setPosts]);
 

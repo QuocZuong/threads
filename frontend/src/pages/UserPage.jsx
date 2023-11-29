@@ -23,6 +23,7 @@ const UserPage = () => {
                 if (data.error) {
                     showToast("Error", data.error, "error");
                 }
+                document.title = "Profile";
                 setPosts(data);
             } catch (error) {
                 showToast("Error", error.message, "error");

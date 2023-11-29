@@ -16,6 +16,7 @@ const UserHeader = ({ user }) => {
     const currentUser = useRecoilValue(userAtom);
     const [following, setFollowing] = useState(user?.followers.includes(currentUser?._id));
     const [updating, setUpdating] = useState(false);
+    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
     /* copy function when click on button */
     const copyURL = () => {
@@ -117,10 +118,10 @@ const UserHeader = ({ user }) => {
                     </Link>
                 </Flex>
                 <Flex gap={2} alignItems={"center"}>
-                    <Box className="icon-container">
+                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
                         <BsInstagram size={24} cursor={"pointer"} />
                     </Box>
-                    <Box className="icon-container">
+                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
                         <Menu>
                             <MenuButton>
                                 <CgMoreO size={24} cursor={"pointer"} />

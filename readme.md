@@ -2,7 +2,9 @@
 
 ## Overview
 
-Welcome to Project Threads! This project was created for educational purposes to explore and learn about NodeJS, Express, REST API and more!. 🚀🚀🚀
+Welcome to Project Threads! This project was created for educational purposes to explore and learn about NodeJS, Express, REST API and more! 🚀🚀🚀
+
+I want to give a shout-out to [Burak Orkmez](https://www.youtube.com/@asaprogrammer_), the youtuber who built this project and I relied on it to learn.
 
 ## Features
 

@@ -6,7 +6,7 @@ import useShowToast from "../hooks/useShowToast";
 import { useEffect, useState } from "react";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
@@ -128,7 +128,7 @@ const Post = ({ post, postedBy }) => {
                             </Text>
 
                             {currentUser?._id === user?._id && (
-                                <DeleteIcon size={20} onClick={handleDeletePost} cursor={"pointer"} />
+                                <SmallCloseIcon size={20} onClick={handleDeletePost} cursor={"pointer"} />
                             )}
                         </Flex>
                     </Flex>

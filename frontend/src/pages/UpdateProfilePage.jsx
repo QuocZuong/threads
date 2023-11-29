@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom.js";
 import {
@@ -58,6 +58,10 @@ export default function UpdateProfilePage() {
             setUpdating(false);
         }
     };
+
+    useEffect(() => {
+        document.title = "Update profile";
+    }, []);
 
     return (
         <form onSubmit={handleSubmit}>

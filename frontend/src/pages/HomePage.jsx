@@ -28,7 +28,7 @@ const HomePage = () => {
                 setIsLoading(false);
             }
         };
-
+        document.title = "Home";
         getFeedPosts();
     }, [showToast, setPosts]);
 

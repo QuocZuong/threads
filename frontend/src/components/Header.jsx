@@ -1,4 +1,4 @@
-import { Flex, Image, useColorMode, Link, Button } from "@chakra-ui/react";
+import { Flex, Image, useColorMode, Link } from "@chakra-ui/react";
 import { FiLogOut } from "react-icons/fi";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { AiFillHome } from "react-icons/ai";
@@ -12,11 +12,13 @@ const Header = () => {
     const user = useRecoilValue(userAtom);
     const logout = useLogout();
     const setAuthScreen = useSetRecoilState(authScreenAtom);
+    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
+
     return (
         <Flex justifyContent={"center"} gap={20} mt={6} mb={12}>
             {user && (
                 <Link as={RouterLink} to="/">
-                    <AiFillHome size={24} />
+                    <AiFillHome size={35} className={isDarkMode ? "icon-container" : "icon-container_light"} />
                 </Link>
             )}
 
@@ -29,19 +31,17 @@ const Header = () => {
             <Image
                 cursor={"pointer"}
                 alt="logo"
-                w={6}
+                w={35}
                 src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                 onClick={toggleColorMode}
+                className={isDarkMode ? "icon-container" : "icon-container_light"}
             ></Image>
 
             {user && (
                 <Flex alignItems={"center"} gap={4}>
                     <Link as={RouterLink} to={`/${user.username}`}>
-                        <RxAvatar size={24} />
+                        <RxAvatar size={24} className={isDarkMode ? "icon-container" : "icon-container_light"} />
                     </Link>
-                    <Button size={"xs"} onClick={logout}>
-                        <FiLogOut size={20} />
-                    </Button>
                 </Flex>
             )}
 
@@ -49,6 +49,13 @@ const Header = () => {
                 <Link as={RouterLink} to="/auth" onClick={() => setAuthScreen("signup")}>
                     Sign up
                 </Link>
+            )}
+            {user && (
+                <FiLogOut
+                    size={35}
+                    className={isDarkMode ? "icon-container" : "icon-container_light"}
+                    onClick={logout}
+                />
             )}
         </Flex>
     );

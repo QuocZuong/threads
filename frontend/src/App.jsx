@@ -11,6 +11,7 @@ import userAtom from "./atoms/userAtom";
 import CreatePost from "./components/CreatePost";
 function App() {
     const user = useRecoilValue(userAtom);
+
     return (
         <Container maxW="620px">
             <Header />

@@ -49,11 +49,6 @@ const getPost = async (req, res) => {
     try {
         const id = req.params.id;
 
-        // // check if the id and send user to not found page
-        // if (!mongoose.Types.ObjectId.isValid(id)) {
-        //     return res.redirect("/not-found");
-        // }
-
         const post = await Post.findById(id);
 
         if (!post) {
@@ -169,6 +164,14 @@ const getFeedPost = async (req, res) => {
         res.status(500).json({ error: error.message });
         console.log("error in replyToPost " + error.message);
     }
+};
+
+const getFeedByHostPost = async (req, res) => {
+    try {
+        const hotPost = await Post.find().sort({ likes: -1 });
+
+        res.status(200).json(hotPost);
+    } catch (error) {}
 };
 
 const getUserPost = async (req, res) => {

@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const postSchema = mongoose.Schema(
     {
         postedBy: {
-            // this is the id will be generated randomly by mongodb and it from the user model
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,

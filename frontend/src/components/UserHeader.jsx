@@ -15,10 +15,8 @@ const UserHeader = ({ user }) => {
     const showToast = useShowToast();
     const currentUser = useRecoilValue(userAtom);
     const [following, setFollowing] = useState(user?.followers.includes(currentUser?._id));
-    const [updating, setUpdating] = useState(false);
-    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
+    const [updating, setUpdating] = useState(false);    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
-    
 
     const handleFollowUnfollow = async () => {
         if (!currentUser) {
@@ -82,6 +80,7 @@ const UserHeader = ({ user }) => {
 
             <Text>{user?.bio}</Text>
 
+            
 
             {currentUser?._id !== user._id && (
                 <Button onClick={handleFollowUnfollow} isLoading={updating}>
@@ -94,17 +93,16 @@ const UserHeader = ({ user }) => {
                     <Text color={"gray.light"}>{user?.followers.length} followers</Text>
                 </Flex>
                 <Flex gap={2} alignItems={"center"}>
-                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"} padding={"8px 0px 8px 8px"}>
+                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
                         <BsInstagram size={24} cursor={"pointer"} />
                     </Box>
                 </Flex>
             </Flex>
             {currentUser?._id === user._id && (
                 <Link as={RouterLink} to="/update">
-                     <Button bg={"none"}border={"groove 0.2px grey"} width={"588px"}>Update profile</Button>
+                    <Button bg={"none"}border={"groove 0.2px grey"} width={"588px"}>Update profile</Button>
                 </Link>
             )}
-
             <Flex w={"full"}>
                 <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} pb={3} cursor={"pointer"}>
                     <Text fontWeight={"bold"}>Threads</Text>

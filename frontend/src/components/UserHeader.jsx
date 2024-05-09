@@ -93,7 +93,7 @@ const UserHeader = ({ user }) => {
                     <Text color={"gray.light"}>{user?.followers.length} followers</Text>
                 </Flex>
                 <Flex gap={2} alignItems={"center"}>
-                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
+                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"} padding={"8px 0px 8px 8px"}>
                         <BsInstagram size={24} cursor={"pointer"} />
                     </Box>
                 </Flex>

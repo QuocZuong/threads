@@ -1,10 +1,10 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, VStack, Flex, Text, Link } from "@chakra-ui/layout";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { useColorModeValue, Button } from "@chakra-ui/react";
-import { Portal } from "@chakra-ui/portal";
+// import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import {  Button } from "@chakra-ui/react";
+// import { Portal } from "@chakra-ui/portal";
 import { BsInstagram } from "react-icons/bs";
-import { CgMoreO } from "react-icons/cg";
+// import { CgMoreO } from "react-icons/cg";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -15,16 +15,8 @@ const UserHeader = ({ user }) => {
     const showToast = useShowToast();
     const currentUser = useRecoilValue(userAtom);
     const [following, setFollowing] = useState(user?.followers.includes(currentUser?._id));
-    const [updating, setUpdating] = useState(false);
-    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
+    const [updating, setUpdating] = useState(false);    const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
-    /* copy function when click on button */
-    const copyURL = () => {
-        const currentURL = window.location.href;
-        navigator.clipboard.writeText(currentURL).then(() => {
-            showToast("Profile copied.", "", "success");
-        });
-    };
 
     const handleFollowUnfollow = async () => {
         if (!currentUser) {
@@ -72,15 +64,6 @@ const UserHeader = ({ user }) => {
                     </Text>
                     <Flex gap={2} alignItems={"center"}>
                         <Text fontSize={"sm"}>{user?.username}</Text>
-                        <Text
-                            fontSize={"xs"}
-                            bg={useColorModeValue("gray.300", "gray.dark")}
-                            color={"gray.light"}
-                            p={1}
-                            borderRadius={"full"}
-                        >
-                            threads.net
-                        </Text>
                     </Flex>
                 </Box>
                 <Box>
@@ -97,11 +80,7 @@ const UserHeader = ({ user }) => {
 
             <Text>{user?.bio}</Text>
 
-            {currentUser?._id === user._id && (
-                <Link as={RouterLink} to="/update">
-                    <Button>Update profile</Button>
-                </Link>
-            )}
+            
 
             {currentUser?._id !== user._id && (
                 <Button onClick={handleFollowUnfollow} isLoading={updating}>
@@ -112,32 +91,18 @@ const UserHeader = ({ user }) => {
             <Flex w={"full"} justifyContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>
                     <Text color={"gray.light"}>{user?.followers.length} followers</Text>
-                    <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
-                    <Link color={"gray.light"} cursor={"pointer"}>
-                        instagram.com
-                    </Link>
                 </Flex>
                 <Flex gap={2} alignItems={"center"}>
-                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
+                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"} padding={"8px 0px 8px 8px"}>
                         <BsInstagram size={24} cursor={"pointer"} />
-                    </Box>
-                    <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
-                        <Menu>
-                            <MenuButton>
-                                <CgMoreO size={24} cursor={"pointer"} />
-                            </MenuButton>
-                            <Portal>
-                                <MenuList bg={"gray.dark"}>
-                                    <MenuItem bg={"gray.dark"} onClick={copyURL}>
-                                        Copy link
-                                    </MenuItem>
-                                </MenuList>
-                            </Portal>
-                        </Menu>
                     </Box>
                 </Flex>
             </Flex>
-
+            {currentUser?._id === user._id && (
+                <Link as={RouterLink} to="/update">
+                    <Button bg={"none"}border={"groove 0.2px grey"} width={"588px"}>Update profile</Button>
+                </Link>
+            )}
             <Flex w={"full"}>
                 <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} pb={3} cursor={"pointer"}>
                     <Text fontWeight={"bold"}>Threads</Text>

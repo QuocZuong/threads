@@ -1,24 +1,28 @@
-import { Flex, Image, useColorMode, Link } from "@chakra-ui/react";
-import { FiLogOut } from "react-icons/fi";
+import { Flex,  useColorMode, Link } from "@chakra-ui/react";
+import { FiSearch } from "react-icons/fi";
+import { BsHeart} from "react-icons/bs";
+// import { FiLogOut } from "react-icons/fi
+import { LuPenSquare } from "react-icons/lu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { AiFillHome } from "react-icons/ai";
-import { RxAvatar } from "react-icons/rx";
+import { GrHomeRounded } from "react-icons/gr";
+import { FaRegUser} from "react-icons/fa6";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
-import useLogout from "../hooks/useLogout";
+// import useLogout from "../hooks/useLogout";
+
 import authScreenAtom from "../atoms/authAtom";
 const Header = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const user = useRecoilValue(userAtom);
-    const logout = useLogout();
+    // const logout = useLogout();
     const setAuthScreen = useSetRecoilState(authScreenAtom);
     const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
     return (
-        <Flex justifyContent={"center"} gap={20} mt={6} mb={12}>
+        <Flex justifyContent={"center"} gap={10} mt={4} mb={8}>
             {user && (
                 <Link as={RouterLink} to="/">
-                    <AiFillHome size={35} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+                    <GrHomeRounded  size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} />
                 </Link>
             )}
 
@@ -28,19 +32,24 @@ const Header = () => {
                 </Link>
             )}
 
-            <Image
+            <FiSearch
                 cursor={"pointer"}
                 alt="logo"
-                w={35}
+                w={50}
                 src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                 onClick={toggleColorMode}
                 className={isDarkMode ? "icon-container" : "icon-container_light"}
-            ></Image>
-
+            />
+            <LuPenSquare size={50}className={isDarkMode ? "icon-container" : "icon-container_light"}/>
+            <BsHeart
+                size={50}
+                strokeWidth={0.3} 
+                className={isDarkMode ? "icon-container" : "icon-container_light"}
+            />
             {user && (
                 <Flex alignItems={"center"} gap={4}>
                     <Link as={RouterLink} to={`/${user.username}`}>
-                        <RxAvatar size={24} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+                        <FaRegUser size={24} className={isDarkMode ? "icon-container" : "icon-container_light"} />
                     </Link>
                 </Flex>
             )}
@@ -50,13 +59,13 @@ const Header = () => {
                     Sign up
                 </Link>
             )}
-            {user && (
+            {/* {user && (
                 <FiLogOut
                     size={35}
                     className={isDarkMode ? "icon-container" : "icon-container_light"}
                     onClick={logout}
                 />
-            )}
+            )} */}
         </Flex>
     );
 };

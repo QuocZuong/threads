@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20%;
     padding: 8px;
     width: 36px;
     height: 36px;
@@ -11,13 +11,14 @@
 
 .icon-container:hover {
     background-color: #1e1e1e;
+    
 }
 
 .icon-container_light {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20%;
     padding: 8px;
     width: 36px;
     height: 36px;

@@ -42,9 +42,10 @@ const HomePage = () => {
 
             {!isLoading && posts?.length === 0 && <h1>Follow some user to see the feed</h1>}
 
-            {posts?.map((post) => {
-                return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts}></Post>;
-            })}
+            {posts?.length > 0 &&
+                posts?.map((post) => {
+                    return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts}></Post>;
+                })}
         </>
     );
 };

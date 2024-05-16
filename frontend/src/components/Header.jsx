@@ -1,9 +1,13 @@
 import { Flex, useColorMode, Link } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { BsHeart } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { LuPenSquare } from "react-icons/lu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { AiFillHome } from "react-icons/ai";
+import { BsFillChatSquareQuoteFill } from "react-icons/bs";
+import { RxAvatar } from "react-icons/rx";
 import { GrHomeRounded } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa6";
 import userAtom from "../atoms/userAtom";
@@ -32,12 +36,21 @@ const Header = () => {
                 </Link>
             )}
 
-            <FiSearch
+            {user && (
+                <Link as={RouterLink} to="/chat">
+                    <BsFillChatSquareQuoteFill
+                        size={35}
+                        className={isDarkMode ? "icon-container" : "icon-container_light"}
+                    />
+                </Link>
+            )}
+            <Image
                 cursor={"pointer"}
                 alt="logo"
                 w={50}
                 src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                 className={isDarkMode ? "icon-container" : "icon-container_light"}
+                onClick={toggleColorMode}
             />
             <LuPenSquare size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} />
             <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />

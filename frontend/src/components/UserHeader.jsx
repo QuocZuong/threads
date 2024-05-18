@@ -94,7 +94,7 @@ const UserHeader = ({ user }) => {
                 </Flex>
                 <Flex gap={2} alignItems={"center"}>
                     <Box className={isDarkMode ? "icon-container" : "icon-container_light"}  >
-                        <BsInstagram size={24} cursor={"pointer"} />
+                        <BsInstagram size={36} cursor={"pointer"} />
                     </Box>
                 </Flex>
             </Flex>

@@ -52,12 +52,12 @@ const Header = () => {
                 className={isDarkMode ? "icon-container" : "icon-container_light"}
                 onClick={toggleColorMode}
             />
-            <LuPenSquare size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} />
-            <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+            <LuPenSquare size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} cursor={"pointer"} />
+            <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} cursor={"pointer"} />
             {user && (
                 <Flex alignItems={"center"} gap={4}>
                     <Link as={RouterLink} to={`/${user.username}`}>
-                        <FaRegUser size={24} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+                        <FaRegUser size={24} className={isDarkMode ? "icon-container" : "icon-container_light"} cursor={"pointer"}/>
                     </Link>
                 </Flex>
             )}
@@ -72,6 +72,7 @@ const Header = () => {
                     size={35}
                     className={isDarkMode ? "icon-container" : "icon-container_light"}
                     onClick={logout}
+                    cursor={"pointer"}
                 />
             )}
         </Flex>

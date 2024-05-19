@@ -193,4 +193,19 @@ const getUserPost = async (req, res) => {
     }
 };
 
-export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost };
+const searchPost = async (req, res, next) => {
+  try {
+    if (!req.query.text) return res.status(400).json({ error: "Bad request" });
+
+    const searchQuery = req.query.text; 
+    const posts = await Post.find({ text: { $regex: new RegExp(searchQuery, "i") }}, null, { lean: true });
+    
+    if (!posts) return res.status(404).json({ error: "Post not found" });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost, searchPost };

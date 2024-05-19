@@ -8,6 +8,7 @@ import conversationRoutes from "./routes/conversationRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./socket/socket.js";
 import dotenv from "dotenv";
+import morgan from "morgan";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ cloudinary.config({
 app.use(express.json({ limit: "10mb" })); // to parse json data from req.body
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser()); // to parse cookies from req.cookies
+app.use(morgan("dev"));
 
 // Routes
 app.use("/api/users", userRoutes);

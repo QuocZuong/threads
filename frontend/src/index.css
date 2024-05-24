@@ -36,3 +36,7 @@
     display: flex;
     justify-content: center;
 }
+
+.icon-container, .icon-container_light {
+    cursor: pointer;
+}

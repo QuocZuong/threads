@@ -1,9 +1,6 @@
 import { useRef, useState } from "react";
-
-import { AddIcon } from "@chakra-ui/icons";
 import {
     Button,
-    useColorModeValue,
     useDisclosure,
     Modal,
     ModalOverlay,
@@ -27,6 +24,8 @@ import { useParams } from "react-router-dom";
 import { BsFillImageFill } from "react-icons/bs";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
+import { Box} from "@chakra-ui/layout";
+import { Avatar } from "@chakra-ui/avatar";
 
 const MAX_CHAR = 500;
 
@@ -89,19 +88,21 @@ const CreatePost = () => {
 
     return (
         <>
-            <Button
-                position={"fixed"}
-                bottom={10}
-                right={5}
-                bg={useColorModeValue("gray.300", "gray.dark")}
-                size={{
-                    base: "sm",
-                    sm: "md",
-                }}
-                onClick={onOpen}
-            >
-                <AddIcon />
-            </Button>
+        <Flex display={"flex"} gap={10} mt={4} mb={8} w={"full"} borderBottom={"0.05px solid gray"} pb={3}alignItems="center">
+                <Box>
+                <Avatar
+                        size="sm"
+                        name={user?.name}
+                        src={user?.profilePic}
+                    />
+                </Box>
+                <Text onClick={onOpen} bg={"none"} cursor={"text"}  width="100%" opacity={0.6} ml="-30px">Bắt đầu Threads...</Text>
+               
+                <Button size="sm" bgColor={"white"} textColor={"black"} borderRadius={"20px"} width="15%" isDisabled isDisabled
+                _hover={{ bgColor: "white"}}>
+                     Đăng
+                </Button>
+            </Flex>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -143,9 +144,9 @@ const CreatePost = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleCreatePost} isLoading={isLoading}>
-                            Post
-                        </Button>
+                    <Button size="sm" bgColor={"white"} textColor={"black"} borderRadius={"20px"} width="15%"onClick={handleCreatePost} isLoading={isLoading} >
+                     Đăng
+                    </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

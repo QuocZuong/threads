@@ -25,7 +25,7 @@ function App() {
                         user ? (
                             <>
                                 <UserPage />
-                                <CreatePost />
+                                {/* <CreatePost /> */}
                             </>
                         ) : (
                             <UserPage />

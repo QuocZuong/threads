@@ -191,4 +191,26 @@ const updateUser = async (req, res) => {
     }
 };
 
-export { getUserProfile, signupUser, loginUser, logoutUser, followUnFollowUser, updateUser };
+const searchUser = async (req, res, next) => {
+  try {
+    if (!req.query.filter) return res.status(400).json({ error: "Bad request" });
+
+    const searchQuery = req.query.filter;
+    const userQuery = {
+      $or: [
+        { name: { $regex: new RegExp(searchQuery, "i") } },
+        { username: { $regex: new RegExp(searchQuery, "i") } },
+      ],
+    };
+
+    const users = await User.find(userQuery, null, { lean: true, limit: 5 });
+
+    if (!users) return res.status(404).json({ error: "Found nothing" });
+
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getUserProfile, signupUser, loginUser, logoutUser, followUnFollowUser, updateUser, searchUser };

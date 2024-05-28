@@ -39,8 +39,8 @@ const FollowButton = ({ isFollowing, targetUserId }) => {
 
   return (
     <>
-      <Button w="90px" isLoading={isLoading} bgColor={isDarkMode ? "gray.800" : "gray.300"} onClick={changeStatus}>
-        {status ? "Unfollow" : "Follow"}
+      <Button w="90px" isLoading={isLoading} bgColor="transparent" border="1px solid gray" rounded="md" onClick={changeStatus}>
+        {status ? "Following" : "Follow"}
       </Button>
     </>
   );

@@ -140,6 +140,7 @@ const SearchBar = () => {
             key={user._id}
             id={user._id}
             name={user.name}
+            username={user.username}
             profileImgUrl={user.profilePic}
             isFollowing={isFollowing(user._id)}
           />

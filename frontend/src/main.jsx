@@ -3,12 +3,14 @@ import * as ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ColorModeScript } from "@chakra-ui/color-mode";
 import { extendTheme } from "@chakra-ui/theme-utils";
 import { mode } from "@chakra-ui/theme-tools";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import { SocketContextProvider } from "./context/SocketContext";
 
 const styles = {
     global: (props) => ({
@@ -33,14 +35,20 @@ const colors = {
 
 const theme = extendTheme({ config, styles, colors });
 
+const queryClient = new QueryClient();
+
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
         <RecoilRoot>
             <BrowserRouter>
                 <ChakraProvider theme={theme}>
-                    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-                    <App />
+                    <QueryClientProvider client={queryClient}>
+                        <SocketContextProvider>
+                            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                            <App />
+                        </SocketContextProvider>
+                    </QueryClientProvider>
                 </ChakraProvider>
             </BrowserRouter>
         </RecoilRoot>

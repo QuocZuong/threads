@@ -45,6 +45,15 @@ const Header = () => {
                     />
                 </Link>
             )}
+
+            {user && (
+                <Link as={RouterLink} to="/chat">
+                    <BsFillChatSquareQuoteFill
+                        size={35}
+                        className={isDarkMode ? "icon-container" : "icon-container_light"}
+                    />
+                </Link>
+            )}
             <Image
                 cursor={"pointer"}
                 alt="logo"

@@ -19,6 +19,12 @@ import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { z } from "zod";
+
+const loginSchema = z.object({
+    username: z.string().min(1, "Username is required."),
+    password: z.string().min(1, "Password is required."),
+});
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +41,8 @@ export default function Login() {
     const handleLogin = async () => {
         setIsLoading(true);
         try {
+            loginSchema.parse(inputs);
+
             const res = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
@@ -52,7 +60,11 @@ export default function Login() {
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(data);
         } catch (error) {
-            showToast("An error occurred.", error, "error");
+            if (error instanceof z.ZodError) {
+                showToast("An error occurred.", error.errors.map(e => e.message).join(" "), "error");
+            } else {
+                showToast("An error occurred.", error, "error");
+            }   
         } finally {
             setIsLoading(false);
         }

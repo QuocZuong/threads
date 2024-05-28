@@ -17,13 +17,18 @@ const HomePage = () => {
                 const res = await fetch("/api/posts/feed");
                 const data = await res.json();
 
+                if (res.status === 500) {
+                    showToast("Error", data.message, "error");
+                    return;
+                }
+
                 if (data.error) {
                     showToast("Error", data.error, "error");
                     return;
                 }
                 setPosts(data);
             } catch (error) {
-                showToast("Error", error, "error");
+                showToast("Error", "Error while loading feed", "error");
             } finally {
                 setIsLoading(false);
             }

@@ -11,7 +11,7 @@
 
 .icon-container:hover {
     background-color: #1e1e1e;
-    
+
 }
 
 .icon-container_light {
@@ -27,4 +27,16 @@
 
 .icon-container_light:hover {
     background-color: #d4d4d4;
+}
+
+.user-message {
+    color: rgb(153, 153, 153);
+    line-height: 340px;
+    width: 572px;
+    display: flex;
+    justify-content: center;
+}
+
+.icon-container, .icon-container_light {
+    cursor: pointer;
 }

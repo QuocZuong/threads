@@ -7,7 +7,6 @@ import Post from "../components/Post.jsx";
 import useGetUserProfile from "../hooks/useGetUserProfile.js";
 import postsAtom from "../atoms/postsAtom.js";
 import { useRecoilState } from "recoil";
-
 const UserPage = () => {
     const { isLoading, user } = useGetUserProfile();
     const { username } = useParams();
@@ -48,7 +47,9 @@ const UserPage = () => {
     return (
         <>
             <UserHeader user={user} />
-            {!fetchingPost && posts.length === 0 && <h1>User has no post</h1>}
+            {!fetchingPost && posts.length === 0 && <div className="user-message">
+                <h1>There are no posts yet</h1>
+                </div>}
 
             {/* {fetchingPost && (
                 <Flex justifyContent={"center"} my={12}>

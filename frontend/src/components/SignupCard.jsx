@@ -20,6 +20,25 @@ import authScreenAtom from "../atoms/authAtom";
 import { useSetRecoilState } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { z } from "zod";
+
+const signupSchema = z.object({
+    name: z
+    .string()
+    .min(1, "Full name is required.")
+    .max(64, "Full name must be 64 characters or less"),
+    username: z
+    .string()
+    .min(1, "Username is required.")
+    .max(64, "Username must be 64 characters or less"),
+    email: z.string().email("Invalid email address."),
+    password: z.string()
+    .regex(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 
+        "Password must contain at least one letter, one number, and one special character."
+    )
+});
+
 export default function SignupCard() {
     const [showPassword, setShowPassword] = useState(false);
     const setScreenAuth = useSetRecoilState(authScreenAtom);
@@ -35,12 +54,14 @@ export default function SignupCard() {
     });
     const handleSignup = async () => {
         try {
+            const parsedInputs = signupSchema.parse(inputs);
+
             const res = await fetch("/api/users/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(inputs),
+                body: JSON.stringify(parsedInputs),
             });
             const data = await res.json();
             if (data.error) {
@@ -50,7 +71,12 @@ export default function SignupCard() {
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(data);
         } catch (error) {
-            showToast("An error occurred.", error, "error");
+            if( error instanceof z.ZodError) {
+                const message = error.errors[0].message;
+                showToast("An error occurred.",  `${message}`, "error");
+            } else {
+                showToast("An error occurred.", error, "error");
+            }
         }
     };
     return (
@@ -66,7 +92,7 @@ export default function SignupCard() {
                         <HStack>
                             <Box>
                                 <FormControl isRequired>
-                                    <FormLabel>Full Name</FormLabel>
+                                    <FormLabel>Full name</FormLabel>
                                     <Input
                                         type="text"
                                         onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
@@ -76,7 +102,7 @@ export default function SignupCard() {
                             </Box>
                             <Box>
                                 <FormControl isRequired>
-                                    <FormLabel>username</FormLabel>
+                                    <FormLabel>Username</FormLabel>
                                     <Input
                                         type="text"
                                         onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
@@ -144,3 +170,4 @@ export default function SignupCard() {
         </Flex>
     );
 }
+

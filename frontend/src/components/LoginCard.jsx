@@ -12,6 +12,7 @@ import {
     Text,
     useColorModeValue,
     Link,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -20,11 +21,9 @@ import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { z } from "zod";
+import { loginSchema } from "../lib/validations";
 
-const loginSchema = z.object({
-    username: z.string().min(1, "Username is required."),
-    password: z.string().min(1, "Password is required."),
-});
+
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +31,7 @@ export default function Login() {
     const setAuthScreen = useSetRecoilState(authScreenAtom);
     const showToast = useShowToast();
     const setUser = useSetRecoilState(userAtom);
+    const [errors, setErrors] = useState({});
 
     const [inputs, setInputs] = useState({
         username: "",
@@ -40,20 +40,22 @@ export default function Login() {
 
     const handleLogin = async () => {
         setIsLoading(true);
+        setErrors({});
         try {
-            loginSchema.parse(inputs);
+            const parsedInputs = loginSchema.parse(inputs);
 
             const res = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(inputs),
+                body: JSON.stringify(parsedInputs),
             });
 
             const data = await res.json();
 
             if (data.error) {
+                setErrors
                 showToast("An error occurred.", data.error, "error");
                 return;
             }
@@ -61,7 +63,11 @@ export default function Login() {
             setUser(data);
         } catch (error) {
             if (error instanceof z.ZodError) {
-                showToast("An error occurred.", error.errors.map(e => e.message).join(" "), "error");
+                const newErrors = error.errors.reduce((acc, e) => {
+                    acc[e.path[0]] = e.message;
+                    return acc;
+                }, {});
+                setErrors(newErrors);
             } else {
                 showToast("An error occurred.", error, "error");
             }   
@@ -89,23 +95,28 @@ export default function Login() {
                     p={8}
                 >
                     <Stack spacing={4}>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={errors.username}>
                             <FormLabel>Username</FormLabel>
                             <Input
                                 type="text"
                                 onChange={(e) => {
                                     setInputs({ ...inputs, username: e.target.value });
+                                    setErrors({ ...errors, username: "" });
                                 }}
                                 value={inputs.username}
                             />
+                            {errors.username && (
+                                <FormErrorMessage>{errors.username}</FormErrorMessage>
+                            )}
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
                             <InputGroup>
                                 <Input
                                     type={showPassword ? "text" : "password"}
                                     onChange={(e) => {
                                         setInputs({ ...inputs, password: e.target.value });
+                                        setErrors({ ...errors, password: "" });
                                     }}
                                     value={inputs.password}
                                 />
@@ -118,6 +129,9 @@ export default function Login() {
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
+                            {errors.password && (
+                                <FormErrorMessage>{errors.password}</FormErrorMessage>
+                            )}
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button

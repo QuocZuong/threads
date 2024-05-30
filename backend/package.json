@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "nodemon --env-file .env --ext '*' server.js",
+        "local": "nodemon --env-file .env.local --ext '*' server.js",
         "start": "node server.js"
     },
     "type": "module",

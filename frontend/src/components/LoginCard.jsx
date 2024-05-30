@@ -12,6 +12,7 @@ import {
     Text,
     useColorModeValue,
     Link,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -19,6 +20,10 @@ import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { z } from "zod";
+import { loginSchema } from "../lib/validations";
+
+
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +31,7 @@ export default function Login() {
     const setAuthScreen = useSetRecoilState(authScreenAtom);
     const showToast = useShowToast();
     const setUser = useSetRecoilState(userAtom);
+    const [errors, setErrors] = useState({});
 
     const [inputs, setInputs] = useState({
         username: "",
@@ -34,25 +40,37 @@ export default function Login() {
 
     const handleLogin = async () => {
         setIsLoading(true);
+        setErrors({});
         try {
+            const parsedInputs = loginSchema.parse(inputs);
+
             const res = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(inputs),
+                body: JSON.stringify(parsedInputs),
             });
 
             const data = await res.json();
 
             if (data.error) {
+                setErrors
                 showToast("An error occurred.", data.error, "error");
                 return;
             }
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(data);
         } catch (error) {
-            showToast("An error occurred.", error, "error");
+            if (error instanceof z.ZodError) {
+                const newErrors = error.errors.reduce((acc, e) => {
+                    acc[e.path[0]] = e.message;
+                    return acc;
+                }, {});
+                setErrors(newErrors);
+            } else {
+                showToast("An error occurred.", error, "error");
+            }   
         } finally {
             setIsLoading(false);
         }
@@ -77,23 +95,28 @@ export default function Login() {
                     p={8}
                 >
                     <Stack spacing={4}>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={errors.username}>
                             <FormLabel>Username</FormLabel>
                             <Input
                                 type="text"
                                 onChange={(e) => {
                                     setInputs({ ...inputs, username: e.target.value });
+                                    setErrors({ ...errors, username: "" });
                                 }}
                                 value={inputs.username}
                             />
+                            {errors.username && (
+                                <FormErrorMessage>{errors.username}</FormErrorMessage>
+                            )}
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
                             <InputGroup>
                                 <Input
                                     type={showPassword ? "text" : "password"}
                                     onChange={(e) => {
                                         setInputs({ ...inputs, password: e.target.value });
+                                        setErrors({ ...errors, password: "" });
                                     }}
                                     value={inputs.password}
                                 />
@@ -106,6 +129,9 @@ export default function Login() {
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
+                            {errors.password && (
+                                <FormErrorMessage>{errors.password}</FormErrorMessage>
+                            )}
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button

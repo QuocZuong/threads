@@ -47,7 +47,11 @@ const Header = () => {
                     <Box as={BsFillChatSquareQuoteFill} {...iconStyles} />
                 </Link>
             )}
-
+            {/* {user && (
+                <Link as={RouterLink} to="/chat">
+                    <Box as={BsFillChatSquareQuoteFill} {...iconStyles} />
+                </Link>
+            )} */}
             <Image
                 cursor="pointer"
                 alt="logo"

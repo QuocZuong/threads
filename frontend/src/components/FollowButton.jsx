@@ -24,11 +24,7 @@ const FollowButton = ({ isFollowing, targetUserId }) => {
         if (res.status !== 200) throw new Error(JSON.stringify(data));
       } catch (err) {
         console.log(err);
-        showToast(
-          "Error",
-          "Please try again later, we are encountering some errors",
-          "error",
-        );
+        showToast("Error", "Please try again later, we are encountering some errors", "error");
       } finally {
         setIsLoading(false);
       }
@@ -39,7 +35,14 @@ const FollowButton = ({ isFollowing, targetUserId }) => {
 
   return (
     <>
-      <Button w="90px" isLoading={isLoading} bgColor="transparent" border="1px solid gray" rounded="md" onClick={changeStatus}>
+      <Button
+        w="90px"
+        isLoading={isLoading}
+        bgColor="transparent"
+        border="1px solid gray"
+        rounded="md"
+        onClick={changeStatus}
+      >
         {status ? "Following" : "Follow"}
       </Button>
     </>

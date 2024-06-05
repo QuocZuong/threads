@@ -1,6 +1,6 @@
 export const errorHanlder = async (error, req, res, next) => {
   res.status(500).json({ error: error.message });
-  next()
-}
+  next();
+};
 
 export default errorHanlder;

@@ -1,26 +1,26 @@
 import mongoose from "mongoose";
 
 const attachmentSchema = mongoose.Schema(
-    {
-        messageId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Message",
-        },
-        fileName: {
-            type: String,
-            required: true,
-        },
-        fileUrl: {
-            type: String,
-        },
-        fileType: {
-            type: String,
-            required: true,
-        },
+  {
+    messageId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
     },
-    {
-        timestamps: true,
+    fileName: {
+      type: String,
+      required: true,
     },
+    fileUrl: {
+      type: String,
+    },
+    fileType: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
 );
 
 const Attachment = mongoose.model("Attachment", attachmentSchema);

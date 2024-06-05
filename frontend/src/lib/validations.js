@@ -12,7 +12,7 @@ export const signupSchema = z.object({
     .string()
     .regex(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Invalid email address."
+      "Invalid email address.",
     ),
   password: z.string().min(6, "Password must be at least 6 characters."),
 });

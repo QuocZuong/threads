@@ -9,8 +9,7 @@ const createPost = async (req, res, next) => {
     const { postedBy, text } = req.body;
     let { img } = req.body;
 
-    if (!postedBy || !text)
-      return res.status(400).json({ error: "Posted by and text are required" });
+    if (!postedBy || !text) return res.status(400).json({ error: "Posted by and text are required" });
 
     const user = await User.findById(postedBy);
 
@@ -24,9 +23,7 @@ const createPost = async (req, res, next) => {
     }
 
     if (text.length > maxLength)
-      return res
-        .status(400)
-        .json({ error: `Text must be less than ${maxLength} characters` });
+      return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
 
     if (img) {
       const uploadedResponse = await cloudinary.uploader.upload(img);
@@ -207,13 +204,4 @@ const searchPost = async (req, res, next) => {
   }
 };
 
-export {
-  createPost,
-  getPost,
-  deletePost,
-  likeUnlikePost,
-  replyToPost,
-  getFeedPost,
-  getUserPost,
-  searchPost,
-};
+export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost, searchPost };

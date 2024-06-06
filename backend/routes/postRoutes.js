@@ -1,13 +1,13 @@
 import express from "express";
 import {
-    createPost,
-    getPost,
-    deletePost,
-    likeUnlikePost,
-    replyToPost,
-    getFeedPost,
-    getUserPost,
-    searchPost,
+  createPost,
+  getPost,
+  deletePost,
+  likeUnlikePost,
+  replyToPost,
+  getFeedPost,
+  getUserPost,
+  searchPost,
 } from "../controllers/postController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 import errorHanlder from "../middlewares/errorHanlder.js";

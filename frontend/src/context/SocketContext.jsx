@@ -6,28 +6,28 @@ import userAtom from "../atoms/userAtom";
 const SocketContext = createContext();
 
 export const useSocket = () => {
-    return useContext(SocketContext);
+  return useContext(SocketContext);
 };
 
 export const SocketContextProvider = ({ children }) => {
-    const [socket, setSocket] = useState(null);
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    const user = useRecoilValue(userAtom);
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const user = useRecoilValue(userAtom);
 
-    useEffect(() => {
-        const socket = io("/", {
-            query: {
-                userId: user?._id,
-            },
-        });
+  useEffect(() => {
+    const socket = io("/", {
+      query: {
+        userId: user?._id,
+      },
+    });
 
-        setSocket(socket);
+    setSocket(socket);
 
-        socket.on("getOnlineUsers", (users) => {
-            setOnlineUsers(users);
-        });
-        return () => socket && socket.close();
-    }, [user?._id]);
+    socket.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+    return () => socket && socket.close();
+  }, [user?._id]);
 
-    return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+  return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
 };

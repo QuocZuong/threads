@@ -23,15 +23,7 @@ const Header = () => {
   const gapSize = useBreakpointValue({ base: 2, md: 4, lg: 6 });
 
   return (
-    <Flex
-      justifyContent={"center"}
-      alignItems="center"
-      gap={gapSize}
-      mt={4}
-      mb={8}
-      wrap="wrap"
-      flexDirection="row"
-    >
+    <Flex justifyContent={"center"} alignItems="center" gap={gapSize} mt={4} mb={8} wrap="wrap" flexDirection="row">
       {user && (
         <Link as={RouterLink} to="/">
           <Box
@@ -46,6 +38,11 @@ const Header = () => {
         </Link>
       )}
 
+      {!user && (
+        <Link as={RouterLink} to="/" onClick={() => setAuthScreen("login")}>
+          Login
+        </Link>
+      )}
       {!user && (
         <Link as={RouterLink} to="/" onClick={() => setAuthScreen("login")}>
           Login
@@ -76,11 +73,7 @@ const Header = () => {
         onClick={toggleColorMode}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
       >
-        <Image
-          alt="logo"
-          src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
-          boxSize="100%"
-        />
+        <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
       </Box>
 
       <Link as={RouterLink} to="/search">

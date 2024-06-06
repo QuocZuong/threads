@@ -18,9 +18,9 @@ const PORT = process.env.PORT || 5050;
 
 // Cloudinary config
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Middleware
@@ -36,5 +36,5 @@ app.use("/api", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 
 server.listen(PORT, () => {
-    console.log(`Hey server started at port ${PORT}!`);
+  console.log(`Hey server started at port ${PORT}!`);
 });

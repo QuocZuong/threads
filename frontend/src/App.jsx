@@ -13,34 +13,34 @@ import SearchPage from "./pages/SearchPage";
 
 import ChatPage from "./pages/ChatPage";
 function App() {
-    const user = useRecoilValue(userAtom);
+  const user = useRecoilValue(userAtom);
 
-    return (
-        <Container maxW="620px">
-            <Header />
-            <Routes>
-                <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />}></Route>
-                <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/" />}></Route>
-                <Route path="/update" element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />}></Route>
-                <Route path="/search" element={<SearchPage />}></Route>
-                <Route
-                    path="/:username"
-                    element={
-                        user ? (
-                            <>
-                                <UserPage />
-                                {/* <CreatePost /> */}
-                            </>
-                        ) : (
-                            <UserPage />
-                        )
-                    }
-                ></Route>
-                <Route path="/:username/post/:pid" element={<PostPage />}></Route>
-                <Route path="/chat" element={user ? <ChatPage /> : <Navigate to="/auth" />}></Route>
-            </Routes>
-        </Container>
-    );
+  return (
+    <Container maxW="620px">
+      <Header />
+      <Routes>
+        <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />}></Route>
+        <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/" />}></Route>
+        <Route path="/update" element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />}></Route>
+        <Route path="/search" element={<SearchPage />}></Route>
+        <Route
+          path="/:username"
+          element={
+            user ? (
+              <>
+                <UserPage />
+                {/* <CreatePost /> */}
+              </>
+            ) : (
+              <UserPage />
+            )
+          }
+        ></Route>
+        <Route path="/:username/post/:pid" element={<PostPage />}></Route>
+        <Route path="/chat" element={user ? <ChatPage /> : <Navigate to="/auth" />}></Route>
+      </Routes>
+    </Container>
+  );
 }
 
 export default App;

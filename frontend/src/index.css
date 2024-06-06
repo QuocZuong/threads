@@ -1,42 +1,42 @@
 .icon-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20%;
-    padding: 8px;
-    width: 36px;
-    height: 36px;
-    transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .icon-container:hover {
-    background-color: #1e1e1e;
-
+  background-color: #1e1e1e;
 }
 
 .icon-container_light {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20%;
-    padding: 8px;
-    width: 36px;
-    height: 36px;
-    transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .icon-container_light:hover {
-    background-color: #d4d4d4;
+  background-color: #d4d4d4;
 }
 
 .user-message {
-    color: rgb(153, 153, 153);
-    line-height: 340px;
-    width: 572px;
-    display: flex;
-    justify-content: center;
+  color: rgb(153, 153, 153);
+  line-height: 340px;
+  width: 572px;
+  display: flex;
+  justify-content: center;
 }
 
-.icon-container, .icon-container_light {
-    cursor: pointer;
+.icon-container,
+.icon-container_light {
+  cursor: pointer;
 }

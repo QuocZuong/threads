@@ -51,7 +51,7 @@ export default function SignupCard() {
       });
       const data = await res.json();
       if (data.error) {
-        setErrors({ username: data.error})
+        setErrors({ username: data.error });
         showToast("An error occurred.", data.error, "error");
         return;
       }
@@ -77,12 +77,7 @@ export default function SignupCard() {
             Sign up
           </Heading>
         </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.dark")}
-          boxShadow={"lg"}
-          p={8}
-        >
+        <Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
           <Stack spacing={4}>
             <HStack>
               <Box>
@@ -92,13 +87,11 @@ export default function SignupCard() {
                     type="text"
                     onChange={(e) => {
                       setInputs({ ...inputs, name: e.target.value });
-                      setErrors({...errors, name: ""});
+                      setErrors({ ...errors, name: "" });
                     }}
                     value={inputs.name}
                   />
-                  {errors.name && (
-                    <FormErrorMessage>{errors.name}</FormErrorMessage>
-                  )}
+                  {errors.name && <FormErrorMessage>{errors.name}</FormErrorMessage>}
                 </FormControl>
               </Box>
               <Box>
@@ -108,13 +101,11 @@ export default function SignupCard() {
                     type="text"
                     onChange={(e) => {
                       setInputs({ ...inputs, username: e.target.value });
-                      setErrors({...errors, username: ""});
+                      setErrors({ ...errors, username: "" });
                     }}
                     value={inputs.username}
                   />
-                  {errors.username && (
-                    <FormErrorMessage>{errors.username}</FormErrorMessage>
-                  )}
+                  {errors.username && <FormErrorMessage>{errors.username}</FormErrorMessage>}
                 </FormControl>
               </Box>
             </HStack>
@@ -124,13 +115,11 @@ export default function SignupCard() {
                 type="email"
                 onChange={(e) => {
                   setInputs({ ...inputs, email: e.target.value });
-                  setErrors({...errors, email: ""});
+                  setErrors({ ...errors, email: "" });
                 }}
                 value={inputs.email}
               />
-              {errors.email && (
-                <FormErrorMessage>{errors.email}</FormErrorMessage>
-              )}
+              {errors.email && <FormErrorMessage>{errors.email}</FormErrorMessage>}
             </FormControl>
             <FormControl isRequired isInvalid={errors.password}>
               <FormLabel>Password</FormLabel>
@@ -139,25 +128,18 @@ export default function SignupCard() {
                   type={showPassword ? "text" : "password"}
                   onChange={(e) => {
                     setInputs({ ...inputs, password: e.target.value });
-                    setErrors({...errors, password: ""});
+                    setErrors({ ...errors, password: "" });
                   }}
                   value={inputs.password}
                 />
 
                 <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
+                  <Button variant={"ghost"} onClick={() => setShowPassword((showPassword) => !showPassword)}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              {errors.password && (
-                <FormErrorMessage>{errors.password}</FormErrorMessage>
-              )}
+              {errors.password && <FormErrorMessage>{errors.password}</FormErrorMessage>}
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button

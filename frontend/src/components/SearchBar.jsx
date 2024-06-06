@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  Image,
-  Input,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, FormControl, Image, Input, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import Post from "./Post";
@@ -70,17 +62,13 @@ const SearchBar = () => {
     const search = setTimeout(async () => {
       try {
         const data = {};
-        const postRes = await fetch(
-          "/api/posts/search?" + getEncodedQueryString(searchVal),
-        );
+        const postRes = await fetch("/api/posts/search?" + getEncodedQueryString(searchVal));
 
         if (postRes.status === 200) {
           data.posts = await postRes.json();
         }
 
-        const userRes = await fetch(
-          "/api/users/search?" + getEncodedQueryString(searchVal),
-        );
+        const userRes = await fetch("/api/users/search?" + getEncodedQueryString(searchVal));
 
         if (userRes.status === 200) {
           data.users = await userRes.json();
@@ -107,12 +95,7 @@ const SearchBar = () => {
 
     if (users && users.length === 0 && posts && posts.length === 0) {
       return (
-        <Flex
-          justifyContent="center"
-          alignItems="end"
-          h="60vh"
-          position="relative"
-        >
+        <Flex justifyContent="center" alignItems="end" h="60vh" position="relative">
           <Image
             src="/chat-bubble.svg"
             w="30%"
@@ -143,17 +126,13 @@ const SearchBar = () => {
             username={user.username}
             profileImgUrl={user.profilePic}
             isFollowing={isFollowing(user._id)}
-          />
+          />,
         );
       });
     }
 
     if (posts) {
-      posts.map((item) =>
-        arr.push(
-          <Post key={item._id} post={item} postedBy={item.postedBy}></Post>,
-        ),
-      );
+      posts.map((item) => arr.push(<Post key={item._id} post={item} postedBy={item.postedBy}></Post>));
     }
 
     return arr;
@@ -172,14 +151,7 @@ const SearchBar = () => {
           borderWidth="2px"
           borderColor={isDarkMode ? "gray.700" : "gray.300"}
         />
-        <SearchIcon
-          pos="absolute"
-          top="3.5"
-          left="5"
-          zIndex="999"
-          boxSize="5"
-          opacity="0.7"
-        />
+        <SearchIcon pos="absolute" top="3.5" left="5" zIndex="999" boxSize="5" opacity="0.7" />
 
         {searchVal && (
           <SmallCloseIcon

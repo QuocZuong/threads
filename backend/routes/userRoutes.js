@@ -1,12 +1,12 @@
 import express from "express";
 import {
-    getUserProfile,
-    signupUser,
-    loginUser,
-    logoutUser,
-    followUnFollowUser,
-    updateUser,
-    searchUser,
+  getUserProfile,
+  signupUser,
+  loginUser,
+  logoutUser,
+  followUnFollowUser,
+  updateUser,
+  searchUser,
 } from "../controllers/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 import errorHanlder from "../middlewares/errorHanlder.js";

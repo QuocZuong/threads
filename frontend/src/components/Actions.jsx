@@ -33,12 +33,7 @@ const Actions = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLikeAndUnlike = async () => {
-    if (!user)
-      return showToast(
-        "Error",
-        "You must be logged in to like a post",
-        "error"
-      );
+    if (!user) return showToast("Error", "You must be logged in to like a post", "error");
     if (isLiking) return;
     setIsLiking(true);
     try {
@@ -83,12 +78,7 @@ const Actions = ({ post }) => {
   };
 
   const handleReply = async () => {
-    if (!user)
-      return showToast(
-        "Error",
-        "You must be logged in to reply a post",
-        "error"
-      );
+    if (!user) return showToast("Error", "You must be logged in to reply a post", "error");
     if (isReplying) return;
     setIsReplying(true);
     try {
@@ -168,8 +158,7 @@ const Actions = ({ post }) => {
 
       <Flex gap={2} alignItems={"center"}>
         <Text color={"gray.light"} fontSize="sm">
-          {post?.replies?.length}{" "}
-          {post?.replies?.length > 1 ? "replies" : "reply"}
+          {post?.replies?.length} {post?.replies?.length > 1 ? "replies" : "reply"}
         </Text>
         <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
         <Text color={"gray.light"} fontSize="sm">

@@ -43,13 +43,9 @@ const Header = () => {
 
       {user && (
         <Link as={RouterLink} to="/chat">
-          <BsFillChatSquareQuoteFill
-            size={35}
-            className={isDarkMode ? "icon-container" : "icon-container_light"}
-          />
+          <BsFillChatSquareQuoteFill size={35} className={isDarkMode ? "icon-container" : "icon-container_light"} />
         </Link>
       )}
-
       <Image
         cursor={"pointer"}
         alt="logo"
@@ -86,11 +82,7 @@ const Header = () => {
       )}
 
       {!user && (
-        <Link
-          as={RouterLink}
-          to="/auth"
-          onClick={() => setAuthScreen("signup")}
-        >
+        <Link as={RouterLink} to="/auth" onClick={() => setAuthScreen("signup")}>
           Sign up
         </Link>
       )}

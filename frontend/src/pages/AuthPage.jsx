@@ -4,11 +4,11 @@ import Login from "../components/LoginCard";
 import SignupCard from "../components/SignupCard";
 import { useEffect } from "react";
 const AuthPage = () => {
-    useEffect(() => {
-        document.title = "Authentication";
-    }, []);
-    const authScreenState = useRecoilValue(authScreenAtom);
-    return <>{authScreenState === "login" ? <Login /> : <SignupCard />}</>;
+  useEffect(() => {
+    document.title = "Authentication";
+  }, []);
+  const authScreenState = useRecoilValue(authScreenAtom);
+  return <>{authScreenState === "login" ? <Login /> : <SignupCard />}</>;
 };
 
 export default AuthPage;

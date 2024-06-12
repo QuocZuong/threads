@@ -33,9 +33,9 @@ const signupUser = async (req, res) => {
     const { name, email, username, password } = req.body;
     const user = await User.findOne({ $or: [{ email }, { username }] });
 
-    if (user) {
-      res.status(400).json({ error: "User already exists" });
-    }
+        if (user) {
+            return res.status(400).json({ error: "User already exists" });
+        }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

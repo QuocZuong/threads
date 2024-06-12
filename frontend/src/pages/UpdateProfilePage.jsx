@@ -6,15 +6,21 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   Stack,
   useColorModeValue,
   Avatar,
-  Center,
+  HStack,
+  // Switch,
+  // extendTheme,
+  Box,
+  Divider,
+  Text,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast.js";
+// import { switchTheme } from "../lib/theme.js";
+import { CiLock } from "react-icons/ci";
 
 export default function UpdateProfilePage() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -22,6 +28,7 @@ export default function UpdateProfilePage() {
   const { handleImageChange, imgUrl } = usePreviewImg();
   const [updating, setUpdating] = useState(false);
   const showToast = useShowToast();
+  // const theme = extendTheme({ components: { switchTheme }, })
 
   const [inputs, setInputs] = useState({
     name: user.name,
@@ -30,6 +37,7 @@ export default function UpdateProfilePage() {
     bio: user.bio,
     password: "",
     profilePic: user.profilePic,
+    // privateProfile: user.privateProfile || false,
   });
 
   const handleSubmit = async (e) => {
@@ -65,69 +73,42 @@ export default function UpdateProfilePage() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Flex align={"center"} justify={"center"}>
+
+      <Flex align={"center"} justify={"center"} >
         <Stack
           spacing={4}
           w={"full"}
           maxW={"md"}
-          bg={useColorModeValue("white", "gray.dark")}
+          bg={useColorModeValue("white", "#181818")}
           rounded={"xl"}
           boxShadow={"lg"}
           p={6}
-          my={6}
+          my={20}
+          border={"1.5px solid"}
+          borderColor={useColorModeValue("white", "#2e2e2e")}          
         >
-          <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
-            User Profile Edit
-          </Heading>
-          <FormControl>
-            <Stack direction={["column", "row"]} spacing={6}>
-              <Center>
-                <Avatar size="xl" src={imgUrl || inputs.profilePic} />
-              </Center>
-              <Center w="full">
-                <Button w="full" onClick={() => fileRef.current.click()}>
-                  Change Avatar
-                </Button>
-                <Input type={"file"} hidden ref={fileRef} onChange={handleImageChange}></Input>
-              </Center>
-            </Stack>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Full name</FormLabel>
-            <Input
-              value={inputs.name}
-              onChange={(e) => {
-                setInputs({ ...inputs, name: e.target.value });
-              }}
-              placeholder="Your full name"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Username</FormLabel>
-            <Input
-              value={inputs.username}
-              onChange={(e) => {
-                setInputs({ ...inputs, username: e.target.value });
-              }}
-              placeholder="username"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              value={inputs.email}
-              onChange={(e) => {
-                setInputs({ ...inputs, email: e.target.value });
-              }}
-              placeholder="your-email@example.com"
-              _placeholder={{ color: "gray.500" }}
-              type="email"
-            />
-          </FormControl>
+
+          <HStack direction={["column", "row"]} spacing={4} justify={"space-between"}>
+            <Flex direction="column" w={"80%"}>
+              <FormLabel>Name</FormLabel>
+              <HStack pb={3}>
+                <CiLock color="gray.300" />
+                <Text>{`${inputs.name} (${inputs.username})`}</Text>
+              </HStack>
+              <Divider />
+            </Flex>
+            <Flex direction="column" align="center">
+              <FormControl>
+                <Box w={50}>
+                  <Button w={10} onClick={() => fileRef.current.click()}>
+                    <Avatar size="lg" src={imgUrl || inputs.profilePic} />
+                  </Button>
+                  <Input type={"file"} hidden ref={fileRef} onChange={handleImageChange}></Input>
+                </Box>
+              </FormControl>
+            </Flex>
+          </HStack>
+
           <FormControl>
             <FormLabel>Bio</FormLabel>
             <Input
@@ -135,45 +116,46 @@ export default function UpdateProfilePage() {
               onChange={(e) => {
                 setInputs({ ...inputs, bio: e.target.value });
               }}
-              placeholder="Bio"
-              _placeholder={{ color: "gray.500" }}
+              placeholder="+ Add bio"
+              variant={"flushed"}
+              _placeholder={{ color: "gray" }}
               type="text"
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Link</FormLabel>
             <Input
-              value={inputs.password}
+              value={inputs.link}
               onChange={(e) => {
-                setInputs({ ...inputs, password: e.target.value });
+                setInputs({ ...inputs, link: e.target.value });
               }}
-              placeholder="password"
-              _placeholder={{ color: "gray.500" }}
-              type="password"
+              placeholder="+ Add link"
+              variant={"flushed"}
+              _placeholder={{ color: "gray" }}
+              type="text"
             />
           </FormControl>
+          {/* <FormControl display="flex" alignItems="center">
+            <Flex justify="space-between" w="full" pb={3}>
+              <FormLabel mb="0">Private profile</FormLabel>
+              <Switch
+                isChecked={inputs.privateProfile}
+                onChange={(e) => setInputs({ ...inputs, privateProfile: e.target.checked })}
+                size='lg'
+                colorScheme={useColorModeValue("blackAlpha", "whiteAlpha")}
+              />
+            </Flex>
+          </FormControl> */}
           <Stack spacing={6} direction={["column", "row"]}>
-            {/* <Button
-                            bg={"red.400"}
-                            color={"white"}
-                            w="full"
-                            _hover={{
-                                bg: "red.500",
-                            }}
-                        >
-                            Cancel
-                        </Button> */}
             <Button
-              bg={"green.400"}
-              color={"white"}
+              bg={useColorModeValue("black", "white")}
+              color={useColorModeValue("white", "black")}
               w="full"
-              _hover={{
-                bg: "green.500",
-              }}
+              _hover={"none"}
               type="submit"
               isLoading={updating}
             >
-              Submit
+              Done
             </Button>
           </Stack>
         </Stack>

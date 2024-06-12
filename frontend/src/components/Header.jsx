@@ -10,6 +10,8 @@ import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import { SearchIcon } from "@chakra-ui/icons";
+import "../components/Header.css";
+
 import authScreenAtom from "../atoms/authAtom";
 
 const Header = () => {
@@ -104,10 +106,23 @@ const Header = () => {
         alignItems="center"
         boxSize={iconSize}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
-      >
-        <BsHeart style={{ width: "100%", height: "100%" }} strokeWidth={0.3} />
-      </Box>
-
+        onClick={toggleColorMode}
+      />
+      <RouterLink to="/search">
+        <SearchIcon
+          boxSize={35}
+          className={isDarkMode ? "icon-container" : "icon-container_light"}
+        ></SearchIcon>
+      </RouterLink>
+      <LuPenSquare
+        size={50}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      />
+      <BsHeart
+        size={50}
+        strokeWidth={0.3}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      />
       {user && (
         <Flex alignItems={"center"} gap={gapSize}>
           <Link as={RouterLink} to={`/${user.username}`}>

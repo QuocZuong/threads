@@ -21,9 +21,8 @@ import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
 import useShowToast from "../hooks/useShowToast";
 
-const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
-
 const Actions = ({ post }) => {
+  const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
   const user = useRecoilValue(userAtom);
   const showToast = useShowToast();
   const [liked, setLiked] = useState(post?.likes.includes(user?._id));
@@ -174,12 +173,22 @@ const Actions = ({ post }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <Input placeholder="Reply goes here..." value={reply} onChange={(e) => setReply(e.target.value)}></Input>
+              <Input
+                placeholder="Reply goes here..."
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+              ></Input>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" size={"sm"} mr={3} onClick={handleReply} isLoading={isReplying}>
+            <Button
+              colorScheme="blue"
+              size={"sm"}
+              mr={3}
+              onClick={handleReply}
+              isLoading={isReplying}
+            >
               Reply
             </Button>
           </ModalFooter>
@@ -192,6 +201,8 @@ const Actions = ({ post }) => {
 export default Actions;
 
 const RepostSVG = () => {
+  const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
+
   return (
     <svg
       aria-label="Repost"
@@ -211,6 +222,8 @@ const RepostSVG = () => {
 };
 
 const ShareSVG = () => {
+  const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
+
   return (
     <svg
       aria-label="Share"

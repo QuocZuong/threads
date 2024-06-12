@@ -14,6 +14,7 @@ import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import { SearchIcon } from "@chakra-ui/icons";
+import "../components/Header.css";
 
 import authScreenAtom from "../atoms/authAtom";
 const Header = () => {
@@ -24,10 +25,13 @@ const Header = () => {
   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
   return (
-    <Flex justifyContent={"center"} gap={10} mt={4} mb={8}>
+    <Flex justifyContent={"space-between"} mt={4} mb={8}>
       {user && (
         <Link as={RouterLink} to="/">
-          <GrHomeRounded size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+          <GrHomeRounded
+            size={50}
+            className={isDarkMode ? "icon-container" : "icon-container_light"}
+          />
         </Link>
       )}
 
@@ -51,10 +55,20 @@ const Header = () => {
         onClick={toggleColorMode}
       />
       <RouterLink to="/search">
-        <SearchIcon boxSize={35} className={isDarkMode ? "icon-container" : "icon-container_light"}></SearchIcon>
+        <SearchIcon
+          boxSize={35}
+          className={isDarkMode ? "icon-container" : "icon-container_light"}
+        ></SearchIcon>
       </RouterLink>
-      <LuPenSquare size={50} className={isDarkMode ? "icon-container" : "icon-container_light"} />
-      <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+      <LuPenSquare
+        size={50}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      />
+      <BsHeart
+        size={50}
+        strokeWidth={0.3}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      />
       {user && (
         <Flex alignItems={"center"} gap={4}>
           <Link as={RouterLink} to={`/${user.username}`}>

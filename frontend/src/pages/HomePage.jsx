@@ -4,7 +4,9 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-
+// import { Box} from "@chakra-ui/layout";
+// import { Avatar } from "@chakra-ui/avatar";
+import CreatePost from "../components/CreatePost";
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +46,7 @@ const HomePage = () => {
           <Spinner size={"xl"} />
         </Flex>
       )}
+      <CreatePost />
 
       {!isLoading && posts?.length === 0 && <h1>Follow some user to see the feed</h1>}
 

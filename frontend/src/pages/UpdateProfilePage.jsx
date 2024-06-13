@@ -73,8 +73,7 @@ export default function UpdateProfilePage() {
 
   return (
     <form onSubmit={handleSubmit}>
-
-      <Flex align={"center"} justify={"center"} >
+      <Flex align={"center"} justify={"center"}>
         <Stack
           spacing={4}
           w={"full"}
@@ -85,9 +84,8 @@ export default function UpdateProfilePage() {
           p={6}
           my={20}
           border={"1.5px solid"}
-          borderColor={useColorModeValue("white", "#2e2e2e")}          
+          borderColor={useColorModeValue("white", "#2e2e2e")}
         >
-
           <HStack direction={["column", "row"]} spacing={4} justify={"space-between"}>
             <Flex direction="column" w={"80%"}>
               <FormLabel>Name</FormLabel>

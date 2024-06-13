@@ -8,25 +8,29 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   FormControl,
-  Textarea,
   Text,
   Input,
   Flex,
   Image,
+  Box,
+  Avatar,
+  VStack,
+  HStack,
   CloseButton,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import { useParams } from "react-router-dom";
-import { BsFillImageFill } from "react-icons/bs";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
+import { IoImagesOutline } from "react-icons/io5";
+import { BsFiletypeGif } from "react-icons/bs";
+import { HiHashtag } from "react-icons/hi2";
+import { BiPoll } from "react-icons/bi";
 
 const MAX_CHAR = 500;
 
@@ -42,7 +46,7 @@ const CreatePost = () => {
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 
   const user = useRecoilValue(userAtom);
-
+  
   const showToast = useShowToast();
 
   const handleTextChange = (e) => {
@@ -93,47 +97,92 @@ const CreatePost = () => {
         position={"fixed"}
         bottom={10}
         right={5}
-        bg={useColorModeValue("gray.300", "gray.dark")}
+        border={"0.5px solid"}
+        borderColor={useColorModeValue("gray", "gray")}
+        bg={useColorModeValue("white", "gray.dark")}
         size={{
           base: "sm",
           sm: "md",
         }}
+        _hover={{ transform: 'scale(1.2)' }}
         onClick={onOpen}
       >
         <AddIcon />
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create Post</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <Textarea placeholder="Post content goes here..." onChange={handleTextChange} value={postText} />
-              <Text fontSize="xs" fontWeight={"bold"} textAlign={"right"} m={1} color={"gray.800"}>
-                {typedChar}/{MAX_CHAR}
-              </Text>
+      <Modal isOpen={isOpen} size={"lg"} onClose={onClose}>
+        <ModalOverlay /> 
+        <ModalContent  pt={3} bg={useColorModeValue("white", "#181818")} borderRadius={20}>
+          {/* <ModalCloseButton /> */}
+          <ModalBody pb={6} >
+            <Flex>
+              <Avatar size="lg" src={user.profilePic} />
+              <VStack ml={4} align="start" w={"full"}>
+                <Box w={"full"}>
+                  <Text fontWeight="bold">{username}</Text>
+                  <Input h={"auto"} overflow="visible" variant="unstyled" placeholder="What's new?" onChange={handleTextChange} value={postText} />
+                </Box>
+                <FormControl>
+                  <HStack justify={"space-between"}>
+                    <Input type="file" hidden ref={imgRef} onChange={handleImageChange} />
+                    <HStack>
+                      <IoImagesOutline
+                        style={{ cursor: "pointer" }}
+                        size={16}
+                        onClick={() => imgRef.current.click()}
+                        color={useColorModeValue("gray", "gray")}
+                      />
+                      <BsFiletypeGif
+                        style={{ cursor: "pointer" }}
+                        size={15}
+                        color={useColorModeValue("gray", "gray")}
+                      />
+                      <HiHashtag style={{ cursor: "pointer" }} size={15} color={useColorModeValue("gray", "gray")} />
+                      <BiPoll style={{ cursor: "pointer" }} size={17} color={useColorModeValue("gray", "gray")} />
+                    </HStack>
 
-              <Input type="file" hidden ref={imgRef} onChange={handleImageChange} />
+                    <Text
+                      fontSize="xs"
+                      fontWeight={"bold"}
+                      textAlign={"right"}
+                      m={1}
+                      color={useColorModeValue("gray.300", "gray")}
+                    >
+                      {typedChar}/{MAX_CHAR}
+                    </Text>
+                  </HStack>
+                </FormControl>
 
-              <BsFillImageFill
-                style={{ marginLeft: "5px", cursor: "pointer" }}
-                size={16}
-                onClick={() => imgRef.current.click()}
-              />
-            </FormControl>
-
-            {imgUrl && (
-              <Flex mt={5} w={"full"} position={"relative"}>
-                <Image src={imgUrl} alt="Selected image" />
-                <CloseButton onClick={() => setImgUrl("")} bg={"gray.800"} position={"absolute"} top={2} right={2} />
-              </Flex>
-            )}
+                {imgUrl && (
+                  <Flex mt={5} w={"300px"} position={"relative"}>
+                    <Image src={imgUrl} borderRadius={10} alt="Selected image" />
+                    <CloseButton
+                      onClick={() => setImgUrl("")}
+                      bg={"gray"}
+                      size={"sm"}
+                      borderRadius={100}
+                      position={"absolute"}
+                      top={2}
+                      right={2}
+                    />
+                  </Flex>
+                )}
+              </VStack>
+            </Flex>
           </ModalBody>
-
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleCreatePost} isLoading={isLoading}>
+            <Button
+              h={7}
+              size={"sm"}
+              borderRadius={8}
+              // colorScheme={useColorModeValue("gray", "gray")}
+              color={useColorModeValue("dark", "white")}
+              bg={useColorModeValue("white", "dark")}
+              border={"0.7px solid"}
+              borderColor={useColorModeValue("gray", "gray")}
+              onClick={handleCreatePost}
+              isLoading={isLoading}
+            >
               Post
             </Button>
           </ModalFooter>

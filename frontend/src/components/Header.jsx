@@ -1,13 +1,9 @@
-import { Flex, useColorMode, Link } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
-import { FiSearch } from "react-icons/fi";
+import { Flex, useColorMode, Link, Box, Image, useBreakpointValue } from "@chakra-ui/react";
 import { BsHeart } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { LuPenSquare } from "react-icons/lu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { AiFillHome } from "react-icons/ai";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import { RxAvatar } from "react-icons/rx";
 import { GrHomeRounded } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa6";
 import userAtom from "../atoms/userAtom";
@@ -17,6 +13,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import "../components/Header.css";
 
 import authScreenAtom from "../atoms/authAtom";
+
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const user = useRecoilValue(userAtom);
@@ -24,14 +21,22 @@ const Header = () => {
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
 
+  const iconSize = useBreakpointValue({ base: "30px", md: "35px", lg: "40px" });
+  const gapSize = useBreakpointValue({ base: 2, md: 4, lg: 6 });
+
   return (
-    <Flex justifyContent={"space-between"} mt={4} mb={8}>
+    <Flex justifyContent={"center"} alignItems="center" gap={gapSize} mt={4} mb={8} wrap="wrap" flexDirection="row">
       {user && (
         <Link as={RouterLink} to="/">
-          <GrHomeRounded
-            size={50}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            boxSize={iconSize}
             className={isDarkMode ? "icon-container" : "icon-container_light"}
-          />
+          >
+            <GrHomeRounded style={{ width: "100%", height: "100%" }} />
+          </Box>
         </Link>
       )}
 
@@ -40,43 +45,97 @@ const Header = () => {
           Login
         </Link>
       )}
+      {!user && (
+        <Link as={RouterLink} to="/" onClick={() => setAuthScreen("login")}>
+          Login
+        </Link>
+      )}
 
       {user && (
         <Link as={RouterLink} to="/chat">
-          <BsFillChatSquareQuoteFill size={35} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            boxSize={iconSize}
+            className={isDarkMode ? "icon-container" : "icon-container_light"}
+          >
+            <BsFillChatSquareQuoteFill style={{ width: "100%", height: "100%" }} />
+          </Box>
         </Link>
       )}
-      <Image
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
         cursor={"pointer"}
-        alt="logo"
-        w={50}
-        src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+        w={iconSize}
+        h={iconSize}
+        onClick={toggleColorMode}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      >
+        <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
+      </Box>
+
+      <Link as={RouterLink} to="/search">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          boxSize={iconSize}
+          className={isDarkMode ? "icon-container" : "icon-container_light"}
+        >
+          <SearchIcon style={{ width: "100%", height: "100%" }}  className={isDarkMode ? "icon-container" : "icon-container_light"}/>
+        </Box>
+      </Link>
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        boxSize={iconSize}
+        className={isDarkMode ? "icon-container" : "icon-container_light"}
+      >
+        <LuPenSquare style={{ width: "100%", height: "100%" }} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+      </Box>
+
+      {/* <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        boxSize={iconSize}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
         onClick={toggleColorMode}
-      />
-      <RouterLink to="/search">
+      /> */}
+      {/* <RouterLink to="/search">
         <SearchIcon
           boxSize={35}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         ></SearchIcon>
-      </RouterLink>
-      <LuPenSquare
+      </RouterLink> */}
+      {/* <LuPenSquare
         size={50}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
-      />
+      /> */}
       <BsHeart
         size={50}
         strokeWidth={0.3}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
       />
       {user && (
-        <Flex alignItems={"center"} gap={4}>
+        <Flex alignItems={"center"} gap={gapSize}>
           <Link as={RouterLink} to={`/${user.username}`}>
-            <FaRegUser
-              size={24}
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              boxSize={iconSize}
               className={isDarkMode ? "icon-container" : "icon-container_light"}
               cursor={"pointer"}
-            />
+            >
+              <FaRegUser style={{ width: "100%", height: "100%" }} />
+            </Box>
           </Link>
         </Flex>
       )}
@@ -86,13 +145,19 @@ const Header = () => {
           Sign up
         </Link>
       )}
+
       {user && (
-        <FiLogOut
-          size={35}
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          boxSize={iconSize}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
           onClick={logout}
           cursor={"pointer"}
-        />
+        >
+          <FiLogOut style={{ width: "100%", height: "100%" }} />
+        </Box>
       )}
     </Flex>
   );

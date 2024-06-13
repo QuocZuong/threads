@@ -86,7 +86,7 @@ const Header = () => {
           boxSize={iconSize}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         >
-          <SearchIcon style={{ width: "100%", height: "100%" }} />
+          <SearchIcon style={{ width: "100%", height: "100%" }}  className={isDarkMode ? "icon-container" : "icon-container_light"}/>
         </Box>
       </Link>
 
@@ -97,27 +97,27 @@ const Header = () => {
         boxSize={iconSize}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
       >
-        <LuPenSquare style={{ width: "100%", height: "100%" }} />
+        <LuPenSquare style={{ width: "100%", height: "100%" }} className={isDarkMode ? "icon-container" : "icon-container_light"} />
       </Box>
 
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
         boxSize={iconSize}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
         onClick={toggleColorMode}
-      />
-      <RouterLink to="/search">
+      /> */}
+      {/* <RouterLink to="/search">
         <SearchIcon
           boxSize={35}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         ></SearchIcon>
-      </RouterLink>
-      <LuPenSquare
+      </RouterLink> */}
+      {/* <LuPenSquare
         size={50}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
-      />
+      /> */}
       <BsHeart
         size={50}
         strokeWidth={0.3}

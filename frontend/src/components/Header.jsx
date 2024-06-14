@@ -45,11 +45,7 @@ const Header = () => {
           Login
         </Link>
       )}
-      {!user && (
-        <Link as={RouterLink} to="/" onClick={() => setAuthScreen("login")}>
-          Login
-        </Link>
-      )}
+
 
       {user && (
         <Link as={RouterLink} to="/chat">
@@ -77,7 +73,7 @@ const Header = () => {
       >
         <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
       </Box>
-
+      {user && (
       <Link as={RouterLink} to="/search">
         <Box
           display="flex"
@@ -89,7 +85,8 @@ const Header = () => {
           <SearchIcon style={{ width: "100%", height: "100%" }}  className={isDarkMode ? "icon-container" : "icon-container_light"}/>
         </Box>
       </Link>
-
+      )}
+      {user && (
       <Box
         display="flex"
         justifyContent="center"
@@ -99,30 +96,13 @@ const Header = () => {
       >
         <LuPenSquare style={{ width: "100%", height: "100%" }} className={isDarkMode ? "icon-container" : "icon-container_light"} />
       </Box>
-
-      {/* <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        boxSize={iconSize}
-        className={isDarkMode ? "icon-container" : "icon-container_light"}
-        onClick={toggleColorMode}
-      /> */}
-      {/* <RouterLink to="/search">
-        <SearchIcon
-          boxSize={35}
-          className={isDarkMode ? "icon-container" : "icon-container_light"}
-        ></SearchIcon>
-      </RouterLink> */}
-      {/* <LuPenSquare
-        size={50}
-        className={isDarkMode ? "icon-container" : "icon-container_light"}
-      /> */}
+      )}
+      {user && (
       <BsHeart
         size={50}
         strokeWidth={0.3}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
-      />
+      />)}
       {user && (
         <Flex alignItems={"center"} gap={gapSize}>
           <Link as={RouterLink} to={`/${user.username}`}>

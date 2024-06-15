@@ -1,0 +1,14 @@
+.searchBar{
+    border-radius: 20px !important;
+    border: 1px solid  rgb(70, 70, 70) !important;
+    border-color: none !important;
+    box-shadow: none !important;
+}
+.boxSearch{
+    border: 1px solid rgb(70, 70, 70);
+    padding: 2rem !important;
+    border-radius: 20px !important;
+}
+.searchUserCard{
+    border: none !important;
+}

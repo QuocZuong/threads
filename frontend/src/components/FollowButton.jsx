@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { Button } from "@chakra-ui/react";
+import "../components/FollowButton.css";
 
 const FollowButton = ({ isFollowing, targetUserId }) => {
   const [status, setStatus] = useState(isFollowing);
@@ -36,7 +37,9 @@ const FollowButton = ({ isFollowing, targetUserId }) => {
   return (
     <>
       <Button
-        w="90px"
+        w="100px"
+        h="30px"
+        className="followButon"
         isLoading={isLoading}
         bgColor="transparent"
         border="1px solid gray"

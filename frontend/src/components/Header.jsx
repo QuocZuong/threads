@@ -41,6 +41,7 @@ const Header = () => {
       )}
 
       {!user && (
+
         <Link
           className={isDarkMode ? "icon-containerSignup" : "icon-container_lightSignup"}
           as={RouterLink}
@@ -78,7 +79,7 @@ const Header = () => {
       >
         <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
       </Box>
-
+      {user && (
       <Link as={RouterLink} to="/search">
         <Box
           display="flex"
@@ -93,7 +94,8 @@ const Header = () => {
           />
         </Box>
       </Link>
-
+      )}
+      {user && (
       <Box
         display="flex"
         justifyContent="center"

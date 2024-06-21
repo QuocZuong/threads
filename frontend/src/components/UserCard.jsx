@@ -15,7 +15,7 @@ const UserCard = ({ id, username, name, profileImgUrl, isFollowing }) => {
 
   return (
     <Flex border={isDarkMode ? "white" : "black"} direction="column" rowGap="16px">
-      <Flex align="center" justify="space-between" columnGap="16px" borderBottom="1px solid gray" p="16px">
+      <Flex align="center" justify="space-between" columnGap="16px" p="16px" position="relative">
         <Flex align="center" columnGap="16px" cursor="pointer" onClick={handleNavigate}>
           <Avatar size={"md"} name={name} src={profileImgUrl} />
           <Box display="inline-block">
@@ -26,6 +26,7 @@ const UserCard = ({ id, username, name, profileImgUrl, isFollowing }) => {
           </Box>
         </Flex>
         {!isUser && <FollowButton position="absolute" zIndex="999" isFollowing={isFollowing} targetUserId={id} />}
+        <Box position="absolute" bottom="0" left="5rem" right="-2rem" height="1px" backgroundColor="rgb(56, 56, 56)" />
       </Flex>
     </Flex>
   );

@@ -41,7 +41,6 @@ const Header = () => {
       )}
 
       {!user && (
-
         <Link
           className={isDarkMode ? "icon-containerSignup" : "icon-container_lightSignup"}
           as={RouterLink}
@@ -80,7 +79,22 @@ const Header = () => {
         <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
       </Box>
       {user && (
-      <Link as={RouterLink} to="/search">
+        <Link as={RouterLink} to="/search">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            boxSize={iconSize}
+            className={isDarkMode ? "icon-container" : "icon-container_light"}
+          >
+            <SearchIcon
+              style={{ width: "100%", height: "100%" }}
+              className={isDarkMode ? "icon-container" : "icon-container_light"}
+            />
+          </Box>
+        </Link>
+      )}
+      {user && (
         <Box
           display="flex"
           justifyContent="center"
@@ -88,27 +102,12 @@ const Header = () => {
           boxSize={iconSize}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         >
-          <SearchIcon
+          <LuPenSquare
             style={{ width: "100%", height: "100%" }}
             className={isDarkMode ? "icon-container" : "icon-container_light"}
           />
         </Box>
-      </Link>
       )}
-      {user && (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        boxSize={iconSize}
-        className={isDarkMode ? "icon-container" : "icon-container_light"}
-      >
-        <LuPenSquare
-          style={{ width: "100%", height: "100%" }}
-          className={isDarkMode ? "icon-container" : "icon-container_light"}
-        />
-      </Box>
-
       {user && (
         <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />
       )}

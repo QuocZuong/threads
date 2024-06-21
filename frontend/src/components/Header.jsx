@@ -42,7 +42,7 @@ const Header = () => {
 
       {!user && (
         <Link
-          className={isDarkMode ? "icon-container" : "icon-container_light"}
+          className={isDarkMode ? "icon-containerSignup" : "icon-container_lightSignup"}
           as={RouterLink}
           to="/"
           style={{ textDecoration: "none" }}

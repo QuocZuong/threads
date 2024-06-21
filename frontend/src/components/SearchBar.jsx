@@ -141,7 +141,13 @@ const SearchBar = () => {
   };
 
   return (
-    <Box rounded={8} p={2} className="boxSearch">
+    <Box
+      rounded={8}
+      p={2}
+      className="boxSearch"
+      backgroundColor={isDarkMode ? "rgb(24, 24, 24)" : "rgb(255, 255, 255) "}
+      borderColor={isDarkMode ? "rgb(75, 75, 75)" : "rgb(255, 255, 255)"}
+    >
       <FormControl mb="32px">
         <Input
           type="text"
@@ -152,7 +158,8 @@ const SearchBar = () => {
           height="50px"
           placeholder="Search"
           borderWidth="2px"
-          borderColor={isDarkMode ? "gray.700" : "gray.300"}
+          backgroundColor={isDarkMode ? "rgb( 0,  0,  0)" : "rgb(238, 242, 247)"}
+          borderColor={isDarkMode ? "rgb(70, 70, 70)" : "rgb(235, 235, 235)"}
         />
         <SearchIcon pos="absolute" top="3.5" left="5" zIndex="999" boxSize="5" opacity="0.7" />
 

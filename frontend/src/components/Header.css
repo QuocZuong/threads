@@ -3,3 +3,12 @@
     width: 50px !important;
     height: 36px !important;
 }
+.icon-container_lightSignup,
+.icon-containerSignup{
+    width: 60px !important;
+    height: 36px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none !important;
+}

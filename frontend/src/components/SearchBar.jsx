@@ -7,6 +7,7 @@ import qs from "qs";
 import UserCard from "./UserCard";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import "../components/SearchBar.css";
 
 const SearchBar = () => {
   const [searchResults, setSearchResults] = useState(null);
@@ -120,6 +121,7 @@ const SearchBar = () => {
       users.map((user) => {
         arr.push(
           <UserCard
+            className="searchUserCard"
             key={user._id}
             id={user._id}
             name={user.name}
@@ -139,13 +141,14 @@ const SearchBar = () => {
   };
 
   return (
-    <Box rounded={8} p={2}>
+    <Box rounded={8} p={2} className="boxSearch">
       <FormControl mb="32px">
         <Input
           type="text"
           value={searchVal}
           onChange={(e) => validate(e.target.value)}
           ps="50px"
+          className="searchBar"
           height="50px"
           placeholder="Search"
           borderWidth="2px"

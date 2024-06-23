@@ -91,7 +91,7 @@ export default function UpdateProfilePage() {
               <FormLabel>Name</FormLabel>
               <HStack pb={3}>
                 <CiLock color="gray.300" />
-                <Text>{`${inputs.name} (${inputs.username})`}</Text>
+                <Text>{`${inputs.name} (@${inputs.username})`}</Text>
               </HStack>
               <Divider />
             </Flex>

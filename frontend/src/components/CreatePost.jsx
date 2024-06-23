@@ -13,11 +13,12 @@ import {
   Input,
   Flex,
   Image,
-  Box,
   Avatar,
   VStack,
   HStack,
   CloseButton,
+  Textarea,
+  Box,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -26,9 +27,6 @@ import { useParams } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { IoImagesOutline } from "react-icons/io5";
-import { BsFiletypeGif } from "react-icons/bs";
-import { HiHashtag } from "react-icons/hi2";
-import { BiPoll } from "react-icons/bi";
 
 const MAX_CHAR = 500;
 
@@ -43,8 +41,10 @@ const CreatePost = () => {
   const imgRef = useRef(null);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 
+  const textareaRef = useRef(null);
+
   const user = useRecoilValue(userAtom);
-  
+
   const showToast = useShowToast();
 
   const handleTextChange = (e) => {
@@ -56,6 +56,11 @@ const CreatePost = () => {
     } else {
       setPostText(inputText);
       setTypedChar(inputText.length);
+    }
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "24px";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
 
@@ -91,54 +96,66 @@ const CreatePost = () => {
 
   return (
     <>
-      <Button
-        position={"fixed"}
-        bottom={10}
-        right={5}
-        border={"0.5px solid"}
-        borderColor={useColorModeValue("gray", "gray")}
-        bg={useColorModeValue("white", "gray.dark")}
-        size={{
-          base: "sm",
-          sm: "md",
-        }}
-        _hover={{ transform: 'scale(1.2)' }}
+      <Flex
+        display={"flex"}
+        gap={10}
+        mt={4}
+        // mb={8}
+        w={"full"}
+        borderBottom={"0.05px solid gray"}
+        pb={3}
+        alignItems="center"
         onClick={onOpen}
       >
-        <AddIcon />
-      </Button>
+        <Box>
+          <Avatar size="md" name={user?.name} src={user?.profilePic} />
+        </Box>
+        <Text bg={"none"} cursor={"text"} width="100%" opacity={0.6} ml="-30px">
+          Bắt đầu Threads...
+        </Text>
+
+        <Button
+          size="sm"
+          bgColor={useColorModeValue("gray.dark", "white")}
+          textColor={useColorModeValue("white", "black")}
+          borderRadius={"20px"}
+          width="15%"
+          _hover={{ bgColor: useColorModeValue("gray.dark", "white"), pointerEvents: "cursor" }}
+        >
+          Đăng
+        </Button>
+      </Flex>
 
       <Modal isOpen={isOpen} size={"lg"} onClose={onClose}>
-        <ModalOverlay /> 
-        <ModalContent  pt={3} bg={useColorModeValue("white", "#181818")} borderRadius={20}>
-          {/* <ModalCloseButton /> */}
-          <ModalBody pb={6} >
+        <ModalOverlay />
+        <ModalContent pt={3} bg={useColorModeValue("white", "#181818")} borderRadius={20}>
+          <ModalBody pb={0}>
             <Flex>
-              <Avatar size="lg" src={user.profilePic} />
-              <VStack ml={4} align="start" w={"full"}>
-                <Box w={"full"}>
-                  <Text fontWeight="bold">{username}</Text>
-                  <Input h={"auto"} overflow="visible" variant="unstyled" placeholder="What's new?" onChange={handleTextChange} value={postText} />
-                </Box>
+              <Avatar size="md" src={user.profilePic} />
+              <VStack ml={4} align="start" w={"full"} spacing={0}>
+                <Text fontWeight={"500"}>{user.username}</Text>
+                <Textarea
+                  ref={textareaRef}
+                  variant="unstyled"
+                  placeholder="What's new?"
+                  onChange={handleTextChange}
+                  value={postText}
+                  overflow="hidden"
+                  resize={"none"}
+                  minHeight={"30px"}
+                  rows={1}
+                  // lineHeight={"20px"}
+                  p={0}
+                />
                 <FormControl>
                   <HStack justify={"space-between"}>
                     <Input type="file" hidden ref={imgRef} onChange={handleImageChange} />
-                    <HStack>
-                      <IoImagesOutline
-                        style={{ cursor: "pointer" }}
-                        size={16}
-                        onClick={() => imgRef.current.click()}
-                        color={useColorModeValue("gray", "gray")}
-                      />
-                      <BsFiletypeGif
-                        style={{ cursor: "pointer" }}
-                        size={15}
-                        color={useColorModeValue("gray", "gray")}
-                      />
-                      <HiHashtag style={{ cursor: "pointer" }} size={15} color={useColorModeValue("gray", "gray")} />
-                      <BiPoll style={{ cursor: "pointer" }} size={17} color={useColorModeValue("gray", "gray")} />
-                    </HStack>
-
+                    <IoImagesOutline
+                      style={{ cursor: "pointer" }}
+                      size={16}
+                      onClick={() => imgRef.current.click()}
+                      color={useColorModeValue("gray", "gray")}
+                    />
                     <Text
                       fontSize="xs"
                       fontWeight={"bold"}
@@ -162,6 +179,8 @@ const CreatePost = () => {
                       position={"absolute"}
                       top={2}
                       right={2}
+                      opacity={0.3}
+                      _hover={{opacity : 0.8}}
                     />
                   </Flex>
                 )}
@@ -170,15 +189,15 @@ const CreatePost = () => {
           </ModalBody>
           <ModalFooter>
             <Button
-              h={7}
-              size={"sm"}
-              borderRadius={8}
-              // colorScheme={useColorModeValue("gray", "gray")}
+              h={8}
+              size={"md"}
+              borderRadius={"20px"}
               color={useColorModeValue("dark", "white")}
               bg={useColorModeValue("white", "dark")}
               border={"0.7px solid"}
               borderColor={useColorModeValue("gray", "gray")}
               onClick={handleCreatePost}
+              _hover={{ bg: "none" }}
               isLoading={isLoading}
             >
               Post

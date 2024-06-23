@@ -1,5 +1,5 @@
 import { Avatar } from "@chakra-ui/avatar";
-import { Box, VStack, Flex, Text, Link } from "@chakra-ui/layout";
+import { Box, VStack, Flex, Text } from "@chakra-ui/layout";
 // import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Button } from "@chakra-ui/react";
 // import { Portal } from "@chakra-ui/portal";
@@ -8,8 +8,9 @@ import { BsInstagram } from "react-icons/bs";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import { Link as RouterLink } from "react-router-dom";
+// import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
+import UpdateProfileModal from "./UpdateProfileModal";
 
 const UserHeader = ({ user }) => {
   const showToast = useShowToast();
@@ -96,13 +97,16 @@ const UserHeader = ({ user }) => {
           </Box>
         </Flex>
       </Flex>
-      {currentUser?._id === user._id && (
+      {/* {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
           <Button bg={"none"} border={"groove 0.2px grey"} width={"588px"}>
             Update profile
           </Button>
         </Link>
-      )}
+      )} */}
+      <Flex w={"full"} justifyContent={"center"} pb={3} cursor={"pointer"}>
+      <UpdateProfileModal />
+      </Flex>
       <Flex w={"full"}>
         <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} pb={3} cursor={"pointer"}>
           <Text fontWeight={"bold"}>Threads</Text>

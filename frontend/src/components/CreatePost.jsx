@@ -113,7 +113,6 @@ const CreatePost = () => {
           borderRadius={"20px"}
           width="15%"
           isDisabled
-          isDisabled
           _hover={{ bgColor: "white" }}
         >
           Đăng

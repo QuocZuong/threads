@@ -107,7 +107,7 @@ const Header = () => {
           style={{ width: "100%", height: "100%" }}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         />
-      </Box>
+      </Box>)}
 
       {user && (
         <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />

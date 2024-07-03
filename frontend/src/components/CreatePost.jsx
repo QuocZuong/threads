@@ -117,12 +117,14 @@ const CreatePost = () => {
         </Text>
 
         <Button
-          size="sm"
-          bgColor={useColorModeValue("gray.dark")}
-          textColor={useColorModeValue("white", "black")}
+          size={"sm"}
+          w={"15%"}
+          border={"0.7px solid"}
           borderRadius={"20px"}
-          width="15%"
-          _hover={{ bgColor: useColorModeValue("gray.dark"), pointerEvents: "cursor" }}
+          bg={useColorModeValue("white", "dark")}
+          color={useColorModeValue("dark", "white")}
+          borderColor={useColorModeValue("gray", "gray")}
+          _hover={{ bg: "none" }}
         >
           {t("post")}
         </Button>
@@ -202,7 +204,7 @@ const CreatePost = () => {
               _hover={{ bg: "none" }}
               isLoading={isLoading}
             >
-               {t('post')}
+              {t("post")}
             </Button>
           </ModalFooter>
         </ModalContent>

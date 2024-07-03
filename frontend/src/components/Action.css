@@ -1,0 +1,49 @@
+:root {
+    --action-hover-bg-light: rgb(237, 235, 235);
+    --action-hover-bg-dark: #1e1e1e;
+}
+
+/* [data-theme='light'] .action-icon::before {
+    background-color: var(--action-hover-bg-light);
+}
+
+[data-theme='dark'] .action-icon::before {
+    background-color: var(--action-hover-bg-dark);
+} */
+
+.action-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 2px;
+    transition: background-color 0.3s ease;
+    z-index: 0;
+}
+
+.action-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    transform: translate(-50%, -50%);
+    border-radius: 35%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    z-index: -1;
+}
+
+.action-icon:hover::before {
+    background-color: var(--action-hover-bg-dark);
+}
+
+[data-theme='light'] .action-icon:hover::before {
+    background-color: var(--action-hover-bg-light);
+}
+
+[data-theme='dark'] .action-icon:hover::before {
+    background-color: var(--action-hover-bg-dark);
+}

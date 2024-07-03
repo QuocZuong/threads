@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Flex,
   Text,
@@ -26,6 +25,7 @@ import { GoHeartFill, GoHeart } from "react-icons/go";
 import { FiRepeat } from "react-icons/fi";
 import { PiChatCircle } from "react-icons/pi";
 import { FiSend } from "react-icons/fi";
+import "../components/Action.css";
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
@@ -40,7 +40,7 @@ const Actions = ({ post }) => {
 
   const bounce = keyframes`
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    50% { transform: scale(0.8); }
     100% { transform: scale(1); }
   `;
 
@@ -135,60 +135,34 @@ const Actions = ({ post }) => {
       <Flex gap={3} my={1} onClick={(e) => e.preventDefault()} className="">
         <Flex gap={2} alignItems={"center"}>
           <HStack spacing={6}>
-            <Box w={"auto"} onClick={handleLikeAndUnlike}>
-              <HStack
-                title="Like"
-                animation={animateLike ? `${bounce} 0.3s ease` : undefined}
-                spacing={1}
-              >
+            <Box w={"auto"} onClick={handleLikeAndUnlike} className="action-icon">
+              <HStack title="Like" animation={animateLike ? `${bounce} 0.4s ease` : undefined} spacing={1}>
                 {liked ? <GoHeartFill size={"23px"} fill={"#ff0033"} /> : <GoHeart size={"23px"} />}
-                {liked ? (
-                  <Text color={"#ff0033"} fontSize="sm">
+                {post?.likes?.length > 0 ? (
+                  <Text color={liked ? "#ff0033" : "white"} fontSize="sm">
                     {post?.likes?.length}
                   </Text>
-                ) : (
-                  ""
-                )}
+                ) : undefined}
               </HStack>
             </Box>
 
-            <Box w={"auto"} onClick={onOpen}>
-              <HStack 
-                justifyContent={"center"} 
-                alignContent={"center"} 
-              
-              >
+            <Box w={"auto"} onClick={onOpen} className="action-icon">
+              <HStack justifyContent={"center"} alignContent={"center"}>
                 <PiChatCircle size={"23px"} style={{ transform: "scaleX(-1)" }} />
-                {post?.replies?.length >= 1 ? (
-                  <Text fontSize="sm">
-                    {post?.replies?.length}
-                  </Text>
-                ) : (
-                  ""
-                )}
+                {post?.replies?.length >= 1 ? <Text fontSize="sm">{post?.replies?.length}</Text> : ""}
               </HStack>
             </Box>
 
-            <Box w={"auto"} justifyItems={"center"} align={"center"}>
+            <Box className="action-icon">
               <FiRepeat size={"19px"} />
             </Box>
 
-            <Box>
+            <Box className="action-icon">
               <FiSend style={{ transform: "rotate(20deg)" }} size={"21px"} />
             </Box>
           </HStack>
         </Flex>
       </Flex>
-
-      {/* <Flex gap={2} alignItems={"center"}>
-        <Text color={"gray.light"} fontSize="sm">
-          {post?.replies?.length} {post?.replies?.length > 1 ? "replies" : "reply"}
-        </Text>
-        <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
-        <Text color={"gray.light"} fontSize="sm">
-          {post?.likes?.length} {post?.likes?.length > 1 ? "likes" : "like"}
-        </Text>
-      </Flex> */}
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -213,58 +187,3 @@ const Actions = ({ post }) => {
 };
 
 export default Actions;
-
-// const RepostSVG = () => {
-//   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
-
-//   return (
-//     <svg
-//       aria-label="Repost"
-//       color="currentColor"
-//       fill="currentColor"
-//       role="img"
-//       viewBox="0 0 24 24"
-//       className={isDarkMode ? "icon-container" : "icon-container_light"}
-//     >
-//       <title>Repost</title>
-//       <path
-//         fill=""
-//         d="M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z"
-//       ></path>
-//     </svg>
-//   );
-// };
-
-// const ShareSVG = () => {
-//   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
-
-//   return (
-//     <svg
-//       aria-label="Share"
-//       color=""
-//       fill="rgb(243, 245, 247)"
-//       role="img"
-//       viewBox="0 0 24 24"
-//       className={isDarkMode ? "icon-container" : "icon-container_light"}
-//     >
-//       <title>Share</title>
-//       <line
-//         fill="none"
-//         stroke="currentColor"
-//         strokeLinejoin="round"
-//         strokeWidth="2"
-//         x1="22"
-//         x2="9.218"
-//         y1="3"
-//         y2="10.083"
-//       ></line>
-//       <polygon
-//         fill="none"
-//         points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
-//         stroke="currentColor"
-//         strokeLinejoin="round"
-//         strokeWidth="2"
-//       ></polygon>
-//     </svg>
-//   );
-// };

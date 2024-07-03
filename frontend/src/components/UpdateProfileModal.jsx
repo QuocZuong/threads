@@ -38,7 +38,6 @@ const UpdateProfileModal = () => {
     bio: user.bio,
     password: "",
     profilePic: user.profilePic,
-    // privateProfile: user.privateProfile || false,
   });
 
   const handleSubmit = async (e) => {
@@ -75,14 +74,7 @@ const UpdateProfileModal = () => {
 
   return (
     <>
-      <Button
-        w={"full"}
-        bg={"none"}
-        border={"groove 0.2px grey"}
-        // borderColor={useColorModeValue("white", "gray")}
-        // bg={useColorModeValue("white", "dark")}
-        onClick={onOpen}
-      >
+      <Button w={"full"} bg={"none"} border={"groove 0.2px grey"} onClick={onOpen}>
         Update profile
       </Button>
 
@@ -136,17 +128,6 @@ const UpdateProfileModal = () => {
                     type="text"
                   />
                 </Flex>
-                {/* <FormControl display="flex" alignItems="center">
-            <Flex justify="space-between" w="full" pb={3}>
-              <FormLabel mb="0">Private profile</FormLabel>
-              <Switch
-                isChecked={inputs.privateProfile}
-                onChange={(e) => setInputs({ ...inputs, privateProfile: e.target.checked })}
-                size='lg'
-                colorScheme={useColorModeValue("blackAlpha", "whiteAlpha")}
-              />
-            </Flex>
-          </FormControl> */}
               </VStack>
             </Flex>
           </ModalBody>

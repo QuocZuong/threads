@@ -11,15 +11,12 @@ import {
   useColorModeValue,
   Avatar,
   HStack,
-  // Switch,
-  // extendTheme,
   Box,
   Divider,
   Text,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast.js";
-// import { switchTheme } from "../lib/theme.js";
 import { CiLock } from "react-icons/ci";
 
 export default function UpdateProfilePage() {
@@ -28,7 +25,6 @@ export default function UpdateProfilePage() {
   const { handleImageChange, imgUrl } = usePreviewImg();
   const [updating, setUpdating] = useState(false);
   const showToast = useShowToast();
-  // const theme = extendTheme({ components: { switchTheme }, })
 
   const [inputs, setInputs] = useState({
     name: user.name,
@@ -37,7 +33,6 @@ export default function UpdateProfilePage() {
     bio: user.bio,
     password: "",
     profilePic: user.profilePic,
-    // privateProfile: user.privateProfile || false,
   });
 
   const handleSubmit = async (e) => {

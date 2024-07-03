@@ -102,7 +102,6 @@ const CreatePost = () => {
         display={"flex"}
         gap={10}
         mt={4}
-        // mb={8}
         w={"full"}
         borderBottom={"0.05px solid gray"}
         pb={3}
@@ -148,7 +147,6 @@ const CreatePost = () => {
                   resize={"none"}
                   minHeight={"30px"}
                   rows={1}
-                  // lineHeight={"20px"}
                   p={0}
                 />
                 <FormControl>

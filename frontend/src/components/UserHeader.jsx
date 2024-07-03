@@ -39,7 +39,7 @@ const UserHeader = ({ user }) => {
       }
 
       if (following) {
-        showToast("Success", `${t("unfollowed")} ${user?.name}`, "success");
+        showToast("Success", `${t("unfollow")}ed ${user?.name}`, "success");
         user.followers.pop();
       } else {
         showToast("Success", `${t("followed")} ${user?.name}`, "success");
@@ -81,7 +81,7 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id !== user._id && (
         <Button onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? t("unfollowed") : t("followed")}
+          {following ? t("unfollow") : t("followed")}
         </Button>
       )}
 

@@ -3,7 +3,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { useParams, useNavigate } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import Actions from "../components/Actions";
-import Comment from "../components/Comment";
+import { CommentWithActions } from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useEffect } from "react";
 import useShowToast from "../hooks/useShowToast";
@@ -19,7 +19,7 @@ const PostPage = () => {
   const currentUser = useRecoilValue(userAtom);
   const navigate = useNavigate();
 
-  const currentPost = posts[0];
+  let currentPost = posts[0];
   useEffect(() => {
     const getPost = async () => {
       try {
@@ -31,6 +31,7 @@ const PostPage = () => {
           return;
         }
         setPosts([data]);
+        currentPost = posts[0];
       } catch (error) {
         showToast("Error", error, "error");
       }
@@ -95,9 +96,11 @@ const PostPage = () => {
         </Flex>
       </Flex>
       <Text my={3}>{currentPost.text}</Text>
-      <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-        <Image src={currentPost?.img} w={"full"} />
-      </Box>
+      {currentPost.img && (
+        <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
+          <Image src={currentPost?.img} w={"full"} />
+        </Box>
+      )}
       <Flex gap={3} my={3}>
         <Actions post={currentPost} />
       </Flex>
@@ -114,7 +117,7 @@ const PostPage = () => {
       </Flex>
       <Divider my={4} />
       {currentPost.replies.map((reply) => (
-        <Comment
+        <CommentWithActions
           key={reply._id}
           reply={reply}
           lastReply={reply._id === currentPost.replies[currentPost.replies.length - 1]._id}

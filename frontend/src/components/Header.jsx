@@ -3,7 +3,6 @@ import { BsHeart } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { LuPenSquare } from "react-icons/lu";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { GrHomeRounded } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa6";
 import userAtom from "../atoms/userAtom";
@@ -12,6 +11,7 @@ import useLogout from "../hooks/useLogout";
 import { SearchIcon } from "@chakra-ui/icons";
 import "../components/Header.css";
 import authScreenAtom from "../atoms/authAtom";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -60,7 +60,7 @@ const Header = () => {
             boxSize={iconSize}
             className={isDarkMode ? "icon-container" : "icon-container_light"}
           >
-            <BsFillChatSquareQuoteFill style={{ width: "100%", height: "100%" }} />
+            <IoChatbubblesOutline style={{ width: "100%", height: "120%" }} />
           </Box>
         </Link>
       )}
@@ -78,7 +78,22 @@ const Header = () => {
         <Image alt="logo" src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"} boxSize="100%" />
       </Box>
       {user && (
-        <Link as={RouterLink} to="/search">
+          <Link as={RouterLink} to="/search">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              boxSize={iconSize}
+              className={isDarkMode ? "icon-container" : "icon-container_light"}
+            >
+              <SearchIcon
+                style={{ width: "100%", height: "100%" }}
+                className={isDarkMode ? "icon-container" : "icon-container_light"}
+              />
+            </Box>
+          </Link>
+      )}
+      {user && (
           <Box
             display="flex"
             justifyContent="center"
@@ -86,26 +101,12 @@ const Header = () => {
             boxSize={iconSize}
             className={isDarkMode ? "icon-container" : "icon-container_light"}
           >
-            <SearchIcon
+            <LuPenSquare
               style={{ width: "100%", height: "100%" }}
               className={isDarkMode ? "icon-container" : "icon-container_light"}
             />
           </Box>
-        </Link>
-      )}
-      {user && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          boxSize={iconSize}
-          className={isDarkMode ? "icon-container" : "icon-container_light"}
-        >
-          <LuPenSquare
-            style={{ width: "100%", height: "100%" }}
-            className={isDarkMode ? "icon-container" : "icon-container_light"}
-          />
-        </Box>
+      
       )}
       {user && (
         <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />
@@ -151,7 +152,6 @@ const Header = () => {
           <FiLogOut style={{ width: "100%", height: "100%" }} />
         </Box>
       )}
-      
     </Flex>
   );
 };

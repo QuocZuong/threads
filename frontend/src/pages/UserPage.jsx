@@ -61,7 +61,7 @@ const UserPage = () => {
                 </Flex>
             )} */}
 
-      {posts?.length > 0 && posts?.map((post) => <Post key={post._id} post={post} postedBy={post.postedBy} />)}
+      {posts?.length > 0 && posts?.map((post) => <Post key={post._id} post={post} />)}
     </>
   );
 };

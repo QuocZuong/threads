@@ -24,7 +24,6 @@ import {
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
-import { useEffect, useState } from "react";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -36,8 +35,8 @@ import { LuLink2 } from "react-icons/lu";
 
 import Comment from "./Comment";
 
-const Post = ({ post, postedBy }) => {
-  const [user, setUser] = useState(null);
+const Post = ({ post }) => {
+  const user = post.postedBy;
   const showToast = useShowToast();
   const navigate = useNavigate();
   const currentUser = useRecoilValue(userAtom);
@@ -83,26 +82,6 @@ const Post = ({ post, postedBy }) => {
     );
   };
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await fetch(`/api/users/${postedBy}`);
-        const data = await res.json();
-
-        if (data.error) {
-          showToast("Error", data.error, "error");
-          return;
-        }
-        setUser(data);
-      } catch (error) {
-        showToast("Error", error, "error");
-        setUser(null);
-      }
-    };
-
-    getUser();
-  }, [postedBy, showToast]);
-
   const menuBg = useColorModeValue("white", "#181818");
   const menuTextColor = useColorModeValue("black", "white");
   const menuItemBgHover = useColorModeValue("gray.100", "#212121");
@@ -118,14 +97,20 @@ const Post = ({ post, postedBy }) => {
       {!post[0] ? <Divider /> : undefined}
       <Flex gap={3} py={3}>
         <Flex flexDirection={"column"} alignItems={"center"}>
-          <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />
+          <Avatar size={"md"} name={user?.name} src={user?.profilePic} cursor={"pointer"} onClick={handleNavigate} />
           {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}
         </Flex>
 
         <Flex flex={1} flexDirection={"column"} gap={2}>
           <Flex justifyContent={"space-between"} w={"full"} h={"20px"}>
             <HStack spacing={1}>
-              <Text fontSize={"sm"} fontWeight={"bold"} onClick={handleNavigate}>
+              <Text
+                fontSize={"sm"}
+                fontWeight={"bold"}
+                cursor={"pointer"}
+                onClick={handleNavigate}
+                _hover={{ textDecoration: "underline" }}
+              >
                 {user?.username}
               </Text>
               <Image src="/verified.png" w={4} height={4}></Image>

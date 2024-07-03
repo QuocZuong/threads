@@ -27,6 +27,7 @@ import { useParams } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { IoImagesOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const MAX_CHAR = 500;
 
@@ -40,6 +41,7 @@ const CreatePost = () => {
   const { username } = useParams();
   const imgRef = useRef(null);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
+  const { t } = useTranslation();
 
   const textareaRef = useRef(null);
 
@@ -110,19 +112,19 @@ const CreatePost = () => {
         <Box>
           <Avatar size="md" name={user?.name} src={user?.profilePic} />
         </Box>
-        <Text bg={"none"} cursor={"text"} width="100%" opacity={0.6} ml="-30px">
-          Bắt đầu Threads...
+        <Text onClick={onOpen} bg={"none"} cursor={"text"} width="100%" opacity={0.6} ml="-30px">
+          {t("startThreads")}
         </Text>
 
         <Button
           size="sm"
-          bgColor={useColorModeValue("gray.dark", "white")}
+          bgColor={useColorModeValue("gray.dark")}
           textColor={useColorModeValue("white", "black")}
           borderRadius={"20px"}
           width="15%"
-          _hover={{ bgColor: useColorModeValue("gray.dark", "white"), pointerEvents: "cursor" }}
+          _hover={{ bgColor: useColorModeValue("gray.dark"), pointerEvents: "cursor" }}
         >
-          Đăng
+          {t("post")}
         </Button>
       </Flex>
 
@@ -180,7 +182,7 @@ const CreatePost = () => {
                       top={2}
                       right={2}
                       opacity={0.3}
-                      _hover={{opacity : 0.8}}
+                      _hover={{ opacity: 0.8 }}
                     />
                   </Flex>
                 )}
@@ -200,7 +202,7 @@ const CreatePost = () => {
               _hover={{ bg: "none" }}
               isLoading={isLoading}
             >
-              Post
+               {t('post')}
             </Button>
           </ModalFooter>
         </ModalContent>

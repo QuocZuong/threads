@@ -40,11 +40,17 @@ const Header = () => {
       )}
 
       {!user && (
-        <Link as={RouterLink} to="/" onClick={() => setAuthScreen("login")}>
+
+        <Link
+          className={isDarkMode ? "icon-container" : "icon-container_light"}
+          as={RouterLink}
+          to="/"
+          style={{ textDecoration: "none" }}
+          onClick={() => setAuthScreen("login")}
+        >
           Login
         </Link>
       )}
-
 
       {user && (
         <Link as={RouterLink} to="/chat">
@@ -81,7 +87,10 @@ const Header = () => {
           boxSize={iconSize}
           className={isDarkMode ? "icon-container" : "icon-container_light"}
         >
-          <SearchIcon style={{ width: "100%", height: "100%" }}  className={isDarkMode ? "icon-container" : "icon-container_light"}/>
+          <SearchIcon
+            style={{ width: "100%", height: "100%" }}
+            className={isDarkMode ? "icon-container" : "icon-container_light"}
+          />
         </Box>
       </Link>
       )}
@@ -93,15 +102,15 @@ const Header = () => {
         boxSize={iconSize}
         className={isDarkMode ? "icon-container" : "icon-container_light"}
       >
-        <LuPenSquare style={{ width: "100%", height: "100%" }} className={isDarkMode ? "icon-container" : "icon-container_light"} />
-      </Box>
-      )}
+        <LuPenSquare
+          style={{ width: "100%", height: "100%" }}
+          className={isDarkMode ? "icon-container" : "icon-container_light"}
+        />
+      </Box>)}
+
       {user && (
-      <BsHeart
-        size={50}
-        strokeWidth={0.3}
-        className={isDarkMode ? "icon-container" : "icon-container_light"}
-      />)}
+        <BsHeart size={50} strokeWidth={0.3} className={isDarkMode ? "icon-container" : "icon-container_light"} />
+      )}
       {user && (
         <Flex alignItems={"center"} gap={gapSize}>
           <Link as={RouterLink} to={`/${user.username}`}>
@@ -120,7 +129,12 @@ const Header = () => {
       )}
 
       {!user && (
-        <Link as={RouterLink} to="/auth" onClick={() => setAuthScreen("signup")}>
+        <Link
+          className={isDarkMode ? "icon-containerSignup" : "icon-container_lightSignup"}
+          as={RouterLink}
+          to="/auth"
+          onClick={() => setAuthScreen("signup")}
+        >
           Sign up
         </Link>
       )}

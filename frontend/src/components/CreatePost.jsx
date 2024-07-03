@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import {
   Button,
-  useColorModeValue,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -17,6 +16,7 @@ import {
   Flex,
   Image,
   CloseButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -27,6 +27,7 @@ import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { Box } from "@chakra-ui/layout";
 import { Avatar } from "@chakra-ui/avatar";
+import { useTranslation } from "react-i18next";
 
 const MAX_CHAR = 500;
 
@@ -40,6 +41,7 @@ const CreatePost = () => {
   const { username } = useParams();
   const imgRef = useRef(null);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
+  const { t } = useTranslation();
 
   const user = useRecoilValue(userAtom);
 
@@ -103,31 +105,30 @@ const CreatePost = () => {
           <Avatar size="sm" name={user?.name} src={user?.profilePic} />
         </Box>
         <Text onClick={onOpen} bg={"none"} cursor={"text"} width="100%" opacity={0.6} ml="-30px">
-          Bắt đầu Threads...
+        {t('startThreads')}
         </Text>
 
         <Button
-          size="sm"
-          bgColor={"white"}
-          textColor={"black"}
-          borderRadius={"20px"}
-          width="15%"
-          isDisabled
-          isDisabled
-          _hover={{ bgColor: "white" }}
+           size="sm"
+           bgColor={useColorModeValue("gray.dark", "white")}
+           textColor={useColorModeValue("white", "black")}
+           borderRadius={"20px"}
+           width="15%"
+           isDisabled
+           _hover={{ bgColor: useColorModeValue("gray.dark", "white") }}
         >
-          Đăng
+          {t('post')}
         </Button>
       </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create Post</ModalHeader>
+          <ModalHeader>{t('creatPost')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <Textarea placeholder="Post content goes here..." onChange={handleTextChange} value={postText} />
+              <Textarea placeholder={t('postContentPlaceholder')} onChange={handleTextChange} value={postText} />
               <Text fontSize="xs" fontWeight={"bold"} textAlign={"right"} m={1} color={"gray.800"}>
                 {typedChar}/{MAX_CHAR}
               </Text>
@@ -159,7 +160,7 @@ const CreatePost = () => {
               onClick={handleCreatePost}
               isLoading={isLoading}
             >
-              Đăng
+               {t('post')}
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -11,7 +11,7 @@ import { mode } from "@chakra-ui/theme-tools";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { SocketContextProvider } from "./context/SocketContext";
-
+import './lib/i18n';
 const styles = {
   global: (props) => ({
     body: {

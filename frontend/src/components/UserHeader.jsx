@@ -1,16 +1,13 @@
 import { Avatar } from "@chakra-ui/avatar";
-import { Box, VStack, Flex, Text, Link } from "@chakra-ui/layout";
-// import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import { Box, VStack, Flex, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
-// import { Portal } from "@chakra-ui/portal";
 import { BsInstagram } from "react-icons/bs";
-// import { CgMoreO } from "react-icons/cg";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import UpdateProfileModal from "./UpdateProfileModal";
 
 const UserHeader = ({ user }) => {
   const showToast = useShowToast();
@@ -42,10 +39,10 @@ const UserHeader = ({ user }) => {
       }
 
       if (following) {
-        showToast("Success", `${t('unfollowed')} ${user?.name}`, "success");
+        showToast("Success", `${t("unfollowed")} ${user?.name}`, "success");
         user.followers.pop();
       } else {
-        showToast("Success", `${t('followed')} ${user?.name}`, "success");
+        showToast("Success", `${t("followed")} ${user?.name}`, "success");
         user.followers.push(currentUser?._id);
       }
 
@@ -84,13 +81,15 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id !== user._id && (
         <Button onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? t('unfollowed') : t('followed')}
+          {following ? t("unfollowed") : t("followed")}
         </Button>
       )}
 
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>{user?.followers.length} {t('followers')}</Text>
+          <Text color={"gray.light"}>
+            {user?.followers.length} {t("followers")}
+          </Text>
         </Flex>
         <Flex gap={2} alignItems={"center"}>
           <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
@@ -98,16 +97,12 @@ const UserHeader = ({ user }) => {
           </Box>
         </Flex>
       </Flex>
-      {currentUser?._id === user._id && (
-        <Link as={RouterLink} to="/update">
-          <Button bg={"none"} border={"groove 0.2px grey"} width={"588px"}>
-          {t('update_profile')}
-          </Button>
-        </Link>
-      )}
+      <Flex w={"full"} justifyContent={"center"} pb={3} cursor={"pointer"}>
+        <UpdateProfileModal />
+      </Flex>
       <Flex w={"full"}>
         <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} pb={3} cursor={"pointer"}>
-          <Text fontWeight={"bold"}>{t('threads')}</Text>
+          <Text fontWeight={"bold"}>{t("threads")}</Text>
         </Flex>
         <Flex
           flex={1}
@@ -117,7 +112,7 @@ const UserHeader = ({ user }) => {
           pb={3}
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>{t('replies')}</Text>
+          <Text fontWeight={"bold"}>{t("replies")}</Text>
         </Flex>
       </Flex>
     </VStack>

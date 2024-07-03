@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Container, useColorModeValue } from "@chakra-ui/react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
@@ -17,7 +17,7 @@ function App() {
   const user = useRecoilValue(userAtom);
 
   return (
-    <Container maxW="620px">
+    <Container bg={useColorModeValue("white", "#181818")} p={6} maxW="620px" borderRadius={20}>
       <Header />
       <LanguageSwitcher />
       <Routes>

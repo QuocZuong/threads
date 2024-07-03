@@ -1,15 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Flex, Box, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Text,
+  HStack,
+  Divider,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
 import { useEffect, useState } from "react";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
-import { SmallCloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
+import { HiDotsHorizontal } from "react-icons/hi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { LuLink2 } from "react-icons/lu";
+
+import Comment from "./Comment";
 
 const Post = ({ post, postedBy }) => {
   const [user, setUser] = useState(null);
@@ -46,6 +62,18 @@ const Post = ({ post, postedBy }) => {
     }
   };
 
+  const handleCopyLink = (e) => {
+    const link = `${window.location.origin}/${user.username}/post/${post._id}`;
+    navigator.clipboard.writeText(link).then(
+      () => {
+        showToast("Success", "Link copied!", "success");
+      },
+      (err) => {
+        showToast("Error", err, "error");
+      },
+    );
+  };
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -66,85 +94,105 @@ const Post = ({ post, postedBy }) => {
     getUser();
   }, [postedBy, showToast]);
 
+  const menuBg = useColorModeValue("white", "#181818");
+  const menuTextColor = useColorModeValue("black", "white");
+  const menuItemBgHover = useColorModeValue("gray.100", "#212121");
+
   if (!user) return null;
 
   if (!post) return null;
+
+  const firstReply = post.replies.length > 0 ? post.replies[0] : undefined;
+
   return (
-    <Link to={`/${user.username}/post/${post._id}`}>
-      <Flex gap={3} mb={4} py={5}>
+    <>
+      {!post[0] ? <Divider /> : undefined}
+      <Flex gap={3} py={3}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />
-          <Box w={0.5} h={"full"} bg={"gray.light"} my={2}></Box>
-          <Box position={"relative"} w={"full"}>
-            {post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
-            {post.replies[0] && (
-              <Avatar
-                size="xs"
-                name={post.replies[0].username}
-                src={post.replies[0].userProfilePic}
-                position={"absolute"}
-                top={"0px"}
-                left="15px"
-                padding={"2px"}
-              />
-            )}
-
-            {post.replies[1] && (
-              <Avatar
-                size="xs"
-                name={post.replies[1].username}
-                src={post.replies[1].userProfilePic}
-                position={"absolute"}
-                bottom={"0px"}
-                right="-5px"
-                padding={"2px"}
-              />
-            )}
-
-            {post.replies[2] && (
-              <Avatar
-                size="xs"
-                name={post.replies[2].username}
-                src={post.replies[2].userProfilePic}
-                position={"absolute"}
-                bottom={"0px"}
-                left="4px"
-                padding={"2px"}
-              />
-            )}
-          </Box>
+          {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}
         </Flex>
+
         <Flex flex={1} flexDirection={"column"} gap={2}>
-          <Flex justifyContent={"space-between"} w={"full"}>
-            <Flex w={"full"} alignItems={"center"}>
+          <Flex justifyContent={"space-between"} w={"full"} h={"20px"}>
+            <HStack spacing={1}>
               <Text fontSize={"sm"} fontWeight={"bold"} onClick={handleNavigate}>
                 {user?.username}
               </Text>
-              <Image src="/verified.png" w={4} height={4} ml={1}></Image>
-            </Flex>
-            <Flex gap={4} alignItems={"center"}>
-              <Text fontSize={"xs"} width={48} textAlign={"right"} color={"gray.light"}>
+              <Image src="/verified.png" w={4} height={4}></Image>
+              <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </Text>
-
-              {currentUser?._id === user?._id && (
-                <SmallCloseIcon size={20} onClick={handleDeletePost} cursor={"pointer"} />
-              )}
+            </HStack>
+            <Flex>
+              <Menu direction="rlt" placement="bottom-end">
+                <MenuButton
+                  justifyContent={"flex-end"}
+                  p={0}
+                  borderRadius="md"
+                  // bg={"transparent"}
+                  h={"20px"}
+                  _hover={"none"}
+                >
+                  <HiDotsHorizontal />
+                </MenuButton>
+                <MenuList boxShadow={"unset"} bg={menuBg} color={menuTextColor}>
+                  <MenuItem
+                    w={"90%"}
+                    ml={3}
+                    bg={"menuBg"}
+                    borderRadius={10}
+                    _hover={{ bg: menuItemBgHover }}
+                    command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
+                    onClick={handleCopyLink}
+                  >
+                    Copy link
+                  </MenuItem>
+                  {currentUser?._id === user?._id && (
+                    <>
+                      <MenuDivider />
+                      <MenuItem
+                        w={"90%"}
+                        ml={3}
+                        bg={"menuBg"}
+                        borderRadius={10}
+                        _hover={{ bg: menuItemBgHover }}
+                        onClick={handleDeletePost}
+                        cursor={"pointer"}
+                        color={"rgb(255, 48, 64)"}
+                        command={<AiOutlineDelete color="red.500" size={22} />}
+                      >
+                        Delete
+                      </MenuItem>
+                    </>
+                  )}
+                </MenuList>
+              </Menu>
             </Flex>
           </Flex>
-
-          <Text fontSize={"sm"}>{post?.text}</Text>
-          {post?.img && (
-            <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-              <Image src={post?.img} w={"full"} />
-            </Box>
-          )}
-          <Flex>
-            <Actions post={post} />
-          </Flex>
+          <Link to={`/${user.username}/post/${post._id}`}>
+            <Flex direction={"column"} w={"full"}>
+              <Text whiteSpace={"normal"} wordBreak={"break-word"} fontSize={"sm"}>
+                {post?.text}
+              </Text>
+            </Flex>
+            {post?.img && (
+              <Box mt={3} borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
+                <Image src={post?.img} w={"full"} />
+              </Box>
+            )}
+            <Flex mt={3}>
+              <Actions post={post} />
+            </Flex>
+          </Link>
         </Flex>
       </Flex>
-    </Link>
+      {firstReply && (
+        <Flex pb={5}>
+          <Comment key={firstReply._id} reply={firstReply} lastReply={true} />
+        </Flex>
+      )}
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import { Avatar } from "@chakra-ui/avatar";
 const Comment = ({ reply, lastReply }) => {
   return (
     <>
-      <Flex gap={4} py={2} my={2} w={"full"}>
+      <Flex gap={4} w={"full"}>
         <Avatar src={reply?.userProfilePic} name={reply?.username}></Avatar>
         <Flex gap={1} w={"full"} flexDirection={"column"}>
           <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
@@ -11,7 +11,9 @@ const Comment = ({ reply, lastReply }) => {
               {reply?.username}
             </Text>
           </Flex>
-          <Text>{reply?.text}</Text>
+          <Text whiteSpace={"normal"} wordBreak={"break-word"}>
+            {reply?.text}
+          </Text>
         </Flex>
       </Flex>
       {!lastReply ? <Divider my={4} /> : null}

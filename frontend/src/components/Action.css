@@ -29,15 +29,17 @@
     left: 50%;
     width: calc(100% + 10px);
     height: calc(100% + 10px);
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
     border-radius: 35%;
     background-color: transparent;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
     z-index: -1;
 }
 
 .action-icon:hover::before {
     background-color: var(--action-hover-bg-dark);
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1
 }
 
 [data-theme='light'] .action-icon:hover::before {

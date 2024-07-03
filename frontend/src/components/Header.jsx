@@ -11,7 +11,6 @@ import { Link as RouterLink } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import { SearchIcon } from "@chakra-ui/icons";
 import "../components/Header.css";
-
 import authScreenAtom from "../atoms/authAtom";
 
 const Header = () => {
@@ -152,6 +151,7 @@ const Header = () => {
           <FiLogOut style={{ width: "100%", height: "100%" }} />
         </Box>
       )}
+      
     </Flex>
   );
 };

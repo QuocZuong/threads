@@ -11,15 +11,12 @@ import {
   useColorModeValue,
   Avatar,
   HStack,
-  // Switch,
-  // extendTheme,
   Box,
   Divider,
   Text,
 } from "@chakra-ui/react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast.js";
-// import { switchTheme } from "../lib/theme.js";
 import { CiLock } from "react-icons/ci";
 
 export default function UpdateProfilePage() {
@@ -28,7 +25,6 @@ export default function UpdateProfilePage() {
   const { handleImageChange, imgUrl } = usePreviewImg();
   const [updating, setUpdating] = useState(false);
   const showToast = useShowToast();
-  // const theme = extendTheme({ components: { switchTheme }, })
 
   const [inputs, setInputs] = useState({
     name: user.name,
@@ -37,7 +33,6 @@ export default function UpdateProfilePage() {
     bio: user.bio,
     password: "",
     profilePic: user.profilePic,
-    // privateProfile: user.privateProfile || false,
   });
 
   const handleSubmit = async (e) => {
@@ -73,8 +68,7 @@ export default function UpdateProfilePage() {
 
   return (
     <form onSubmit={handleSubmit}>
-
-      <Flex align={"center"} justify={"center"} >
+      <Flex align={"center"} justify={"center"}>
         <Stack
           spacing={4}
           w={"full"}
@@ -85,15 +79,14 @@ export default function UpdateProfilePage() {
           p={6}
           my={20}
           border={"1.5px solid"}
-          borderColor={useColorModeValue("white", "#2e2e2e")}          
+          borderColor={useColorModeValue("white", "#2e2e2e")}
         >
-
           <HStack direction={["column", "row"]} spacing={4} justify={"space-between"}>
             <Flex direction="column" w={"80%"}>
               <FormLabel>Name</FormLabel>
               <HStack pb={3}>
                 <CiLock color="gray.300" />
-                <Text>{`${inputs.name} (${inputs.username})`}</Text>
+                <Text>{`${inputs.name} (@${inputs.username})`}</Text>
               </HStack>
               <Divider />
             </Flex>

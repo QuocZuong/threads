@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 /**
  * The schema for `Reply` model.
  */
-export const replySchema = mongoose.Schema(
+export const commentSchema = mongoose.Schema(
   {
     /** The user who created the reply. */
-    userId: {
+    postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -22,6 +22,14 @@ export const replySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    /** An attached image to the comment. */
+    img: String,
+    /** An array of comment inside of the comment, allowing a recursive structure. */
+    comments: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Comment",
+      default: [],
+    },
     /** The username of the user who created the reply. */
     username: {
       type: String,
@@ -35,14 +43,9 @@ export const replySchema = mongoose.Schema(
   },
 );
 
-replySchema.add({
-  /** An array of replies inside of the reply, allowing a recursive structure. */
-  replies: [replySchema],
-});
-
 /**
  * A reply of a Post.
  */
-const Reply = mongoose.model("Reply", replySchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
-export default Reply;
+export default Comment;

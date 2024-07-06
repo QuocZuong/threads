@@ -11,13 +11,24 @@ import {
   MenuItem,
   MenuDivider,
   useColorModeValue,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  VStack,
+  StackDivider,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
 import { useEffect, useState } from "react";
 import Actions from "./Actions";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, set } from "date-fns";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
@@ -33,6 +44,7 @@ const Post = ({ post, postedBy }) => {
   const navigate = useNavigate();
   const currentUser = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -42,7 +54,7 @@ const Post = ({ post, postedBy }) => {
   const handleDeletePost = async (e) => {
     try {
       e.preventDefault();
-      if (!window.confirm("Are you sure to delete this post?")) return;
+      // if (!window.confirm("Are you sure to delete this post?")) return;
       const res = await fetch("/api/posts/" + post._id, {
         method: "DELETE",
         headers: {
@@ -157,13 +169,52 @@ const Post = ({ post, postedBy }) => {
                         bg={"menuBg"}
                         borderRadius={10}
                         _hover={{ bg: menuItemBgHover }}
-                        onClick={handleDeletePost}
+                        onClick={onOpen}
                         cursor={"pointer"}
                         color={"rgb(255, 48, 64)"}
                         command={<AiOutlineDelete color="red.500" size={22} />}
                       >
                         Delete
                       </MenuItem>
+                      <Modal isOpen={isOpen} onClose={onClose} size={"xs"} isCentered>
+                        <ModalOverlay />
+                        <ModalContent bg={menuBg} borderRadius={20}>
+                          <ModalHeader fontWeight={"bold"} textAlign={"center"}>
+                            Delete post?
+                          </ModalHeader>
+                          <ModalBody textAlign={"center"} color={"gray"}>
+                            {`If you delete this post, you won't be able to restore it.`}
+                          </ModalBody>
+                          <ModalFooter justifyContent={"space-between"}>
+                            <VStack w={"full"}>
+                              <Divider />
+                              <HStack w={"full"} divider={<StackDivider />}>
+                                <Box
+                                  role="button"
+                                  w={"full"}
+                                  h={"40px"}
+                                  onClick={onClose}
+                                  textAlign={"center"}
+                                  alignContent={"center"}
+                                >
+                                  Cancel
+                                </Box>
+                                <Box
+                                  role="button"
+                                  w={"full"}
+                                  h={"40px"}
+                                  fontWeight={"bold"}
+                                  textAlign={"center"}
+                                  alignContent={"center"}
+                                  onClick={handleDeletePost}
+                                >
+                                  Delete
+                                </Box>
+                              </HStack>
+                            </VStack>
+                          </ModalFooter>
+                        </ModalContent>
+                      </Modal>
                     </>
                   )}
                 </MenuList>

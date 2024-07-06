@@ -15,10 +15,8 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
   VStack,
   StackDivider,
@@ -28,7 +26,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
 import { useEffect, useState } from "react";
 import Actions from "./Actions";
-import { formatDistanceToNow, set } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
@@ -54,7 +52,6 @@ const Post = ({ post, postedBy }) => {
   const handleDeletePost = async (e) => {
     try {
       e.preventDefault();
-      // if (!window.confirm("Are you sure to delete this post?")) return;
       const res = await fetch("/api/posts/" + post._id, {
         method: "DELETE",
         headers: {

@@ -11,6 +11,16 @@ export const commentSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    repliedPost: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      required: true,
+    },
+    repliedComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null,
+    },
     /** An array of users' id who liked the reply. */
     likes: {
       type: [mongoose.Schema.Types.ObjectId],

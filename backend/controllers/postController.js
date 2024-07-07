@@ -145,6 +145,7 @@ const replyToPost = async (req, res, next) => {
 
     const comment = await Comment.create({
       postedBy: userId,
+      repliedPost: postId,
       text,
       img: imgUrl,
       username,

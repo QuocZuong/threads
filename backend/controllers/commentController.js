@@ -10,11 +10,30 @@ export const getComment = async (req, res, next) => {
     const { id: commentId } = req.params;
     const comment = await Comment.findById(commentId)
       .populate(["comments", "postedBy"])
-      .populate({ path: "comments", populate: ["postedBy", "comments"] });
+      .populate({ path: "comments", populate: ["postedBy", "comments"] })
+      .populate("repliedPost")
+      .populate("repliedComment");
 
     if (!comment) return res.status(404).json({ error: "Comment not found" });
 
     res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get all comemnts created by a user.
+ */
+export const getUserComments = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const comments = await Comment.find({ postedBy: userId })
+      .populate(["comments", "postedBy"])
+      .populate({ path: "comments", populate: ["postedBy", "comments"] })
+      .populate("repliedComment");
+
+    res.status(200).json(comments);
   } catch (error) {
     next(error);
   }
@@ -50,6 +69,8 @@ export const reply = async (req, res, next) => {
 
     const comment = await Comment.create({
       postedBy: userId,
+      repliedPost: parentComment.repliedPost,
+      repliedComment: parentComment._id,
       text,
       img: imgUrl,
       username,

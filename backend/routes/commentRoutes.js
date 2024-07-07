@@ -1,5 +1,5 @@
 import express from "express";
-import { likeOrUnlike, reply, update, remove, getComment } from "../controllers/commentController.js";
+import { likeOrUnlike, reply, update, remove, getComment, getUserComments } from "../controllers/commentController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
 /**
@@ -10,6 +10,7 @@ const router = express.Router();
 router.use(protectRoute);
 
 router.get("/:id", getComment);
+router.get("/userComments", getUserComments);
 router.post("/reply/:id", reply);
 router.put("/like/:id", likeOrUnlike);
 router.put("/:id", update);

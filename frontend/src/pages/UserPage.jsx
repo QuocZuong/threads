@@ -45,6 +45,14 @@ const UserPage = () => {
   }
 
   if (!user && !isLoading) return <h1>{t('notFound')}</h1>;
+  
+  if (fetchingPost) {
+    return (
+      <Flex justifyContent={"center"} my={12}>
+        <Spinner size={"xl"} />
+      </Flex>
+    );
+  }
 
   return (
     <>
@@ -55,12 +63,6 @@ const UserPage = () => {
           <h1>{t('noPost')}</h1>
         </div>
       )}
-
-      {/* {fetchingPost && (
-                <Flex justifyContent={"center"} my={12}>
-                    <Spinner size={"xl"} />
-                </Flex>
-            )} */}
 
       {posts?.length > 0 && posts?.map((post) => <Post key={post._id} post={post} />)}
     </>

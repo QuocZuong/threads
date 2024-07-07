@@ -7,10 +7,12 @@ import postsAtom from "../atoms/postsAtom";
 // import { Box} from "@chakra-ui/layout";
 // import { Avatar } from "@chakra-ui/avatar";
 import CreatePost from "../components/CreatePost";
+import { useTranslation } from "react-i18next";
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(true);
   const showToast = useShowToast();
+  const { t } = useTranslation();
   useEffect(() => {
     const getFeedPosts = async () => {
       setIsLoading(true);
@@ -48,7 +50,7 @@ const HomePage = () => {
       )}
       <CreatePost />
 
-      {!isLoading && posts?.length === 0 && <h1>Follow some user to see the feed</h1>}
+      {!isLoading && posts?.length === 0 &&  <div className="home-page"> <h1>{t('followUsers')}</h1></div>}
 
       {posts?.length > 0 &&
         posts?.map((post) => {

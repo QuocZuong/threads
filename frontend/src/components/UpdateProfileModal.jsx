@@ -22,6 +22,7 @@ import {
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast.js";
 import { CiLock } from "react-icons/ci";
+import { useTranslation } from "react-i18next";
 
 const UpdateProfileModal = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -30,7 +31,7 @@ const UpdateProfileModal = () => {
   const [updating, setUpdating] = useState(false);
   const showToast = useShowToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const {t} = useTranslation();
   const [inputs, setInputs] = useState({
     name: user.name,
     username: user.username,
@@ -75,7 +76,7 @@ const UpdateProfileModal = () => {
   return (
     <>
       <Button w={"full"} bg={"none"} border={"groove 0.2px grey"} onClick={onOpen}>
-        Update profile
+        {t('updateProfile')}
       </Button>
 
       <Modal isOpen={isOpen} size={"lg"} onClose={onClose}>
@@ -86,7 +87,7 @@ const UpdateProfileModal = () => {
               <VStack w={"full"} align="start">
                 <HStack direction={["column", "row"]} w={"full"} spacing={4} justify={"space-between"}>
                   <Flex direction="column" w={"85%"}>
-                    <Text>Name</Text>
+                    <Text>{t('name')}</Text>
                     <HStack pb={3} pt={3}>
                       <CiLock color="gray.300" />
                       <Text>{`${inputs.name} (@${inputs.username})`}</Text>
@@ -103,26 +104,26 @@ const UpdateProfileModal = () => {
                   </Flex>
                 </HStack>
                 <Flex direction="column" w={"full"}>
-                  <Text>Bio</Text>
+                  <Text>{t('bio')}</Text>
                   <Input
                     value={inputs.bio}
                     onChange={(e) => {
                       setInputs({ ...inputs, bio: e.target.value });
                     }}
-                    placeholder="+ Add bio"
+                    placeholder={t('addBio')}
                     variant={"flushed"}
                     _placeholder={{ color: "gray" }}
                     type="text"
                   />
                 </Flex>
                 <Flex direction="column" w={"full"}>
-                  <Text>Link</Text>
+                  <Text>{t('link')}</Text>
                   <Input
                     value={inputs.link}
                     onChange={(e) => {
                       setInputs({ ...inputs, link: e.target.value });
                     }}
-                    placeholder="+ Add link"
+                    placeholder={t('addLink')}
                     variant={"flushed"}
                     _placeholder={{ color: "gray" }}
                     type="text"
@@ -140,7 +141,7 @@ const UpdateProfileModal = () => {
               onClick={handleSubmit}
               isLoading={updating}
             >
-              Done
+              {t('done')}
             </Button>
           </ModalFooter>
         </ModalContent>

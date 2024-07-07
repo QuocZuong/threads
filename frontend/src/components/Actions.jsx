@@ -139,11 +139,7 @@ const Actions = ({ post }) => {
               <Box w={"auto"} onClick={handleLikeAndUnlike} className="action-icon">
                 <HStack title="Like" animation={animateLike ? `${bounce} 0.4s ease` : undefined} spacing={1}>
                   {liked ? <GoHeartFill size={"23px"} fill={"#ff0033"} /> : <GoHeart size={"23px"} />}
-                  {post?.likes?.length > 0 ? (
-                    <Text color={liked ? "#ff0033" : "white"} fontSize="sm">
-                      {post?.likes?.length}
-                    </Text>
-                  ) : undefined}
+                  {post?.likes?.length > 0 ? <Text fontSize="sm">{post?.likes?.length}</Text> : undefined}
                 </HStack>
               </Box>
 

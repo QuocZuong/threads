@@ -49,6 +49,7 @@ const UserPage = () => {
   return (
     <>
       <UserHeader user={user} />
+
       {!fetchingPost && posts.length === 0 && (
         <div className="user-message">
           <h1>{t('noPost')}</h1>

@@ -20,6 +20,12 @@ const PostPage = () => {
   const navigate = useNavigate();
 
   let currentPost = posts[0];
+
+  const goToPosterPage = (e) => {
+    e.preventDefault();
+    navigate(`/${user.username}`);
+  };
+
   useEffect(() => {
     const getPost = async () => {
       try {
@@ -79,9 +85,21 @@ const PostPage = () => {
     <>
       <Flex>
         <Flex w={"full"} alignItems={"center"} gap={3}>
-          <Avatar src={user?.profilePic} size={"md"} name={user?.username} />
+          <Avatar
+            src={user?.profilePic}
+            size={"md"}
+            name={user?.username}
+            cursor={"pointer"}
+            onClick={goToPosterPage}
+          />
           <Flex>
-            <Text fontSize={"sm"} fontWeight={"bold"}>
+            <Text
+              fontSize={"sm"}
+              fontWeight={"bold"}
+              cursor={"pointer"}
+              onClick={goToPosterPage}
+              _hover={{ textDecor: "underline" }}
+            >
               {user?.username}
             </Text>
             <Image src="/verified.png" w={4} height={4} ml={3}></Image>

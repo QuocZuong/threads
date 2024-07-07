@@ -9,5 +9,15 @@
   "threads": "Chủ đề",
   "replies": "Trả lời",
   "update_profile": "Cập nhật hồ sơ",
-   "ago": "trước"
+  "ago": "trước",
+  "noPost": "Chưa có bài đăng nào.",
+  "notFound": "Không tìm thấy người dùng",
+  "updateProfile":"Cập nhật thông tin",
+  "name": "Tên",
+  "bio": "Tiểu sử",
+  "link": "Liên kết",
+  "addBio": "+ Thêm tiểu sử",
+  "addLink": "+ Thêm liên kết",
+  "done": "Xong",
+  "search": "Tìm kiếm"
 }

@@ -54,7 +54,13 @@
   display: flex;
   justify-content: center;
 }
-
+.home-page {
+  color: rgb(153, 153, 153);
+  line-height: 340px;
+  width: 572px;
+  display: flex;
+  justify-content: center;
+}
 .icon-container,
 .icon-container_light {
   cursor: pointer;

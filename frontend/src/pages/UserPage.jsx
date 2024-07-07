@@ -7,12 +7,14 @@ import Post from "../components/Post.jsx";
 import useGetUserProfile from "../hooks/useGetUserProfile.js";
 import postsAtom from "../atoms/postsAtom.js";
 import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
 const UserPage = () => {
   const { isLoading, user } = useGetUserProfile();
   const { username } = useParams();
   const showToast = useShowToast();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [fetchingPost, setFetchingPost] = useState(true);
+  const {t} = useTranslation();
   useEffect(() => {
     const getPosts = async () => {
       setFetchingPost(true);
@@ -42,14 +44,14 @@ const UserPage = () => {
     );
   }
 
-  if (!user && !isLoading) return <h1>User not found</h1>;
+  if (!user && !isLoading) return <h1>{t('notFound')}</h1>;
 
   return (
     <>
       <UserHeader user={user} />
       {!fetchingPost && posts.length === 0 && (
         <div className="user-message">
-          <h1>There are no posts yet</h1>
+          <h1>{t('noPost')}</h1>
         </div>
       )}
 

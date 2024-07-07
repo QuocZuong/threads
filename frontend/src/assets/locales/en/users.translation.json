@@ -1,15 +1,24 @@
 {
-    "welcome": "Welcome",
-    "language": "Language",
-    "followers": "followers",
-    "please_login_to_follow": "Please login to follow",
-    "error_occurred": "An error occurred.",
-    "unfollowed": "Unfollowed",
-    "followed": "Followed",
-    "threads": "Threads",
-    "replies": "Replies",
-    "update_profile": "Update profile",
-    "ago": "ago"
-
+  "welcome": "Welcome",
+  "language": "Language",
+  "followers": "followers",
+  "please_login_to_follow": "Please login to follow",
+  "error_occurred": "An error occurred.",
+  "unfollowed": "Unfollowed",
+  "followed": "Followed",
+  "threads": "Threads",
+  "replies": "Replies",
+  "update_profile": "Update profile",
+  "ago": "ago",
+  "noPost": "There are no posts yet",
+  "notFound": "User not found",
+  "updateProfile":"Update profile",
+  "name": "Name",
+  "bio": "Bio",
+  "link": "Link",
+  "addBio": "+ Add bio",
+  "addLink": "+ Add link",
+  "done": "Done",
+  "search": "Search"
   }
   

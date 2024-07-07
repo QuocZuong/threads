@@ -8,16 +8,18 @@ import UserCard from "./UserCard";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import "../components/SearchBar.css";
+import { useTranslation } from "react-i18next";
 
 const SearchBar = () => {
   const [searchResults, setSearchResults] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchVal, setSearchVal] = useState("");
   const showToast = useShowToast();
+  const {t} = useTranslation();
   const SEARCH_DELAY = 1000; // Will search after ... ms when user stop typing
   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
   const [user, setUser] = useState(useRecoilValue(userAtom));
-
+  
   const validate = (val) => {
     setSearchVal(val);
   };
@@ -156,7 +158,7 @@ const SearchBar = () => {
           ps="50px"
           className="searchBar"
           height="50px"
-          placeholder="Search"
+          placeholder={t('search')}
           borderWidth="2px"
           backgroundColor={isDarkMode ? "rgb( 0,  0,  0)" : "rgb(238, 242, 247)"}
           borderColor={isDarkMode ? "rgb(70, 70, 70)" : "rgb(235, 235, 235)"}

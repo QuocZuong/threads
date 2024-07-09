@@ -53,6 +53,8 @@ const Post = ({ post }) => {
   };
 
   const handleCopyLink = (e) => {
+    e.preventDefault();
+
     const link = `${window.location.origin}/${user.username}/post/${post._id}`;
     navigator.clipboard.writeText(link).then(
       () => {

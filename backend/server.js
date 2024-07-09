@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import conversationRoutes from "./routes/conversationRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./socket/socket.js";
 import dotenv from "dotenv";
@@ -32,6 +33,7 @@ app.use(morgan("dev"));
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes)
 app.use("/api", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 

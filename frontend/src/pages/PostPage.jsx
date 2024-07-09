@@ -19,8 +19,7 @@ const PostPage = () => {
   const navigate = useNavigate();
   const [isDeleteing, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  let currentPost = posts[0];
+  const currentPost = posts[0];
 
   const goToPosterPage = (e) => {
     e.preventDefault();
@@ -38,7 +37,6 @@ const PostPage = () => {
           return;
         }
         setPosts([data]);
-        currentPost = posts[0];
       } catch (error) {
         showToast("Error", error, "error");
       }
@@ -125,14 +123,8 @@ const PostPage = () => {
             </Text>
           </Flex>
         </Flex>
-        <Flex gap={4} alignItems={"center"}>
-          <Text fontSize={"xs"} width={48} textAlign={"right"} color={"gray.light"}>
-            {formatDistanceToNow(new Date(currentPost?.createdAt))} ago
-          </Text>
-
-          <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
-          <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
-        </Flex>
+        <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
+        <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
       </Flex>
       <Text my={3}>{currentPost.text}</Text>
       {currentPost.img && (

@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(protectRoute);
 
 router.get("/:id", getComment);
-router.get("/userComments", getUserComments);
+router.get("/user/:userId", getUserComments);
 router.post("/reply/:id", reply);
 router.put("/like/:id", likeOrUnlike);
 router.put("/:id", update);

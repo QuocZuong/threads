@@ -24,11 +24,11 @@ export const getComment = async (req, res, next) => {
 };
 
 /**
- * Get all comemnts created by a user.
+ * Get all comemnts created by an user id.
  */
 export const getUserComments = async (req, res, next) => {
   try {
-    const userId = req.user._id;
+    const userId = req.params.userId;
     const comments = await Comment.find({ postedBy: userId })
       .populate(["comments", "postedBy"])
       .populate({ path: "comments", populate: ["postedBy", "comments"] })
@@ -163,7 +163,7 @@ export const update = async (req, res, next) => {
     const comment = await Comment.findById(commentId);
 
     if (!comment) return res.status(404).json({ error: "Comment not found" });
-    if (comment.userId !== userId) return res.status(401).json({ error: "Unauthorized" });
+    if (comment.postedBy.toString() !== userId.toString()) return res.status(401).json({ error: "Unauthorized" });
 
     if (img) {
       imgUrl = await uploadImage(img);
@@ -174,6 +174,7 @@ export const update = async (req, res, next) => {
     comment.img = imgUrl;
 
     await comment.save();
+    return res.status(200).json(comment);
   } catch (error) {
     next(error);
   }

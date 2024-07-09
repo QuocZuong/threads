@@ -17,7 +17,7 @@ import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 const CommentPage = () => {
   const { user, isLoading: isLoadingUser } = useGetUserProfile();
-  const [ postOwner, setPostOwner ] = useState(null);
+  const [postOwner, setPostOwner] = useState(null);
   const { comment: currentComment, isLoading: isLoadingComment } = useGetComment();
   const navigate = useNavigate();
   const [newText, setNewText] = useState("");

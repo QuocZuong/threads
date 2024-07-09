@@ -1,13 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Flex,
-  Box,
-  Text,
-  HStack,
-  Divider,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Box, Text, HStack, Divider, useDisclosure } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";

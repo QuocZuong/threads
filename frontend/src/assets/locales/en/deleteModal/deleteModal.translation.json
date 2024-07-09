@@ -1,0 +1,14 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "post": {
+    "header": "Delete post?",
+    "body": "If you delete this post, you won't be able to restore it."
+  },
+  "comment": {
+    "header": "Delete comment?",
+    "body": "If you delete this comment, you won't be able to restore it."
+  }
+}

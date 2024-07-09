@@ -20,7 +20,7 @@ router.get("/:id", getPost); // get all posts
 router.get("/user/:username", protectRoute, getUserPost); // get user's posts
 router.delete("/:id", protectRoute, deletePost);
 router.put("/like/:id", protectRoute, likeUnlikePost);
-router.put("/reply/:id", protectRoute, replyToPost);
+router.put("/reply/post/:id", protectRoute, replyToPost);
 router.all("*", errorHanlder);
 
 export default router;

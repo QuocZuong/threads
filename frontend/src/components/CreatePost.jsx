@@ -23,7 +23,7 @@ import {
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { IoImagesOutline } from "react-icons/io5";
@@ -48,6 +48,12 @@ const CreatePost = () => {
   const user = useRecoilValue(userAtom);
 
   const showToast = useShowToast();
+  const navigate = useNavigate();
+
+  const goToProfilePage = (e) => {
+    e.preventDefault();
+    navigate(`/${user.username}`);
+  };
 
   const handleTextChange = (e) => {
     const inputText = e.target.value;
@@ -108,7 +114,7 @@ const CreatePost = () => {
         alignItems="center"
         onClick={onOpen}
       >
-        <Box>
+        <Box cursor={"pointer"} onClick={goToProfilePage}>
           <Avatar size="md" name={user?.name} src={user?.profilePic} />
         </Box>
         <Text onClick={onOpen} bg={"none"} cursor={"text"} width="100%" opacity={0.6} ml="-30px">
@@ -134,9 +140,11 @@ const CreatePost = () => {
         <ModalContent pt={3} bg={useColorModeValue("white", "#181818")} borderRadius={20}>
           <ModalBody pb={0}>
             <Flex>
-              <Avatar size="md" src={user.profilePic} />
+              <Avatar size="md" src={user.profilePic} cursor={"pointer"} onClick={goToProfilePage} />
               <VStack ml={4} align="start" w={"full"} spacing={0}>
-                <Text fontWeight={"500"}>{user.username}</Text>
+                <Text fontWeight={"500"} cursor={"pointer"} onClick={goToProfilePage}>
+                  {user.username}
+                </Text>
                 <Textarea
                   ref={textareaRef}
                   variant="unstyled"

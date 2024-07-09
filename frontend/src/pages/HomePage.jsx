@@ -5,11 +5,13 @@ import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import CreatePost from "../components/CreatePost";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(true);
   const showToast = useShowToast();
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
@@ -84,7 +86,7 @@ const HomePage = () => {
       )}
       <CreatePost />
 
-      {!isLoading && posts?.length === 0 && <h1>Follow some user to see the feed</h1>}
+      {!isLoading && posts?.length === 0 &&  <div className="home-page"> <h1>{t('followUsers')}</h1></div>}
 
       {posts?.map((post, index) => {
         if (posts.length === index + 1) {
@@ -99,7 +101,7 @@ const HomePage = () => {
             />
           );
         } else {
-          return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts} isLastPost={false} />;
+          return <Post key={post._id} post={post} isLastPost={false} />;
         }
       })}
       {isLoading && (

@@ -11,13 +11,14 @@ import postsAtom from "../atoms/postsAtom";
 import MenuActions from "../components/MenuActions";
 import { useRecoilState } from "recoil";
 import DeleteModal from "../components/DeleteModal";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 const PostPage = () => {
   const { isLoading, user } = useGetUserProfile();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const showToast = useShowToast();
   const { pid } = useParams();
   const navigate = useNavigate();
-  const [isDeleteing, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentPost = posts[0];
 
@@ -124,7 +125,13 @@ const PostPage = () => {
           </Flex>
         </Flex>
         <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
-        <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
+        <DeleteModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onDelete={handleDeletePost}
+          isLoading={isDeleting}
+          type={DELETE_MODAL_TYPES.post}
+        />
       </Flex>
       <Text my={3}>{currentPost.text}</Text>
       {currentPost.img && (

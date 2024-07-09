@@ -12,6 +12,8 @@ import useShowToast from "../hooks/useShowToast";
 import MenuActions from "../components/MenuActions";
 import { UpdateCommentModal } from "../components/UpdateModal";
 import getUser from "../api/user.api";
+import DeleteModal from "../components/DeleteModal";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 const CommentPage = () => {
   const { user, isLoading: isLoadingUser } = useGetUserProfile();
@@ -20,8 +22,10 @@ const CommentPage = () => {
   const navigate = useNavigate();
   const [newText, setNewText] = useState("");
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isUpdateModalOpen, onOpen: onUpdateModalOpen, onClose: onUpdateModalClose } = useDisclosure();
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const showToast = useShowToast();
 
@@ -69,7 +73,8 @@ const CommentPage = () => {
   const handleDelete = async (e) => {
     try {
       e.preventDefault();
-      if (!window.confirm("Are you sure to delete this comment?")) return;
+
+      setIsDeleting(true);
       const res = await fetch("/api/comments/" + currentComment._id, {
         method: "DELETE",
         headers: {
@@ -87,6 +92,8 @@ const CommentPage = () => {
       navigate(`/${postOwner.username}/post/${currentComment.repliedPost._id}`);
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -110,7 +117,7 @@ const CommentPage = () => {
       }
 
       showToast("Success", "Comment updated", "success");
-      onClose();
+      onUpdateModalClose();
     } catch (error) {
       showToast("Error", error, "error");
     } finally {
@@ -162,9 +169,16 @@ const CommentPage = () => {
             <MenuActions
               poster={currentComment.postedBy}
               onCopyLink={handleCopyLink}
-              onDelete={handleDelete}
+              onDelete={onDeleteModalOpen}
               onUpdate={true}
-              onOpenUpdateModal={onOpen}
+              onOpenUpdateModal={onUpdateModalOpen}
+            />
+            <DeleteModal
+              isOpen={isDeleteModalOpen}
+              onClose={onDeleteModalClose}
+              onDelete={handleDelete}
+              isLoading={isDeleting}
+              type={DELETE_MODAL_TYPES.comment}
             />
           </Flex>
         </Flex>
@@ -178,8 +192,8 @@ const CommentPage = () => {
           <CommentActions comment={currentComment} />
         </Flex>
         <UpdateCommentModal
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={isUpdateModalOpen}
+          onClose={onUpdateModalClose}
           text={newText}
           onSubmit={handleUpdate}
           isSubmiting={isSubmiting}

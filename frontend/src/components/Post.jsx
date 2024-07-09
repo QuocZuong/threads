@@ -20,6 +20,7 @@ import Comment from "./Comment";
 import MenuActions from "./MenuActions";
 import DeleteModal from "./DeleteModal";
 import { useState } from "react";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 const Post = ({ post }) => {
   const user = post.postedBy;
@@ -27,7 +28,7 @@ const Post = ({ post }) => {
   const navigate = useNavigate();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isDeleteing, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -102,7 +103,13 @@ const Post = ({ post }) => {
               </Text>
             </HStack>
             <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
-            <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
+            <DeleteModal
+              isOpen={isOpen}
+              onClose={onClose}
+              onDelete={handleDeletePost}
+              isLoading={isDeleting}
+              type={DELETE_MODAL_TYPES.post}
+            />
           </Flex>
           <Link to={`/${user.username}/post/${post._id}`}>
             <Flex direction={"column"} w={"full"}>

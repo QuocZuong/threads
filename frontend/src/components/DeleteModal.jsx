@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Divider,
   HStack,
@@ -14,18 +13,21 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 /**
- * The modal for deleting a post.
+ * The modal for deleting an item.
  *
- * @param {Function} isOpen Whether the modal is open.
- * @param {Function} onClose Function to close the modal.
- * @param {Function} onDelete Function to delete the post.
- * @param {Boolean} isLoading Whether the post is being deleted.
+ * @param {Boolean} isOpen Whether the modal is open.
+ * @param {Function} onClose The function to close the modal.
+ * @param {Function} onDelete The function to delete the item.
+ * @param {Boolean} isLoading Whether the delete operation is in progress.
+ * @param {String} type The type of the item to delete, as defined in {@link DELETE_MODAL_TYPES}.
  *
  * @returns The JSX for the delete modal.
  */
-export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
+export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading, type }) => {
   const menuBg = useColorModeValue("white", "#181818");
   const { t } = useTranslation("deleteModal", { keyPrefix: type === DELETE_MODAL_TYPES.post ? "post" : "comment" });
   const { t: tc } = useTranslation("deleteModal", { keyPrefix: "common" });
@@ -73,6 +75,14 @@ export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
       </ModalContent>
     </Modal>
   );
+};
+
+DeleteModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default DeleteModal;

@@ -9,6 +9,8 @@ import usePreviewImg from "../hooks/usePreviewImg";
 import { createContext, useMemo, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { UpdateCommentModal } from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 const Comment = ({ reply, lastReply }) => {
   const navigate = useNavigate();
@@ -83,11 +85,11 @@ export const CommentWithActions = ({ reply, lastReply, isHidingReplies }) => {
   return (
     <>
       <VStack spacing={"2"}>
-        {CommentItem(reply, isShowingDivider)}
+        <CommentItem comment={reply} isAddingVeticalDivider={isShowingDivider} />
         {isShowingDivider &&
           reply.comments.map((comment, index) => {
             const isLastReply = reply.comments.length - 1 === index;
-            return CommentItem(comment, !isLastReply);
+            return <CommentItem key={comment._id} comment={comment} isAddingVeticalDivider={!isLastReply} />;
           })}
       </VStack>
       {!lastReply ? <Divider my={4} /> : null}
@@ -99,18 +101,20 @@ export const CommentWithActions = ({ reply, lastReply, isHidingReplies }) => {
 export const CommentActionsMenuContext = createContext(null);
 
 /**
- * Small comment items for the `CommentWithActions` component.
+ * Small comment item for the `CommentWithActions` component.
  *
  * @param {Object} comment The commnent to render
- * @param {Boolean} isAddingVeticalDivier Whether to add a vertical divider or not.
+ * @param {Boolean} isAddingVeticalDivider Whether to add a vertical divider or not.
  *
  * @returns The JSX code for this component.
  */
-const CommentItem = (comment, isAddingVeticalDivier) => {
+const CommentItem = ({ comment, isAddingVeticalDivider }) => {
   const [newText, setNewText] = useState(comment.text);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg(comment.img !== "" ? comment.img : null);
   const { isOpen: isUpdateModalOpen, onOpen: onUpdateModalOpen, onClose: onUpdateModalClose } = useDisclosure();
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const navigate = useNavigate();
   const showToast = useShowToast();
@@ -153,6 +157,7 @@ const CommentItem = (comment, isAddingVeticalDivier) => {
     try {
       e.preventDefault();
 
+      setIsDeleting(true);
       const res = await fetch("/api/comments/" + comment._id, {
         method: "DELETE",
         headers: {
@@ -167,8 +172,11 @@ const CommentItem = (comment, isAddingVeticalDivier) => {
       }
 
       showToast("Success", "Comment deleted", "success");
+      onDeleteModalClose();
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -210,7 +218,7 @@ const CommentItem = (comment, isAddingVeticalDivier) => {
             onClick={goToPosterPage}
             cursor={"pointer"}
           ></Avatar>
-          {isAddingVeticalDivier && <Box w={0.5} minHeight={"20px"} h={"100%"} bg={"gray.light"} mt={2} ms={"23px"} />}
+          {isAddingVeticalDivider && <Box w={0.5} minHeight={"20px"} h={"100%"} bg={"gray.light"} mt={2} ms={"23px"} />}
         </Flex>
         <Flex gap={1} w={"full"} flexDirection={"column"}>
           <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
@@ -231,9 +239,16 @@ const CommentItem = (comment, isAddingVeticalDivier) => {
             <MenuActions
               poster={comment.postedBy}
               onCopyLink={handleCopyLink}
-              onDelete={handleDelete}
+              onDelete={onDeleteModalOpen}
               onUpdate={true}
               onOpenUpdateModal={onUpdateModalOpen}
+            />
+            <DeleteModal
+              isOpen={isDeleteModalOpen}
+              onClose={onDeleteModalClose}
+              onDelete={handleDelete}
+              isLoading={isDeleting}
+              type={DELETE_MODAL_TYPES.comment}
             />
           </Flex>
           <Box cursor={"pointer"} onClick={goToCommentPage}>

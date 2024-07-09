@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
+import PropTypes from "prop-types";
 
 export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpdateModal }) => {
   const currentUser = useRecoilValue(userAtom);
@@ -15,13 +16,7 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
 
   return (
     <Menu direction="rlt" placement="bottom-end">
-      <MenuButton
-        justifyContent={"flex-end"}
-        p={0}
-        borderRadius="md"
-        h={"20px"}
-        _hover={"none"}
-      >
+      <MenuButton justifyContent={"flex-end"} p={0} borderRadius="md" h={"20px"} _hover={"none"}>
         <HiDotsHorizontal />
       </MenuButton>
       <MenuList boxShadow={"unset"} bg={menuBg} color={menuTextColor}>
@@ -76,6 +71,14 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
       </MenuList>
     </Menu>
   );
+};
+
+MenuActions.propTypes = {
+  poster: PropTypes.object.isRequired,
+  onCopyLink: PropTypes.func,
+  onDelete: PropTypes.func,
+  onUpdate: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  onOpenUpdateModal: PropTypes.func,
 };
 
 export default MenuActions;

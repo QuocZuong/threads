@@ -1,0 +1,14 @@
+{
+  "common": {
+    "cancel": "Huỷ",
+    "delete": "Xoá"
+  },
+  "post": {
+    "header": "Xoá bài viết?",
+    "body": "Nếu bạn xoá bài viết này, bạn sẽ không thể khôi phục lại."
+  },
+  "comment": {
+    "header": "Xoá bình luận?",
+    "body": "Nếu bạn xoá bình luận này, bạn sẽ không thể khôi phục lại."
+  }
+}

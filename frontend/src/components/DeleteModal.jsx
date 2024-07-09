@@ -13,6 +13,7 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 /**
  * The modal for deleting a post.
@@ -26,16 +27,18 @@ import {
  */
 export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
   const menuBg = useColorModeValue("white", "#181818");
+  const { t } = useTranslation("deleteModal", { keyPrefix: type === DELETE_MODAL_TYPES.post ? "post" : "comment" });
+  const { t: tc } = useTranslation("deleteModal", { keyPrefix: "common" });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"xs"} isCentered>
       <ModalOverlay />
       <ModalContent bg={menuBg} borderRadius={20}>
         <ModalHeader fontWeight={"bold"} textAlign={"center"}>
-          Delete post?
+          {t("header")}
         </ModalHeader>
         <ModalBody textAlign={"center"} color={"gray"}>
-          {`If you delete this post, you won't be able to restore it.`}
+          {t("body")}
         </ModalBody>
         <ModalFooter justifyContent={"space-between"}>
           <VStack w={"full"}>
@@ -49,7 +52,7 @@ export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
                 textAlign={"center"}
                 alignContent={"center"}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 w={"full"}
@@ -62,7 +65,7 @@ export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
                 onClick={onDelete}
                 isLoading={isLoading}
               >
-                Delete
+                {tc("delete")}
               </Button>
             </HStack>
           </VStack>

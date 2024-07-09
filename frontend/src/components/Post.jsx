@@ -11,7 +11,7 @@ import postsAtom from "../atoms/postsAtom";
 import Comment from "./Comment";
 import MenuActions from "./MenuActions";
 import DeleteModal from "./DeleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
 const Post = ({ post, refs, isLastPost }) => {

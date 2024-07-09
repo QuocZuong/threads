@@ -1,9 +1,14 @@
-import { Flex, Text, Divider, Box, VStack, Image } from "@chakra-ui/react";
+import { Flex, Text, Divider, Box, VStack, Image, useDisclosure } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import CommentActions from "./CommentActions";
 import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import MenuActions from "./MenuActions";
+import usePreviewImg from "../hooks/usePreviewImg";
+import { createContext, useMemo, useState } from "react";
+import useShowToast from "../hooks/useShowToast";
+import { UpdateCommentModal } from "./UpdateModal";
 
 const Comment = ({ reply, lastReply }) => {
   const navigate = useNavigate();
@@ -67,30 +72,141 @@ const Comment = ({ reply, lastReply }) => {
  *
  * @param {object} reply The reply object.
  * @param {boolean} lastReply Whether this is the last reply in the thread.
+ * @param {boolean} isHidingReplies Whether this comment is showing child comments or not.
  *
  * @returns The JSX code for this component.
  */
-export const CommentWithActions = ({ reply, lastReply }) => {
+export const CommentWithActions = ({ reply, lastReply, isHidingReplies }) => {
   const isSingleComment = reply.comments.length === 0;
+  const isShowingDivider = !isHidingReplies && !isSingleComment;
+
+  return (
+    <>
+      <VStack spacing={"2"}>
+        {CommentItem(reply, isShowingDivider)}
+        {isShowingDivider &&
+          reply.comments.map((comment, index) => {
+            const isLastReply = reply.comments.length - 1 === index;
+            return CommentItem(comment, !isLastReply);
+          })}
+      </VStack>
+      {!lastReply ? <Divider my={4} /> : null}
+    </>
+  );
+};
+
+/** The context for each comment's action menu. */
+export const CommentActionsMenuContext = createContext(null);
+
+/**
+ * Small comment items for the `CommentWithActions` component.
+ *
+ * @param {Object} comment The commnent to render
+ * @param {Boolean} isAddingVeticalDivier Whether to add a vertical divider or not.
+ *
+ * @returns The JSX code for this component.
+ */
+const CommentItem = (comment, isAddingVeticalDivier) => {
+  const [newText, setNewText] = useState(comment.text);
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg(comment.img !== "" ? comment.img : null);
+  const { isOpen: isUpdateModalOpen, onOpen: onUpdateModalOpen, onClose: onUpdateModalClose } = useDisclosure();
+  const [isSubmiting, setIsSubmiting] = useState(false);
+
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
-  const renderComment = (reply, isAddingVeticalDivier) => {
-    const goToPosterPage = (e) => {
+  const contextValue = useMemo(
+    () => ({
+      newText,
+      setNewText,
+      handleImageChange,
+      imgUrl,
+      setImgUrl,
+    }),
+    [handleImageChange, imgUrl, setImgUrl, newText, setNewText],
+  );
+
+  const goToPosterPage = (e) => {
+    e.preventDefault();
+    navigate(`/${comment.username}`);
+  };
+
+  const goToCommentPage = (e) => {
+    e.preventDefault();
+    navigate(`/${comment.username}/comment/${comment._id}`);
+  };
+
+  const handleCopyLink = async (e) => {
+    e.preventDefault();
+
+    const link = `${window.location.origin}/${comment.postedBy.username}/comment/${comment._id}`;
+
+    try {
+      await navigator.clipboard.writeText(link);
+      showToast("Success", "Link copied!", "success");
+    } catch (err) {
+      showToast("Error", err, "error");
+    }
+  };
+
+  const handleDelete = async (e) => {
+    try {
       e.preventDefault();
-      navigate(`/${reply.username}`);
-    };
 
-    const goToCommentPage = (e) => {
-      e.preventDefault();
-      navigate(`/${reply.username}/comment/${reply._id}`);
-    };
+      const res = await fetch("/api/comments/" + comment._id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
 
-    return (
-      <Flex gap={4} w={"full"} key={reply._id}>
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      showToast("Success", "Comment deleted", "success");
+    } catch (error) {
+      showToast("Error", error, "error");
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      setIsSubmiting(true);
+      const res = await fetch("/api/comments/" + comment._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: newText, img: imgUrl }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      showToast("Success", "Comment updated", "success");
+      onUpdateModalClose();
+    } catch (error) {
+      showToast("Error", error, "error");
+    } finally {
+      setIsSubmiting(false);
+    }
+  };
+
+  return (
+    <CommentActionsMenuContext.Provider value={contextValue}>
+      <Flex gap={4} w={"full"} key={comment._id}>
         <Flex flexDir={"column"}>
           <Avatar
-            src={reply?.userProfilePic}
-            name={reply?.username}
+            src={comment?.userProfilePic}
+            name={comment?.username}
             onClick={goToPosterPage}
             cursor={"pointer"}
           ></Avatar>
@@ -98,47 +214,49 @@ export const CommentWithActions = ({ reply, lastReply }) => {
         </Flex>
         <Flex gap={1} w={"full"} flexDirection={"column"}>
           <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
-            <Text
-              fontSize={"sm"}
-              fontWeight={"bold"}
-              onClick={goToPosterPage}
-              cursor={"pointer"}
-              _hover={{ textDecor: "underline" }}
-            >
-              {reply?.username}
-            </Text>
-            <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-              {formatDistanceToNow(new Date(reply.createdAt))} ago
-            </Text>
+            <Flex gap={2}>
+              <Text
+                fontSize={"sm"}
+                fontWeight={"bold"}
+                onClick={goToPosterPage}
+                cursor={"pointer"}
+                _hover={{ textDecor: "underline" }}
+              >
+                {comment?.username}
+              </Text>
+              <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
+                {formatDistanceToNow(new Date(comment.createdAt))} ago
+              </Text>
+            </Flex>
+            <MenuActions
+              poster={comment.postedBy}
+              onCopyLink={handleCopyLink}
+              onDelete={handleDelete}
+              onUpdate={true}
+              onOpenUpdateModal={onUpdateModalOpen}
+            />
           </Flex>
           <Box cursor={"pointer"} onClick={goToCommentPage}>
             <Text whiteSpace={"normal"} wordBreak={"break-word"}>
-              {reply?.text}
+              {comment?.text}
             </Text>
-            {reply.img && (
+            {comment.img && (
               <Box mt={3} borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-                <Image src={reply.img} w={"full"} />
+                <Image src={comment.img} w={"full"} />
               </Box>
             )}
           </Box>
-          <CommentActions comment={reply} />
+          <CommentActions comment={comment} />
         </Flex>
       </Flex>
-    );
-  };
-
-  return (
-    <>
-      <VStack spacing={"2"}>
-        {renderComment(reply, !isSingleComment)}
-        {!isSingleComment &&
-          reply.comments.map((comment, index) => {
-            const isLastReply = reply.comments.length - 1 === index;
-            return renderComment(comment, !isLastReply);
-          })}
-      </VStack>
-      {!lastReply ? <Divider my={4} /> : null}
-    </>
+      <UpdateCommentModal
+        isOpen={isUpdateModalOpen}
+        onClose={onUpdateModalClose}
+        text={newText}
+        onSubmit={handleUpdate}
+        isSubmiting={isSubmiting}
+      ></UpdateCommentModal>
+    </CommentActionsMenuContext.Provider>
   );
 };
 
@@ -267,6 +385,7 @@ Comment.propTypes = {
 CommentWithActions.propTypes = {
   reply: PropTypes.object.isRequired,
   lastReply: PropTypes.bool.isRequired,
+  isHidingReplies: PropTypes.bool,
 };
 
 PostAsCommentWithVerticalDivider.propTypes = {

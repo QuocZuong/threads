@@ -1,16 +1,17 @@
-import { Flex, Text, Image, Box, Divider, Button, Spinner } from "@chakra-ui/react";
+import { Flex, Text, Image, Box, Divider, Button, Spinner, useDisclosure } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useParams, useNavigate } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import Actions from "../components/Actions";
 import { CommentWithActions } from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
 import { useRecoilValue, useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
+import DeleteModal from "../components/DeleteModal";
 const PostPage = () => {
   const { isLoading, user } = useGetUserProfile();
   const [posts, setPosts] = useRecoilState(postsAtom);
@@ -18,6 +19,8 @@ const PostPage = () => {
   const { pid } = useParams();
   const currentUser = useRecoilValue(userAtom);
   const navigate = useNavigate();
+  const [isDeleteing, setIsDeleting] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   let currentPost = posts[0];
 
@@ -49,7 +52,7 @@ const PostPage = () => {
   const handleDeletePost = async (e) => {
     try {
       e.preventDefault();
-      if (!window.confirm("Are you sure to delete this post?")) return;
+      setIsDeleting(true);
       const res = await fetch("/api/posts/" + currentPost._id, {
         method: "DELETE",
         headers: {
@@ -62,10 +65,13 @@ const PostPage = () => {
         showToast("Error", data.error, "error");
         return;
       }
+      setPosts(posts.filter((p) => p._id !== currentPost._id));
       showToast("Success", "Post deleted", "success");
-      navigate(`/${user?.username}`);
+      navigate("/");
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -110,7 +116,8 @@ const PostPage = () => {
             {formatDistanceToNow(new Date(currentPost?.createdAt))} ago
           </Text>
 
-          {currentUser?._id === user?._id && <DeleteIcon size={20} onClick={handleDeletePost} cursor={"pointer"} />}
+          {currentUser?._id === user?._id && <DeleteIcon size={20} onClick={onOpen} cursor={"pointer"} />}
+          <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
         </Flex>
       </Flex>
       <Text my={3}>{currentPost.text}</Text>

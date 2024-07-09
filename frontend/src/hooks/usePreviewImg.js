@@ -1,7 +1,18 @@
 import { useState } from "react";
 import useShowToast from "./useShowToast";
-const usePreviewImg = () => {
-  const [imgUrl, setImgUrl] = useState(null);
+
+/**
+ * Process an image from an input and provide the local image URL.
+ *
+ * @param {String} initialValue An optional parameter to set the initial value of the image URL.
+ *
+ * @returns {Object} An object containing the following properties and methods:
+ *  - imgUrl: The URL of the image to be previewed.
+ *  - setImgUrl: A function to set the URL of the image to be previewed.
+ *  - handleImageChange: A function to handle the change event of the input element of type file.
+ */
+const usePreviewImg = (initialValue) => {
+  const [imgUrl, setImgUrl] = useState(initialValue || null);
   const showToast = useShowToast();
   const handleImageChange = (e) => {
     const file = e.target.files[0];

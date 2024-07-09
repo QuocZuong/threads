@@ -5,43 +5,28 @@ import {
   Text,
   HStack,
   Divider,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   useColorModeValue,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
-  VStack,
-  StackDivider,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
-import { useRecoilState, useRecoilValue } from "recoil";
-import userAtom from "../atoms/userAtom";
+import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { LuLink2 } from "react-icons/lu";
-
 import Comment from "./Comment";
+import MenuActions from "./MenuActions";
+import DeleteModal from "./DeleteModal";
+import { useState } from "react";
 
 const Post = ({ post }) => {
   const user = post.postedBy;
   const showToast = useShowToast();
   const navigate = useNavigate();
-  const currentUser = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isDeleteing, setIsDeleting] = useState(false);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -51,6 +36,7 @@ const Post = ({ post }) => {
   const handleDeletePost = async (e) => {
     try {
       e.preventDefault();
+      setIsDeleting(true);
       const res = await fetch("/api/posts/" + post._id, {
         method: "DELETE",
         headers: {
@@ -67,6 +53,8 @@ const Post = ({ post }) => {
       showToast("Success", "Post deleted", "success");
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -82,9 +70,6 @@ const Post = ({ post }) => {
     );
   };
 
-  const menuBg = useColorModeValue("white", "#181818");
-  const menuTextColor = useColorModeValue("black", "white");
-  const menuItemBgHover = useColorModeValue("gray.100", "#212121");
 
   if (!user) return null;
 
@@ -118,90 +103,8 @@ const Post = ({ post }) => {
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </Text>
             </HStack>
-            <Flex>
-              <Menu direction="rlt" placement="bottom-end">
-                <MenuButton
-                  justifyContent={"flex-end"}
-                  p={0}
-                  borderRadius="md"
-                  // bg={"transparent"}
-                  h={"20px"}
-                  _hover={"none"}
-                >
-                  <HiDotsHorizontal />
-                </MenuButton>
-                <MenuList boxShadow={"unset"} bg={menuBg} color={menuTextColor}>
-                  <MenuItem
-                    w={"90%"}
-                    ml={3}
-                    bg={"menuBg"}
-                    borderRadius={10}
-                    _hover={{ bg: menuItemBgHover }}
-                    command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
-                    onClick={handleCopyLink}
-                  >
-                    Copy link
-                  </MenuItem>
-                  {currentUser?._id === user?._id && (
-                    <>
-                      <MenuDivider />
-                      <MenuItem
-                        w={"90%"}
-                        ml={3}
-                        bg={"menuBg"}
-                        borderRadius={10}
-                        _hover={{ bg: menuItemBgHover }}
-                        onClick={onOpen}
-                        cursor={"pointer"}
-                        color={"rgb(255, 48, 64)"}
-                        command={<AiOutlineDelete color="red.500" size={22} />}
-                      >
-                        Delete
-                      </MenuItem>
-                      <Modal isOpen={isOpen} onClose={onClose} size={"xs"} isCentered>
-                        <ModalOverlay />
-                        <ModalContent bg={menuBg} borderRadius={20}>
-                          <ModalHeader fontWeight={"bold"} textAlign={"center"}>
-                            Delete post?
-                          </ModalHeader>
-                          <ModalBody textAlign={"center"} color={"gray"}>
-                            {`If you delete this post, you won't be able to restore it.`}
-                          </ModalBody>
-                          <ModalFooter justifyContent={"space-between"}>
-                            <VStack w={"full"}>
-                              <Divider />
-                              <HStack w={"full"} divider={<StackDivider />}>
-                                <Box
-                                  role="button"
-                                  w={"full"}
-                                  h={"40px"}
-                                  onClick={onClose}
-                                  textAlign={"center"}
-                                  alignContent={"center"}
-                                >
-                                  Cancel
-                                </Box>
-                                <Box
-                                  role="button"
-                                  w={"full"}
-                                  h={"40px"}
-                                  fontWeight={"bold"}
-                                  textAlign={"center"}
-                                  alignContent={"center"}
-                                  onClick={handleDeletePost}
-                                >
-                                  Delete
-                                </Box>
-                              </HStack>
-                            </VStack>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </>
-                  )}
-                </MenuList>
-              </Menu>
-            </Flex>
+            <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
+            <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
           </Flex>
           <Link to={`/${user.username}/post/${post._id}`}>
             <Flex direction={"column"} w={"full"}>

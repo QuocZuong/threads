@@ -36,5 +36,5 @@ app.use("/api", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 
 server.listen(PORT, () => {
-  console.log(`Hey server started at port ${PORT}!`);
+  console.log(`Hey server started at port ${PORT} 🚀`);
 });

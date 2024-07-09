@@ -1,4 +1,5 @@
 import Comment from "../models/commentModel.js";
+import Post from "../models/postModel.js";
 import { removeImage, uploadImage } from "../utils/helpers/imageUploader.js";
 
 /**
@@ -121,9 +122,28 @@ export const remove = async (req, res, next) => {
     const comment = await Comment.findById(commentId);
 
     if (!comment) return res.status(404).json({ error: "Comment not found" });
-    if (comment.userId !== userId) return res.status(401).json({ error: "Unauthorized" });
+    if (comment.postedBy.toString() !== userId.toString()) return res.status(401).json({ error: "Unauthorized" });
 
-    await comment.remove();
+    // Remove the reference to the comment from the parent
+    if (comment.repliedComment) {
+      await Comment.updateOne({ _id: comment.repliedComment }, { $pull: { comments: commentId } });
+    } else {
+      await Post.updateOne({ _id: comment.repliedPost }, { $pull: { replies: commentId } });
+    }
+
+    // Recusively remove all the comments of the comment
+    const collector = async (comment) => {
+      comment = await Comment.findById(comment);
+      await Comment.findByIdAndDelete(comment._id);
+
+      comment.comments.forEach((c) => {
+        collector(c);
+      });
+    };
+
+    await collector(comment._id);
+
+    return res.status(200).json({ message: "Comment deleted successfully" });
   } catch (error) {
     next(error);
   }

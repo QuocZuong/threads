@@ -80,8 +80,18 @@ const deletePost = async (req, res, next) => {
 
     if (post.img) await removeImage(post.img);
 
+    // Recusively remove all the replies of the post
+    const collector = async (comment) => {
+      comment = await Comment.findById(comment);
+      await Comment.findByIdAndDelete(comment._id);
+
+      comment.comments.forEach((c) => {
+        collector(c);
+      });
+    };
+
     post.replies.forEach(async (reply) => {
-      await Comment.findByIdAndDelete(reply);
+      await collector(reply);
     });
 
     await Post.findByIdAndDelete(post._id);

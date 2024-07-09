@@ -15,6 +15,7 @@ import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
+
 import Comment from "./Comment";
 import MenuActions from "./MenuActions";
 import DeleteModal from "./DeleteModal";
@@ -70,10 +71,7 @@ const Post = ({ post }) => {
     );
   };
 
-
-  if (!user) return null;
-
-  if (!post) return null;
+  if (!user || !post) return null;
 
   const firstReply = post.replies.length > 0 ? post.replies[0] : undefined;
 

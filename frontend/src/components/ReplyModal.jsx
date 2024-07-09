@@ -14,7 +14,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Text,
   Textarea,
   VStack,
@@ -29,7 +28,6 @@ import { IoImagesOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import useCommentActions from "../hooks/useCommentActions";
 import usePostActions from "../hooks/usePostActions";
-import useShowToast from "../hooks/useShowToast";
 import { useNavigate } from "react-router-dom";
 
 /**

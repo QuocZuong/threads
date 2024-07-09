@@ -1,15 +1,12 @@
 import { Flex, Text, Image, Box, Divider, Button, Spinner, useDisclosure } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
 import { useParams, useNavigate } from "react-router-dom";
-import { DeleteIcon } from "@chakra-ui/icons";
 import Actions from "../components/Actions";
 import { CommentWithActions } from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
-import { useRecoilValue, useRecoilState } from "recoil";
-import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
 import DeleteModal from "../components/DeleteModal";
 const PostPage = () => {
@@ -17,7 +14,6 @@ const PostPage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const showToast = useShowToast();
   const { pid } = useParams();
-  const currentUser = useRecoilValue(userAtom);
   const navigate = useNavigate();
   const [isDeleteing, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();

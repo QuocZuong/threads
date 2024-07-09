@@ -55,7 +55,7 @@ const getPost = async (req, res, next) => {
     const id = req.params.id;
     const post = await Post.findById(id)
       .populate("replies")
-      .populate({ path: "replies", populate: "comments" })
+      .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);
 
     if (!post) {
@@ -187,7 +187,7 @@ const getFeedPost = async (req, res, next) => {
     })
       .sort({ createdAt: -1 })
       .populate("replies")
-      .populate({ path: "replies", populate: "comments" })
+      .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);
     res.status(200).json(feedPosts);
   } catch (error) {
@@ -200,7 +200,7 @@ const getFeedByHostPost = async (req, res, next) => {
     const hotPost = await Post.find()
       .sort({ likes: -1 })
       .populate("replies")
-      .populate({ path: "replies", populate: "comments" })
+      .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);
 
     res.status(200).json(hotPost);
@@ -222,7 +222,7 @@ const getUserPost = async (req, res, next) => {
         createdAt: -1,
       })
       .populate("replies")
-      .populate({ path: "replies", populate: "comments" })
+      .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);
 
     res.status(200).json(posts);
@@ -239,7 +239,7 @@ const searchPost = async (req, res, next) => {
     const postQuery = { text: { $regex: new RegExp(searchQuery, "i") } };
     const posts = await Post.find(postQuery, null, { lean: true })
       .populate("replies")
-      .populate({ path: "replies", populate: "comments" })
+      .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);
 
     if (!posts) return res.status(404).json({ error: "Found nothing" });

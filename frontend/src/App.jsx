@@ -13,6 +13,7 @@ import SearchPage from "./pages/SearchPage";
 
 import ChatPage from "./pages/ChatPage";
 import LanguageSwitcher from "./components/LanguageSwitcher";
+import CommentPage from "./pages/CommentPage";
 function App() {
   const user = useRecoilValue(userAtom);
 
@@ -38,6 +39,7 @@ function App() {
           }
         ></Route>
         <Route path="/:username/post/:pid" element={<PostPage />}></Route>
+        <Route path="/:username/comment/:id" element={<CommentPage />}></Route>
         <Route path="/chat" element={user ? <ChatPage /> : <Navigate to="/auth" />}></Route>
       </Routes>
     </Container>

@@ -1,48 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Flex,
-  Box,
-  Text,
-  HStack,
-  Divider,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useColorModeValue,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  VStack,
-  StackDivider,
-} from "@chakra-ui/react";
+import { Flex, Box, Text, HStack, Divider, useDisclosure } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Avatar } from "@chakra-ui/avatar";
 import useShowToast from "../hooks/useShowToast";
-import { useEffect, useState } from "react";
 import Actions from "./Actions";
 import { formatDistanceToNow } from "date-fns";
-import { useRecoilState, useRecoilValue } from "recoil";
-import userAtom from "../atoms/userAtom";
+import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { LuLink2 } from "react-icons/lu";
 
 import Comment from "./Comment";
+import MenuActions from "./MenuActions";
+import DeleteModal from "./DeleteModal";
+import { useState } from "react";
+import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
-const Post = ({ post, postedBy }) => {
-  const [user, setUser] = useState(null);
+const Post = ({ post }) => {
+  const user = post.postedBy;
   const showToast = useShowToast();
   const navigate = useNavigate();
-  const currentUser = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -52,6 +30,7 @@ const Post = ({ post, postedBy }) => {
   const handleDeletePost = async (e) => {
     try {
       e.preventDefault();
+      setIsDeleting(true);
       const res = await fetch("/api/posts/" + post._id, {
         method: "DELETE",
         headers: {
@@ -68,10 +47,14 @@ const Post = ({ post, postedBy }) => {
       showToast("Success", "Post deleted", "success");
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const handleCopyLink = (e) => {
+    e.preventDefault();
+
     const link = `${window.location.origin}/${user.username}/post/${post._id}`;
     navigator.clipboard.writeText(link).then(
       () => {
@@ -83,33 +66,7 @@ const Post = ({ post, postedBy }) => {
     );
   };
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await fetch(`/api/users/${postedBy}`);
-        const data = await res.json();
-
-        if (data.error) {
-          showToast("Error", data.error, "error");
-          return;
-        }
-        setUser(data);
-      } catch (error) {
-        showToast("Error", error, "error");
-        setUser(null);
-      }
-    };
-
-    getUser();
-  }, [postedBy, showToast]);
-
-  const menuBg = useColorModeValue("white", "#181818");
-  const menuTextColor = useColorModeValue("black", "white");
-  const menuItemBgHover = useColorModeValue("gray.100", "#212121");
-
-  if (!user) return null;
-
-  if (!post) return null;
+  if (!user || !post) return null;
 
   const firstReply = post.replies.length > 0 ? post.replies[0] : undefined;
 
@@ -118,14 +75,20 @@ const Post = ({ post, postedBy }) => {
       {!post[0] ? <Divider /> : undefined}
       <Flex gap={3} py={3}>
         <Flex flexDirection={"column"} alignItems={"center"}>
-          <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />
+          <Avatar size={"md"} name={user?.name} src={user?.profilePic} cursor={"pointer"} onClick={handleNavigate} />
           {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}
         </Flex>
 
         <Flex flex={1} flexDirection={"column"} gap={2}>
           <Flex justifyContent={"space-between"} w={"full"} h={"20px"}>
             <HStack spacing={1}>
-              <Text fontSize={"sm"} fontWeight={"bold"} onClick={handleNavigate}>
+              <Text
+                fontSize={"sm"}
+                fontWeight={"bold"}
+                cursor={"pointer"}
+                onClick={handleNavigate}
+                _hover={{ textDecoration: "underline" }}
+              >
                 {user?.username}
               </Text>
               <Image src="/verified.png" w={4} height={4}></Image>
@@ -133,90 +96,14 @@ const Post = ({ post, postedBy }) => {
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </Text>
             </HStack>
-            <Flex>
-              <Menu direction="rlt" placement="bottom-end">
-                <MenuButton
-                  justifyContent={"flex-end"}
-                  p={0}
-                  borderRadius="md"
-                  // bg={"transparent"}
-                  h={"20px"}
-                  _hover={"none"}
-                >
-                  <HiDotsHorizontal />
-                </MenuButton>
-                <MenuList boxShadow={"unset"} bg={menuBg} color={menuTextColor}>
-                  <MenuItem
-                    w={"90%"}
-                    ml={3}
-                    bg={"menuBg"}
-                    borderRadius={10}
-                    _hover={{ bg: menuItemBgHover }}
-                    command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
-                    onClick={handleCopyLink}
-                  >
-                    Copy link
-                  </MenuItem>
-                  {currentUser?._id === user?._id && (
-                    <>
-                      <MenuDivider />
-                      <MenuItem
-                        w={"90%"}
-                        ml={3}
-                        bg={"menuBg"}
-                        borderRadius={10}
-                        _hover={{ bg: menuItemBgHover }}
-                        onClick={onOpen}
-                        cursor={"pointer"}
-                        color={"rgb(255, 48, 64)"}
-                        command={<AiOutlineDelete color="red.500" size={22} />}
-                      >
-                        Delete
-                      </MenuItem>
-                      <Modal isOpen={isOpen} onClose={onClose} size={"xs"} isCentered>
-                        <ModalOverlay />
-                        <ModalContent bg={menuBg} borderRadius={20}>
-                          <ModalHeader fontWeight={"bold"} textAlign={"center"}>
-                            Delete post?
-                          </ModalHeader>
-                          <ModalBody textAlign={"center"} color={"gray"}>
-                            {`If you delete this post, you won't be able to restore it.`}
-                          </ModalBody>
-                          <ModalFooter justifyContent={"space-between"}>
-                            <VStack w={"full"}>
-                              <Divider />
-                              <HStack w={"full"} divider={<StackDivider />}>
-                                <Box
-                                  role="button"
-                                  w={"full"}
-                                  h={"40px"}
-                                  onClick={onClose}
-                                  textAlign={"center"}
-                                  alignContent={"center"}
-                                >
-                                  Cancel
-                                </Box>
-                                <Box
-                                  role="button"
-                                  w={"full"}
-                                  h={"40px"}
-                                  fontWeight={"bold"}
-                                  textAlign={"center"}
-                                  alignContent={"center"}
-                                  onClick={handleDeletePost}
-                                >
-                                  Delete
-                                </Box>
-                              </HStack>
-                            </VStack>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </>
-                  )}
-                </MenuList>
-              </Menu>
-            </Flex>
+            <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
+            <DeleteModal
+              isOpen={isOpen}
+              onClose={onClose}
+              onDelete={handleDeletePost}
+              isLoading={isDeleting}
+              type={DELETE_MODAL_TYPES.post}
+            />
           </Flex>
           <Link to={`/${user.username}/post/${post._id}`}>
             <Flex direction={"column"} w={"full"}>

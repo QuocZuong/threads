@@ -50,7 +50,7 @@ const SearchBar = () => {
 
     fetchUser();
     console.count("fetchUser");
-  }, []);
+  }, [showToast, user._id]);
 
   useEffect(() => {
     console.count("searchVal");
@@ -85,7 +85,7 @@ const SearchBar = () => {
     }, SEARCH_DELAY);
 
     return () => clearTimeout(search);
-  }, [searchVal]);
+  }, [showToast, searchVal]);
 
   const clearSearchInput = () => {
     setSearchResults(null);
@@ -116,8 +116,6 @@ const SearchBar = () => {
     }
 
     const arr = [];
-    console.log("Search result: ");
-    console.log(searchResults);
 
     if (users) {
       users.map((user) => {
@@ -136,7 +134,7 @@ const SearchBar = () => {
     }
 
     if (posts) {
-      posts.map((item) => arr.push(<Post key={item._id} post={item} postedBy={item.postedBy}></Post>));
+      posts.map((item) => arr.push(<Post key={item._id} post={item}></Post>));
     }
 
     return arr;

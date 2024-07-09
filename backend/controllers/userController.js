@@ -1,9 +1,11 @@
 import User from "../models/userModel.js";
-import Post from "../models/postModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import Comment from "../models/commentModel.js";
+
+const IGNORED_USER_INFO = "-password -updatedAt -__v";
 
 const getUserProfile = async (req, res) => {
   // query is either username or userId
@@ -13,10 +15,10 @@ const getUserProfile = async (req, res) => {
 
     if (mongoose.Types.ObjectId.isValid(query)) {
       // find by userId
-      user = await User.findById(query).select("-password").select("-updatedAt");
+      user = await User.findById(query).select(IGNORED_USER_INFO);
     } else {
       // find by username
-      user = await User.findOne({ username: query }).select("-password").select("-updatedAt");
+      user = await User.findOne({ username: query }).select(IGNORED_USER_INFO);
     }
 
     if (!user) return res.status(400).json({ error: "User not found" });
@@ -33,9 +35,9 @@ const signupUser = async (req, res) => {
     const { name, email, username, password } = req.body;
     const user = await User.findOne({ $or: [{ email }, { username }] });
 
-        if (user) {
-            return res.status(400).json({ error: "User already exists" });
-        }
+    if (user) {
+      return res.status(400).json({ error: "User already exists" });
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -170,15 +172,14 @@ const updateUser = async (req, res) => {
 
     user = await user.save();
 
-    await Post.updateMany(
-      { "replies.userId": userId },
+    await Comment.updateMany(
+      { postedBy: userId },
       {
         $set: {
-          "replies.$[reply].username": user.username,
-          "replies.$[reply].userProfilePic": user.profilePic,
+          username: user.username,
+          userProfilePic: user.profilePic,
         },
       },
-      { arrayFilters: [{ "reply.userId": userId }] },
     );
 
     // password should be null in response

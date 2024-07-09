@@ -8,8 +8,18 @@ import userAtom from "../atoms/userAtom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import UpdateProfileModal from "./UpdateProfileModal";
+import { PAGE_TYPES } from "../constants/userPage.constants";
 
-const UserHeader = ({ user }) => {
+/**
+ * The head of the user page.
+ *
+ * @param {Object} user The object containing user's infomation.
+ * @param {String} showedPage The page that is currently being showed under this component.
+ * @param {Function} setShowedPage The function to set the showed page in the `UserPage` component, as defined in {@link PAGE_TYPES}.
+ *
+ * @returns The JSX code of this component.
+ */
+const UserHeader = ({ user, showedPage, setShowedPage }) => {
   const showToast = useShowToast();
   const currentUser = useRecoilValue(userAtom);
   const [following, setFollowing] = useState(user?.followers.includes(currentUser?._id));
@@ -39,7 +49,7 @@ const UserHeader = ({ user }) => {
       }
 
       if (following) {
-        showToast("Success", `${t("unfollowed")} ${user?.name}`, "success");
+        showToast("Success", `${t("unfollow")}ed ${user?.name}`, "success");
         user.followers.pop();
       } else {
         showToast("Success", `${t("followed")} ${user?.name}`, "success");
@@ -52,6 +62,16 @@ const UserHeader = ({ user }) => {
     } finally {
       setUpdating(false);
     }
+  };
+
+  const borderTypes = {
+    active: "1px solid white",
+    inactive: "1px solid gray",
+  };
+
+  const buttonTextColors = {
+    active: "white",
+    inactive: "gray.light",
   };
 
   return (
@@ -81,7 +101,7 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id !== user._id && (
         <Button onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? t("unfollowed") : t("followed")}
+          {following ? t("unfollow") : t("followed")}
         </Button>
       )}
 
@@ -101,18 +121,40 @@ const UserHeader = ({ user }) => {
         <UpdateProfileModal />
       </Flex>
       <Flex w={"full"}>
-        <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} pb={3} cursor={"pointer"}>
-          <Text fontWeight={"bold"}>{t("threads")}</Text>
+        <Flex
+          flex={1}
+          borderBottom={showedPage === PAGE_TYPES.threads ? borderTypes.active : borderTypes.inactive}
+          transition={"border 0.3s"}
+          justifyContent={"center"}
+          pb={3}
+          cursor={"pointer"}
+          onClick={() => setShowedPage(PAGE_TYPES.threads)}
+        >
+          <Text
+            fontWeight={"bold"}
+            color={showedPage === PAGE_TYPES.threads ? buttonTextColors.active : buttonTextColors.inactive}
+            transition={"color 0.3s"}
+          >
+            {t("threads")}
+          </Text>
         </Flex>
         <Flex
           flex={1}
-          borderBottom={"1px solid gray"}
+          borderBottom={showedPage === PAGE_TYPES.replies ? borderTypes.active : borderTypes.inactive}
+          transition={"border 0.3s"}
           justifyContent={"center"}
           color={"gray.light"}
           pb={3}
           cursor={"pointer"}
+          onClick={() => setShowedPage(PAGE_TYPES.replies)}
         >
-          <Text fontWeight={"bold"}>{t("replies")}</Text>
+          <Text
+            fontWeight={"bold"}
+            color={showedPage === PAGE_TYPES.replies ? buttonTextColors.active : buttonTextColors.inactive}
+            transition={"color 0.3s"}
+          >
+            {t("replies")}
+          </Text>
         </Flex>
       </Flex>
     </VStack>

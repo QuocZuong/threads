@@ -4,8 +4,6 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-// import { Box} from "@chakra-ui/layout";
-// import { Avatar } from "@chakra-ui/avatar";
 import CreatePost from "../components/CreatePost";
 import { useTranslation } from "react-i18next";
 const HomePage = () => {
@@ -54,7 +52,7 @@ const HomePage = () => {
 
       {posts?.length > 0 &&
         posts?.map((post) => {
-          return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts}></Post>;
+          return <Post key={post._id} post={post}></Post>;
         })}
     </>
   );

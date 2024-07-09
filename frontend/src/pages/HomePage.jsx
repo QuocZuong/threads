@@ -1,43 +1,79 @@
 import { Flex, Spinner } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-// import { Box} from "@chakra-ui/layout";
-// import { Avatar } from "@chakra-ui/avatar";
 import CreatePost from "../components/CreatePost";
+
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(true);
   const showToast = useShowToast();
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
+
   useEffect(() => {
-    const getFeedPosts = async () => {
-      setIsLoading(true);
-      setPosts([]);
-      try {
-        const res = await fetch("/api/posts/feed");
-        const data = await res.json();
+    setPage(1);
+    setPosts([]);
+    getFeedPosts(1);
+  }, []);
 
-        if (res.status === 500) {
-          showToast("Error", data.message, "error");
-          return;
-        }
+  useEffect(() => {
+    if (page >= 2) getFeedPosts(page);
+    console.log("page", page);
+  }, [page]);
 
-        if (data.error) {
-          showToast("Error", data.error, "error");
-          return;
-        }
-        setPosts(data);
-      } catch (error) {
-        showToast("Error", "Error while loading feed", "error");
-      } finally {
-        setIsLoading(false);
+  const getFeedPosts = async (page) => {
+    setIsLoading(true);
+    setPosts([]);
+    try {
+      const res = await fetch(`/api/posts/feed?page=${page}&limit=2`);
+      const data = await res.json();
+
+      if (res.status === 500) {
+        showToast("Error", data.message, "error");
+        return;
       }
-    };
-    document.title = "Home";
-    getFeedPosts();
-  }, [showToast, setPosts]);
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      console.log(data);
+
+      if (data.length === 0) {
+        setHasMore(false);
+      } else {
+        setPosts((prevPosts) => {
+          return Set([...prevPosts, ...data]);
+        });
+        setHasMore(data.length > 0);
+      }
+    } catch (error) {
+      showToast("Error", "Error while loading feed", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const lastPostElementRef = useCallback(
+    (node) => {
+      console.log(node);
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log("a");
+    },
+    [isLoading, hasMore],
+  );
 
   return (
     <>
@@ -50,10 +86,28 @@ const HomePage = () => {
 
       {!isLoading && posts?.length === 0 && <h1>Follow some user to see the feed</h1>}
 
-      {posts?.length > 0 &&
-        posts?.map((post) => {
-          return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts}></Post>;
-        })}
+      {posts?.map((post, index) => {
+        if (posts.length === index + 1) {
+          return (
+            <Post
+              key={post._id}
+              post={post}
+              postedBy={post.postedBy}
+              setPosts={setPosts}
+              refs={lastPostElementRef}
+              isLastPost={true}
+            />
+          );
+        } else {
+          return <Post key={post._id} post={post} postedBy={post.postedBy} setPosts={setPosts} isLastPost={false} />;
+        }
+      })}
+      {isLoading && (
+        <Flex justifyContent={"center"} pt={10}>
+          <Spinner />
+        </Flex>
+      )}
+      {!hasMore && <h1>No more posts</h1>}
     </>
   );
 };

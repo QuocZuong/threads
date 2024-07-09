@@ -36,13 +36,21 @@ import { LuLink2 } from "react-icons/lu";
 
 import Comment from "./Comment";
 
-const Post = ({ post, postedBy }) => {
+const Post = ({ post, postedBy, refs, isLastPost }) => {
+  // const { lastPostElementRef } = refs;
+  let lastPostElementRef = null;
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
   const navigate = useNavigate();
   const currentUser = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (isLastPost) {
+      lastPostElementRef = refs.lastPostElementRef;
+    }
+  }, []);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -116,7 +124,7 @@ const Post = ({ post, postedBy }) => {
   return (
     <>
       {!post[0] ? <Divider /> : undefined}
-      <Flex gap={3} py={3}>
+      <Flex gap={3} py={3} ref={lastPostElementRef}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size={"md"} name={user?.name} src={user?.profilePic} onClick={handleNavigate} />
           {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}

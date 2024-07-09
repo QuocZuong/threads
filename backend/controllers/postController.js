@@ -142,6 +142,7 @@ const replyToPost = async (req, res, next) => {
 };
 
 const getFeedPost = async (req, res, next) => {
+  console.log(req.query.page, req.query.limit);
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
@@ -150,10 +151,17 @@ const getFeedPost = async (req, res, next) => {
 
     const following = user.following;
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
     // get posts of the users that the logged in user is following and his posts
     const feedPosts = await Post.find({
       postedBy: { $in: [...following, userId] },
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
     res.status(200).json(feedPosts);
   } catch (error) {
     next(error);

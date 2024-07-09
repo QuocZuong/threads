@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Spinner, useCallbackRef } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";

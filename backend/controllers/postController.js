@@ -173,7 +173,6 @@ const replyToPost = async (req, res, next) => {
 };
 
 const getFeedPost = async (req, res, next) => {
-  console.log(req.query.page, req.query.limit);
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
@@ -190,7 +189,6 @@ const getFeedPost = async (req, res, next) => {
     const feedPosts = await Post.find({
       postedBy: { $in: [...following, userId] },
     })
-      
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)

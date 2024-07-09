@@ -23,7 +23,7 @@ import {
 import usePreviewImg from "../hooks/usePreviewImg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { IoImagesOutline } from "react-icons/io5";
@@ -38,7 +38,6 @@ const CreatePost = () => {
   const [typedChar, setTypedChar] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useRecoilState(postsAtom);
-  const { username } = useParams();
   const imgRef = useRef(null);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
   const { t } = useTranslation();
@@ -91,10 +90,11 @@ const CreatePost = () => {
       }
 
       showToast("Create post success", "", "success");
-      if (username === user.username) {
-        setPosts([data, ...posts]);
-      }
+      setPosts([data, ...posts]);
       onClose();
+      setPostText("");
+      setTypedChar(0);
+      setImgUrl("");
     } catch (error) {
       showToast("Error", error, "error");
     } finally {

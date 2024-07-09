@@ -11,24 +11,16 @@ import postsAtom from "../atoms/postsAtom";
 import Comment from "./Comment";
 import MenuActions from "./MenuActions";
 import DeleteModal from "./DeleteModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
-const Post = ({ post, refs, isLastPost }) => {
-  // const { lastPostElementRef } = refs;
-  let lastPostElementRef = null;
+const Post = ({ post, lastPostRef }) => {
   const user = post.postedBy;
   const showToast = useShowToast();
   const navigate = useNavigate();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    if (isLastPost) {
-      lastPostElementRef = refs.lastPostElementRef;
-    }
-  }, []);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -81,7 +73,7 @@ const Post = ({ post, refs, isLastPost }) => {
   return (
     <>
       {!post[0] ? <Divider /> : undefined}
-      <Flex gap={3} py={3} ref={lastPostElementRef}>
+      <Flex gap={3} py={3} ref={lastPostRef}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size={"md"} name={user?.name} src={user?.profilePic} cursor={"pointer"} onClick={handleNavigate} />
           {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}

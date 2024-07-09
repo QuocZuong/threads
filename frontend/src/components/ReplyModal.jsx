@@ -143,7 +143,7 @@ const ReplyCommentModalInput = () => {
     <Flex>
       <Avatar size="md" src={user.profilePic} cursor={"pointer"} onClick={goToUserPage} />
       <VStack ml={4} align="start" w={"full"} spacing={0}>
-        <Text fontWeight={"500"} cursor={"pointer"} onClick={goToUserPage} _hover={{ textDecoration: "underline" }}>
+        <Text fontWeight={"500"} cursor={"pointer"} onClick={goToUserPage}>
           {user.username}
         </Text>
         <Textarea
@@ -320,7 +320,7 @@ const ReplyPostModalInput = () => {
     <Flex>
       <Avatar size="md" src={user.profilePic} cursor={"pointer"} onClick={goToUserPage} />
       <VStack ml={4} align="start" w={"full"} spacing={0}>
-        <Text fontWeight={"500"} cursor={"pointer"} onClick={goToUserPage} _hover={{ textDecoration: "underline" }}>
+        <Text fontWeight={"500"} cursor={"pointer"} onClick={goToUserPage}>
           {user.username}
         </Text>
         <Textarea

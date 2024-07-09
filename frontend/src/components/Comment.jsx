@@ -300,13 +300,7 @@ export const PostAsCommentWithVerticalDivider = ({ post }) => {
       </Flex>
       <Flex gap={1} w={"full"} flexDirection={"column"}>
         <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
-          <Text
-            fontSize={"sm"}
-            fontWeight={"bold"}
-            cursor={"pointer"}
-            onClick={goToPosterPage}
-            _hover={{ textDecoration: "underline" }}
-          >
+          <Text fontSize={"sm"} fontWeight={"bold"} cursor={"pointer"} onClick={goToPosterPage}>
             {postedBy.username}
           </Text>
           <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
@@ -356,13 +350,7 @@ export const CommentWithVerticalDivider = ({ reply, lastReply }) => {
         </Flex>
         <Flex gap={1} w={"full"} flexDirection={"column"}>
           <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
-            <Text
-              fontSize={"sm"}
-              fontWeight={"bold"}
-              cursor={"pointer"}
-              onClick={goToPosterPage}
-              _hover={{ textDecoration: "underline" }}
-            >
+            <Text fontSize={"sm"} fontWeight={"bold"} cursor={"pointer"} onClick={goToPosterPage}>
               {reply?.username}
             </Text>
             <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>

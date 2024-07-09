@@ -109,7 +109,7 @@ const PostPage = () => {
             cursor={"pointer"}
             onClick={goToPosterPage}
           />
-          <Flex>
+          <Flex gap={1} alignItems={"center"}>
             <Text
               fontSize={"sm"}
               fontWeight={"bold"}
@@ -119,7 +119,10 @@ const PostPage = () => {
             >
               {user?.username}
             </Text>
-            <Image src="/verified.png" w={4} height={4} ml={3}></Image>
+            <Image src="/verified.png" w={4} height={4}></Image>
+            <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
+              {formatDistanceToNow(new Date(currentPost.createdAt))} ago
+            </Text>
           </Flex>
         </Flex>
         <Flex gap={4} alignItems={"center"}>

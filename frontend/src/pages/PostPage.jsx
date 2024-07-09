@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
 import postsAtom from "../atoms/postsAtom";
+import MenuActions from "../components/MenuActions";
+import { useRecoilState } from "recoil";
 import DeleteModal from "../components/DeleteModal";
 const PostPage = () => {
   const { isLoading, user } = useGetUserProfile();
@@ -71,6 +73,19 @@ const PostPage = () => {
     }
   };
 
+  const handleCopyLink = (e) => {
+    e.preventDefault();
+    const link = `${window.location.origin}/${user.username}/post/${currentPost._id}`;
+    navigator.clipboard.writeText(link).then(
+      () => {
+        showToast("Success", "Link copied!", "success");
+      },
+      (err) => {
+        showToast("Error", err, "error");
+      },
+    );
+  };
+
   if (!user && isLoading) {
     return (
       <Flex justifyContent={"center"}>
@@ -112,7 +127,7 @@ const PostPage = () => {
             {formatDistanceToNow(new Date(currentPost?.createdAt))} ago
           </Text>
 
-          {currentUser?._id === user?._id && <DeleteIcon size={20} onClick={onOpen} cursor={"pointer"} />}
+          <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
           <DeleteModal isOpen={isOpen} onClose={onClose} onDelete={handleDeletePost} isLoading={isDeleteing} />
         </Flex>
       </Flex>

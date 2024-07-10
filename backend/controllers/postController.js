@@ -181,11 +181,17 @@ const getFeedPost = async (req, res, next) => {
 
     const following = user.following;
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
     // get posts of the users that the logged in user is following and his posts
     const feedPosts = await Post.find({
       postedBy: { $in: [...following, userId] },
     })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .populate("replies")
       .populate({ path: "replies", populate: ["comments", "postedBy"] })
       .populate("postedBy", IGNORED_USER_INFO);

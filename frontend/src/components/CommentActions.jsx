@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import usePreviewImg from "../hooks/usePreviewImg";
 import "../components/Action.css";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 /** The context for each comment's action bar. */
 export const CommentActionsContext = createContext(null);
@@ -42,7 +43,7 @@ const CommentActions = ({ comment }) => {
     50% { transform: scale(0.8); }
     100% { transform: scale(1); }
   `;
-
+  const {t} = useTranslation();
   const contextValue = useMemo(
     () => ({
       handleImageChange,
@@ -152,7 +153,7 @@ const CommentActions = ({ comment }) => {
         </HStack>
         <HStack spacing={2} className="action-icon" onClick={onOpen}>
           <Icon w={"20px"} h={"20px"} aria-label="Comment">
-            <title>Comment</title>
+            <title>{t("comment")}</title>
             <path
               d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
               fill="none"

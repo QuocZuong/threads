@@ -7,6 +7,7 @@ import translationVi from "../assets/locales/vi";
 import deleteModalEnTranslation from "../assets/locales/en/deleteModal";
 import deleteModalViTranslation from "../assets/locales/vi/deleteModal";
 
+
 i18n
   .use(Backend)
   .use(LanguageDetector)

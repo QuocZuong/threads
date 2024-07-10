@@ -1,14 +1,15 @@
 .icon-container,
-.icon-container_light{
+.icon-container_light {
     width: 50px !important;
     height: 36px !important;
 }
+
 .icon-container_lightSignup,
-.icon-containerSignup{
-    width: 80px !important;
+.icon-containerSignup {
+    width: 90px !important;
     height: 36px !important;
     display: flex;
-    padding: 0px 12px;
+    padding: 0px 5px;
     justify-content: center;
     align-items: center;
     text-decoration: none !important;

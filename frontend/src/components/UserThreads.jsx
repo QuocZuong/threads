@@ -5,13 +5,14 @@ import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import Post from "./Post";
 import { Flex, Spinner } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 const UserThreads = () => {
   const [fetchingPost, setFetchingPost] = useState(true);
   const { username } = useParams();
   const showToast = useShowToast();
   const [posts, setPosts] = useRecoilState(postsAtom);
-
+  const {t} = useTranslation();
   useEffect(() => {
     const getPosts = async () => {
       setFetchingPost(true);
@@ -44,7 +45,7 @@ const UserThreads = () => {
   if (!fetchingPost && posts.length === 0) {
     return (
       <div className="user-message">
-        <h1>There are no posts yet</h1>
+        <h1>{t("noPost")}</h1>
       </div>
     );
   }

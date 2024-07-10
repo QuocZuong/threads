@@ -7,6 +7,12 @@
     "chooseLanguage": "Choose Language",
     "vn": "Vietnamese",
     "en": "English",
-    "followUsers":"Follow some users to see the feed."
+    "get": "Get",
+    "followUsers":"Follow some users to see the feed.",
+    "getApp":"Get the app to like, reply and post.",
+    "whatNew":"What's new?",
+    "edit": "Edit",
+    "copyLink": "Copy link",
+    "delete": "Delete"
   }
   

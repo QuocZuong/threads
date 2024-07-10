@@ -6,6 +6,7 @@ import userAtom from "../atoms/userAtom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpdateModal }) => {
   const currentUser = useRecoilValue(userAtom);
@@ -13,7 +14,7 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
   const menuBg = useColorModeValue("white", "#181818");
   const menuTextColor = useColorModeValue("black", "white");
   const menuItemBgHover = useColorModeValue("gray.100", "#212121");
-
+  const {t} = useTranslation();
   return (
     <Menu direction="rlt" placement="bottom-end">
       <MenuButton justifyContent={"flex-end"} p={0} borderRadius="md" h={"20px"} _hover={"none"}>
@@ -32,7 +33,7 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               cursor={"pointer"}
               command={<FiEdit size={22} />}
             >
-              Edit
+              {t("edit")}
             </MenuItem>
             <MenuDivider />
           </>
@@ -47,7 +48,7 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
             command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
             onClick={onCopyLink}
           >
-            Copy link
+            {t("copyLink")}
           </MenuItem>
         )}
         {currentUser?._id === poster._id && onDelete && (
@@ -64,7 +65,7 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               color={"rgb(255, 48, 64)"}
               command={<AiOutlineDelete color="red.500" size={22} />}
             >
-              Delete
+              {t("delete")}
             </MenuItem>
           </>
         )}

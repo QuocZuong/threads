@@ -22,6 +22,7 @@ import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { z } from "zod";
 import { loginSchema } from "../lib/validations";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ export default function Login() {
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
   const [errors, setErrors] = useState({});
-
+  const {t} = useTranslation();
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -79,7 +80,7 @@ export default function Login() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Login
+            {t("login")}
           </Heading>
         </Stack>
         <Box
@@ -94,7 +95,7 @@ export default function Login() {
         >
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.username}>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>{t("userName")}</FormLabel>
               <Input
                 type="text"
                 onChange={(e) => {
@@ -106,7 +107,7 @@ export default function Login() {
               {errors.username && <FormErrorMessage>{errors.username}</FormErrorMessage>}
             </FormControl>
             <FormControl isRequired isInvalid={errors.password}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("passWord")}</FormLabel>
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -136,14 +137,14 @@ export default function Login() {
                 }}
                 onClick={handleLogin}
               >
-                Login
+                {t("login")}
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Don&apos;t have an account?{" "}
+                {t("dont_have_account")}{" "}
                 <Link color={useColorModeValue("gray.700", "gray.100")} onClick={() => setAuthScreen("signup")}>
-                  Sign up
+                  {t("signUp")}
                 </Link>
               </Text>
             </Stack>

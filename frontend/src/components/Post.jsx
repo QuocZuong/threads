@@ -14,7 +14,7 @@ import DeleteModal from "./DeleteModal";
 import { useState } from "react";
 import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
 
-const Post = ({ post }) => {
+const Post = ({ post, lastPostRef }) => {
   const user = post.postedBy;
   const showToast = useShowToast();
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const Post = ({ post }) => {
   return (
     <>
       {!post[0] ? <Divider /> : undefined}
-      <Flex gap={3} py={3}>
+      <Flex gap={3} py={3} ref={lastPostRef}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size={"md"} name={user?.name} src={user?.profilePic} cursor={"pointer"} onClick={handleNavigate} />
           {post.replies.length > 0 ? <Box w={0.5} h={"full"} bg={"gray.light"} mt={3}></Box> : undefined}

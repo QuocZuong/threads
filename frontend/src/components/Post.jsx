@@ -96,7 +96,7 @@ const Post = ({ post, lastPostRef }) => {
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </Text>
             </HStack>
-            <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />
+            <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} onUpdate={onOpen} post={post} />
             <DeleteModal
               isOpen={isOpen}
               onClose={onClose}

@@ -8,6 +8,7 @@ import {
   getFeedPost,
   getUserPost,
   searchPost,
+  editPost,
 } from "../controllers/postController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 import errorHanlder from "../middlewares/errorHanlder.js";
@@ -22,5 +23,6 @@ router.delete("/:id", protectRoute, deletePost);
 router.put("/like/:id", protectRoute, likeUnlikePost);
 router.put("/reply/post/:id", protectRoute, replyToPost);
 router.all("*", errorHanlder);
+router.patch("/edit/:postId", editPost);
 
 export default router;

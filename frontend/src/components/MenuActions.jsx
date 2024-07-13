@@ -10,7 +10,6 @@ import ModalEditPost from "./ModalEditPost";
 import React, { useState, useEffect } from "react";
 
 export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, post }) => {
-  console.log("ádas ", poster);
   const currentUser = useRecoilValue(userAtom);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 

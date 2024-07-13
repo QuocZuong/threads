@@ -43,7 +43,6 @@ const ModalEditPost = ({ poster, isOpen, onClose, onUpdatePost, post }) => {
   const imgRef = useRef(null);
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg(post ? post.img : "");
 
-  console.log("img", imgUrl);
   useEffect(() => {
     if (isOpen) {
       setPostText(post.text);
@@ -93,7 +92,6 @@ const ModalEditPost = ({ poster, isOpen, onClose, onUpdatePost, post }) => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
-  console.log("post tex ", post);
 
   return (
     <>

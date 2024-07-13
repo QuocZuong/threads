@@ -4,6 +4,7 @@ import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCooki
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import Comment from "../models/commentModel.js";
+import Post from "../models/postModel.js";
 
 const IGNORED_USER_INFO = "-password -updatedAt -__v";
 
@@ -207,6 +208,28 @@ const searchUser = async (req, res, next) => {
     res.status(200).json(users);
   } catch (error) {
     next(error);
+  }
+};
+
+export const calculateUserScore = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a parameter
+
+    // Count number of posts by user
+    const postCount = await Post.countDocuments({ postedBy: userId });
+
+    // Count number of comments by user
+    const commentCount = await Comment.countDocuments({ postedBy: userId });
+
+    // Calculate total score
+    const totalScore = postCount * 2 + commentCount;
+
+    // Check if total score is 100 or more
+    const result = totalScore >= 100;
+
+    res.status(200).json({ result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 

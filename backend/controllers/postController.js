@@ -2,8 +2,15 @@ import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 import Comment from "../models/commentModel.js";
 import { removeImage, uploadImage } from "../utils/helpers/imageUploader.js";
+import cloudinary from "cloudinary";
 
 const IGNORED_USER_INFO = "-password -updatedAt -__v";
+// Cấu hình Cloudinary
+cloudinary.config({
+  cloud_name: "your_cloud_name",
+  api_key: "your_api_key",
+  api_secret: "your_api_secret",
+});
 
 const createPost = async (req, res, next) => {
   const maxLength = 500;
@@ -256,4 +263,68 @@ const searchPost = async (req, res, next) => {
   }
 };
 
-export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost, searchPost };
+const editPost = async (req, res, next) => {
+  const maxLength = 500;
+
+  try {
+    const { postedBy, text } = req.body;
+    let { img } = req.body;
+    const { postId } = req.params;
+
+    if (!postedBy || !text || !postId) {
+      return res.status(400).json({ error: "Posted by, text, and postId are required" });
+    }
+
+    const user = await User.findById(postedBy);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: `Post not found ${postId} ` });
+    }
+
+    if (text.length > maxLength) {
+      return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
+    }
+
+    // Xử lý ảnh
+    if (img) {
+      // Nếu có ảnh mới được cung cấp, thực hiện tải lên và cập nhật
+      const uploadedResponse = await cloudinary.uploader.upload(img);
+      img = uploadedResponse.secure_url;
+      const newImagePublicId = uploadedResponse.public_id;
+
+      // Xóa ảnh cũ trên Cloudinary nếu có
+      if (post.imgPublicId) {
+        await cloudinary.uploader.destroy(post.imgPublicId);
+      }
+
+      // Cập nhật URL ảnh mới và public_id vào bài viết
+      post.img = img;
+      post.imgPublicId = newImagePublicId;
+    } else {
+      // Nếu không có ảnh mới được cung cấp, xóa ảnh cũ đi
+      if (post.imgPublicId) {
+        await cloudinary.uploader.destroy(post.imgPublicId);
+      }
+      // Cập nhật lại là không có ảnh
+      post.img = "";
+      post.imgPublicId = "";
+    }
+
+    // Cập nhật lại nội dung bài viết
+    post.text = text;
+
+    await post.save();
+
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPost, getUserPost, searchPost, editPost };

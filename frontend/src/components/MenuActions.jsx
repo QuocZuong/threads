@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, useColorModeValue } from "@chakra-ui/react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { LuLink2 } from "react-icons/lu";
 import { useRecoilValue } from "recoil";

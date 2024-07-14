@@ -43,6 +43,8 @@ Table Conversation {
   title String
   participants Array [ref: > User._id]
   lastMessage Object
+  createdAt String
+  updatedAt String 
 }
 
 Table Message {
@@ -51,11 +53,13 @@ Table Message {
   senderId ObjectId [ref: > User._id]
   content String
   type String [default: "text"]
+  createdAt String
+  updatedAt String 
 }
 
 Table Attachement {
   _id ObjectId [pk]
-  messageId ObjectId [ref: > User._id]
+  messageId ObjectId [ref: > Message._id]
   fileName String
   fileUrl String
   fileType String

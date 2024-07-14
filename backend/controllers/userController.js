@@ -154,21 +154,42 @@ const updateUser = async (req, res) => {
       user.password = hashedPassword;
     }
 
-    // upload profile pic to cloudinary
-    if (profilePic) {
-      if (user.profilePic) {
-        await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+    // Kiểm tra nếu profilePic là một base64 string hoặc một URL hợp lệ
+    const isBase64 = (str) => {
+      try {
+        return btoa(atob(str)) === str;
+      } catch (err) {
+        return false;
       }
+    };
 
-      const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      profilePic = uploadedResponse.secure_url;
+    const isValidUrl = (str) => {
+      try {
+        new URL(str);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+
+    if (profilePic) {
+      if (isBase64(profilePic)) {
+        if (user.profilePic) {
+          await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+        }
+
+        const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+        profilePic = uploadedResponse.secure_url;
+      } else if (!isValidUrl(profilePic)) {
+        return res.status(400).json({ error: "Invalid profile picture format" });
+      }
     }
 
     user.name = name || user.name;
     user.email = email || user.email;
     user.username = username || user.username;
     user.profilePic = profilePic || user.profilePic;
-    user.bio = bio || user.bio;
+    user.bio = bio !== undefined ? bio : user.bio;
 
     user = await user.save();
 

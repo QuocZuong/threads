@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, useColorModeValue } from "@chakra-ui/react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { LuLink2 } from "react-icons/lu";
 import { useRecoilValue } from "recoil";
@@ -31,9 +31,11 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               _hover={{ bg: menuItemBgHover }}
               onClick={onOpenUpdateModal}
               cursor={"pointer"}
-              command={<FiEdit size={22} />}
             >
-              {t("edit")}
+              <Flex justifyContent={"space-between"} w={"full"}>
+                <Text> {t("edit")}</Text>
+                <FiEdit size={22} />
+              </Flex>
             </MenuItem>
             <MenuDivider />
           </>
@@ -45,7 +47,6 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
             bg={"menuBg"}
             borderRadius={10}
             _hover={{ bg: menuItemBgHover }}
-            command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
             onClick={onCopyLink}
           >
             {t("copyLink")}
@@ -63,9 +64,11 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               onClick={onDelete}
               cursor={"pointer"}
               color={"rgb(255, 48, 64)"}
-              command={<AiOutlineDelete color="red.500" size={22} />}
             >
-              {t("delete")}
+              <Flex justifyContent={"space-between"} w={"full"}>
+                <Text>{t("delete")}</Text>
+                <AiOutlineDelete color="red.500" size={22} />
+              </Flex>
             </MenuItem>
           </>
         )}

@@ -1,6 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, VStack, Flex, Text } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
+import { Button, useColorModeValue } from "@chakra-ui/react";
+import { BsInstagram } from "react-icons/bs";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -65,13 +66,13 @@ const UserHeader = ({ user, showedPage, setShowedPage }) => {
   };
 
   const borderTypes = {
-    active: "1px solid white",
-    inactive: "1px solid gray",
+    active: `1px solid ` + useColorModeValue("black", "white"),
+    inactive: "0.5px solid gray",
   };
 
   const buttonTextColors = {
-    active: "white",
-    inactive: "gray.light",
+    active: useColorModeValue("black", "white"),
+    inactive: "gray",
   };
 
   return (
@@ -131,7 +132,7 @@ const UserHeader = ({ user, showedPage, setShowedPage }) => {
           onClick={() => setShowedPage(PAGE_TYPES.threads)}
         >
           <Text
-            fontWeight={"bold"}
+            fontWeight={"600"}
             color={showedPage === PAGE_TYPES.threads ? buttonTextColors.active : buttonTextColors.inactive}
             transition={"color 0.3s"}
           >
@@ -149,7 +150,7 @@ const UserHeader = ({ user, showedPage, setShowedPage }) => {
           onClick={() => setShowedPage(PAGE_TYPES.replies)}
         >
           <Text
-            fontWeight={"bold"}
+            fontWeight={"600"}
             color={showedPage === PAGE_TYPES.replies ? buttonTextColors.active : buttonTextColors.inactive}
             transition={"color 0.3s"}
           >

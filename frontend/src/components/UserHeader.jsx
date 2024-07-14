@@ -1,7 +1,6 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, VStack, Flex, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
-import { BsInstagram } from "react-icons/bs";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import UpdateProfileModal from "./UpdateProfileModal";
 import { PAGE_TYPES } from "../constants/userPage.constants";
+import { LuLink2 } from "react-icons/lu";
 
 /**
  * The head of the user page.
@@ -113,7 +113,7 @@ const UserHeader = ({ user, showedPage, setShowedPage }) => {
         </Flex>
         <Flex gap={2} alignItems={"center"}>
           <Box className={isDarkMode ? "icon-container" : "icon-container_light"}>
-            <BsInstagram size={36} cursor={"pointer"} />
+            <LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} cursor={"pointer"} />
           </Box>
         </Flex>
       </Flex>

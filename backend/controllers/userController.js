@@ -231,4 +231,26 @@ const searchUser = async (req, res, next) => {
   }
 };
 
+export const calculateUserScore = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a parameter
+
+    // Count number of posts by user
+    const postCount = await Post.countDocuments({ postedBy: userId });
+
+    // Count number of comments by user
+    const commentCount = await Comment.countDocuments({ postedBy: userId });
+
+    // Calculate total score
+    const totalScore = postCount * 2 + commentCount;
+
+    // Check if total score is 100 or more
+    const result = totalScore >= 100;
+
+    res.status(200).json({ result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export { getUserProfile, signupUser, loginUser, logoutUser, followUnFollowUser, updateUser, searchUser };

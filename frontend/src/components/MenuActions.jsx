@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, useColorModeValue } from "@chakra-ui/react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { LuLink2 } from "react-icons/lu";
 import { useRecoilValue } from "recoil";
@@ -30,9 +30,11 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               _hover={{ bg: menuItemBgHover }}
               onClick={onOpenUpdateModal}
               cursor={"pointer"}
-              command={<FiEdit size={22} />}
             >
-              Edit
+              <Flex justifyContent={"space-between"} w={"full"}>
+                <Text>Edit</Text>
+                <FiEdit size={22} />
+              </Flex>
             </MenuItem>
             <MenuDivider />
           </>
@@ -44,10 +46,12 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
             bg={"menuBg"}
             borderRadius={10}
             _hover={{ bg: menuItemBgHover }}
-            command={<LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />}
             onClick={onCopyLink}
           >
-            Copy link
+            <Flex justifyContent={"space-between"} w={"full"}>
+              <Text>Copy link</Text>
+              <LuLink2 style={{ transform: "rotate(-45deg)" }} size={22} />{" "}
+            </Flex>
           </MenuItem>
         )}
         {currentUser?._id === poster._id && onDelete && (
@@ -62,9 +66,11 @@ export const MenuActions = ({ poster, onCopyLink, onDelete, onUpdate, onOpenUpda
               onClick={onDelete}
               cursor={"pointer"}
               color={"rgb(255, 48, 64)"}
-              command={<AiOutlineDelete color="red.500" size={22} />}
             >
-              Delete
+              <Flex justifyContent={"space-between"} w={"full"}>
+                <Text>Delete</Text>
+                <AiOutlineDelete color="red.500" size={22} />
+              </Flex>
             </MenuItem>
           </>
         )}

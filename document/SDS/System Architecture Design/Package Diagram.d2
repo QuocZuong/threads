@@ -1,0 +1,45 @@
+classes: {
+  package: {
+    width: 220
+  }
+
+  dot-arrow: {
+    style: {
+      stroke-dash: 3
+      stroke: black
+      font-color: black
+    }
+  }
+}
+
+React App: {
+  class: package
+}
+
+React App -> API: Request
+React App <- API: Response
+
+API: {
+  Controllers
+  DBContext
+  Middlewares
+  Routes
+  Utils
+  Socket
+  Models
+
+  Controllers -> DBContext: use {class: dot-arrow}
+  Controllers -> Models: use {class: dot-arrow}
+  Controllers -> Utils: use {class: dot-arrow}
+
+  Routes -> Controllers: use {class: dot-arrow}
+  Routes -> Middlewares: use {class: dot-arrow}
+
+  Middlewares -> Models: use {class: dot-arrow}
+}
+
+API.DBContext -> MongoDB: use {class: dot-arrow}
+API.Controllers -> MongoDB: use {class: dot-arrow}
+API.Models -> MongoDB: use {class: dot-arrow}
+
+API.Utils -> Cloudinary Database: use {class: dot-arrow}

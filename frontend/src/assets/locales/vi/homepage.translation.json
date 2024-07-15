@@ -7,6 +7,12 @@
     "chooseLanguage": "Chọn ngôn ngữ",
     "vn": "Tiếng Việt",
     "en": "Tiếng Anh",
-    "followUsers":"Theo dõi một số người dùng để xem bảng tin."
+    "get": "Tải",
+    "followUsers":"Theo dõi một số người dùng để xem bảng tin.",
+    "getApp":"Tải ứng dụng để thích, trả lời và đăng bài.",
+    "whatNew":"Có gì mới?",
+    "edit": "Chỉnh sửa",
+    "copyLink": "Sao chép liên kết",
+    "delete": "Xóa"
 }
   

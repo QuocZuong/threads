@@ -1,10 +1,11 @@
 import { CommentWithActions } from "./Comment";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 import useGetUserComments from "../hooks/useGetUserComment";
+import { useTranslation } from "react-i18next";
 
 const UserRepliesThreads = () => {
   const { isLoading, comments } = useGetUserComments();
-
+  const {t} = useTranslation();
   if (isLoading) {
     return (
       <Flex justifyContent={"center"} my={12}>
@@ -16,11 +17,11 @@ const UserRepliesThreads = () => {
   if (!comments) {
     return null;
   }
-
+  
   if (comments.length === 0) {
     return (
       <div className="user-message">
-        <h1>There are no comments yet</h1>
+        <h1>{t("noComment")}</h1>
       </div>
     );
   }

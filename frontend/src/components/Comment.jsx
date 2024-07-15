@@ -11,6 +11,8 @@ import useShowToast from "../hooks/useShowToast";
 import { UpdateCommentModal } from "./UpdateModal";
 import DeleteModal from "./DeleteModal";
 import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const Comment = ({ reply, lastReply }) => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const Comment = ({ reply, lastReply }) => {
     e.preventDefault();
     navigate(`/${reply.username}/comment/${reply._id}`);
   };
-
+  const {t} = useTranslation();
   return (
     <>
       <Flex gap={4} w={"full"}>
@@ -41,7 +43,7 @@ const Comment = ({ reply, lastReply }) => {
               {reply?.username}
             </Text>
             <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-              {formatDistanceToNow(new Date(reply.createdAt))} ago
+              {formatDistanceToNow(new Date(reply.createdAt))} {t("ago")}
             </Text>
           </Flex>
 
@@ -233,7 +235,7 @@ const CommentItem = ({ comment, isAddingVeticalDivider }) => {
                 {comment?.username}
               </Text>
               <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-                {formatDistanceToNow(new Date(comment.createdAt))} ago
+                {formatDistanceToNow(new Date(comment.createdAt))} {t("ago")}
               </Text>
             </Flex>
             <MenuActions
@@ -304,7 +306,7 @@ export const PostAsCommentWithVerticalDivider = ({ post }) => {
             {postedBy.username}
           </Text>
           <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-            {formatDistanceToNow(new Date(post.createdAt))} ago
+            {formatDistanceToNow(new Date(post.createdAt))} {t("ago")}
           </Text>
         </Flex>
         <Text whiteSpace={"normal"} wordBreak={"break-word"}>
@@ -354,7 +356,7 @@ export const CommentWithVerticalDivider = ({ reply, lastReply }) => {
               {reply?.username}
             </Text>
             <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-              {formatDistanceToNow(new Date(reply.createdAt))} ago
+              {formatDistanceToNow(new Date(reply.createdAt))} {t("ago")}
             </Text>
           </Flex>
           <Text whiteSpace={"normal"} wordBreak={"break-word"}>

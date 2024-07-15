@@ -12,6 +12,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import "../components/Header.css";
 import authScreenAtom from "../atoms/authAtom";
 import { IoChatbubblesOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -19,10 +20,10 @@ const Header = () => {
   const logout = useLogout();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const isDarkMode = localStorage.getItem("chakra-ui-color-mode") === "dark";
-
+  
   const iconSize = useBreakpointValue({ base: "30px", md: "35px", lg: "40px" });
   const gapSize = useBreakpointValue({ base: 2, md: 4, lg: 6 });
-
+  const {t} = useTranslation();
   return (
     <Flex justifyContent={"center"} alignItems="center" gap={gapSize} mt={4} mb={8} wrap="wrap" flexDirection="row">
       {user && (
@@ -47,7 +48,7 @@ const Header = () => {
           style={{ textDecoration: "none" }}
           onClick={() => setAuthScreen("login")}
         >
-          Login
+          {t("login")}
         </Link>
       )}
 
@@ -135,7 +136,7 @@ const Header = () => {
           to="/auth"
           onClick={() => setAuthScreen("signup")}
         >
-          Sign up
+          {t("signUp")}
         </Link>
       )}
 

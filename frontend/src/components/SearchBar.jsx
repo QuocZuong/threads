@@ -108,7 +108,7 @@ const SearchBar = () => {
             filter={isDarkMode ? "invert(1)" : "none"}
           />
           <Text position="absolute" top="90" left="27%" w="23%">
-            There is nothing to show
+            {t("noShow")}
           </Text>
           <Image src="/anime-girl-shoulder-shrug.png" w="50%" />
         </Flex>

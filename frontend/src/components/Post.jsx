@@ -13,6 +13,7 @@ import MenuActions from "./MenuActions";
 import DeleteModal from "./DeleteModal";
 import { useState } from "react";
 import { DELETE_MODAL_TYPES } from "../constants/deleteModal.constants";
+import { useTranslation } from "react-i18next";
 
 const Post = ({ post, lastPostRef }) => {
   const user = post.postedBy;
@@ -21,7 +22,7 @@ const Post = ({ post, lastPostRef }) => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDeleting, setIsDeleting] = useState(false);
-
+  const {t} = useTranslation();
   const handleNavigate = (e) => {
     e.preventDefault();
     navigate(`/${user.username}`);
@@ -93,7 +94,7 @@ const Post = ({ post, lastPostRef }) => {
               </Text>
               <Image src="/verified.png" w={4} height={4}></Image>
               <Text fontSize={"xs"} width={"auto"} textAlign={"left"} color={"gray.light"}>
-                {formatDistanceToNow(new Date(post.createdAt))} ago
+                {formatDistanceToNow(new Date(post.createdAt))} {t("ago")}
               </Text>
             </HStack>
             <MenuActions poster={user} onCopyLink={handleCopyLink} onDelete={onOpen} />

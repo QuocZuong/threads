@@ -9,6 +9,7 @@
   "threads": "Threads",
   "replies": "Replies",
   "update_profile": "Update profile",
+  "minutes": "minutes",
   "ago": "ago",
   "noPost": "There are no posts yet",
   "notFound": "User not found",
@@ -19,6 +20,9 @@
   "addBio": "+ Add bio",
   "addLink": "+ Add link",
   "done": "Done",
-  "search": "Search"
+  "search": "Search",
+  "comment": "Comment",
+  "noShow": "There is nothing to show",
+  "noComment":"There are no comments yet"
   }
   

@@ -23,6 +23,7 @@ import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { z } from "zod";
 import { signupSchema } from "../lib/validations";
+import { useTranslation } from "react-i18next";
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +32,7 @@ export default function SignupCard() {
   const showToast = useShowToast();
   const [errors, setErrors] = useState({});
   const setUser = useSetRecoilState(userAtom);
-
+  const {t} = useTranslation();
   const [inputs, setInputs] = useState({
     name: "",
     username: "",
@@ -74,7 +75,7 @@ export default function SignupCard() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+          {t("signUp")}
           </Heading>
         </Stack>
         <Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
@@ -82,7 +83,7 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl isRequired isInvalid={errors.name}>
-                  <FormLabel>Full name</FormLabel>
+                  <FormLabel>{t("fullName")}</FormLabel>
                   <Input
                     type="text"
                     onChange={(e) => {
@@ -96,7 +97,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl isRequired isInvalid={errors.username}>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>{t("userName")}</FormLabel>
                   <Input
                     type="text"
                     onChange={(e) => {
@@ -110,7 +111,7 @@ export default function SignupCard() {
               </Box>
             </HStack>
             <FormControl isRequired isInvalid={errors.email}>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>{t("emailAddress")}</FormLabel>
               <Input
                 type="email"
                 onChange={(e) => {
@@ -122,7 +123,7 @@ export default function SignupCard() {
               {errors.email && <FormErrorMessage>{errors.email}</FormErrorMessage>}
             </FormControl>
             <FormControl isRequired isInvalid={errors.password}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("passWord")}</FormLabel>
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -152,19 +153,19 @@ export default function SignupCard() {
                 }}
                 onClick={handleSignup}
               >
-                Sign up
+                {t("signUp")}
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user?{" "}
+                {t("alreadyUser")}{" "}
                 <Link
                   color={useColorModeValue("gray.700", "gray.100")}
                   onClick={() => {
                     setScreenAuth("login");
                   }}
                 >
-                  Login
+                  {t("login")}
                 </Link>
               </Text>
             </Stack>

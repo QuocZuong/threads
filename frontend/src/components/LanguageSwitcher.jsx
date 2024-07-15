@@ -42,7 +42,7 @@ function LanguageSwitcher() {
         borderColor={useColorModeValue("gray.300", "gray.dark")}
         borderWidth="1px"
         boxShadow="lg"
-        width="140px" // Adjusted width to be more compact
+        width="140px" 
         padding="1"
         borderRadius="md"
       >
@@ -52,7 +52,7 @@ function LanguageSwitcher() {
           border="0"
           textAlign="center"
           color={useColorModeValue("gray.700", "gray.300")}
-          fontSize="xs" // Adjusted font size
+          fontSize="xs" 
           padding="2"
         >
           {t('chooseLanguage')}
@@ -66,9 +66,9 @@ function LanguageSwitcher() {
             justifyContent="space-between"
             _hover={{ bg: selectedBgColor, color: selectedTextColor }}
             padding="1"
-            fontSize="xs" // Adjusted font size
+            fontSize="xs" 
             borderRadius="md"
-            mb={1} // Margin between buttons
+            mb={1} 
           >
             {t('vn')}
             {selectedLanguage === 'vn' && <Icon as={FaCheck} ml={1} />}
@@ -81,7 +81,7 @@ function LanguageSwitcher() {
             justifyContent="space-between"
             _hover={{ bg: selectedBgColor, color: selectedTextColor }}
             padding="1"
-            fontSize="xs" // Adjusted font size
+            fontSize="xs"
             borderRadius="md"
           >
             {t('en')}

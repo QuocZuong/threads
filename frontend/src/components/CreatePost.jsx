@@ -148,7 +148,7 @@ const CreatePost = () => {
                 <Textarea
                   ref={textareaRef}
                   variant="unstyled"
-                  placeholder="What's new?"
+                  placeholder={t("whatNew")}
                   onChange={handleTextChange}
                   value={postText}
                   overflow="hidden"

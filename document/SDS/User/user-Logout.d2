@@ -1,0 +1,61 @@
+vars: {
+  page-name: React App
+  server-name: Express Server
+  db-name: MongoDB
+}
+
+label.style.font-color: black
+
+classes: {
+  text-black: {
+    style: {
+      font-color: black
+    }
+  }
+
+  return arrow: {
+    style: {
+      stroke-dash: 3
+      stroke: black
+      font-color: black
+    }
+  }
+
+  frame: {
+    style: {
+      fill: '#EAEDF0'
+      stroke-width: 1
+    }
+  }
+
+  label right: {
+    style.font-color: black
+  }
+}
+
+shape: sequence_diagram
+
+user: {
+  shape: image
+  width: 50
+  height: 60
+  icon: https://upload.wikimedia.org/wikipedia/commons/5/5b/Robustness_Diagram_Actor.svg
+}
+
+page: ${page-name}
+server: ${server-name}
+
+user -> page.p: Press the logout button {class: text-black}
+page.p -> server.logout: Send POST request to logout {class: text-black}
+
+alt: {
+  class: frame
+  \[An error was thrown\]: {
+    page.p <- server.logout: Return response with status code 500 {class: return arrow}
+    user <- page.p: Show error message "error in logout user..." {class: return arrow}
+  }
+  \[No error was thrown\]: {
+    page.p <- server.logout: Return response with status code 200 {class: return arrow}
+    user <- page.p: Show error message "error in logout user..." {class: return arrow}
+  }
+}

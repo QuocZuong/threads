@@ -1,0 +1,94 @@
+vars: {
+  page-name: React App
+  server-name: Express Server
+  db-name: MongoDB
+}
+
+label.style.font-color: black
+
+classes: {
+  text-black: {
+    style: {
+      font-color: black
+    }
+  }
+
+  return arrow: {
+    style: {
+      stroke-dash: 3
+      stroke: black
+      font-color: black
+    }
+  }
+
+  frame: {
+    style: {
+      fill: '#EAEDF0'
+      stroke-width: 1
+    }
+  }
+
+  label right: {
+    style.font-color: black
+  }
+}
+
+shape: sequence_diagram
+
+user: {
+  shape: image
+  width: 50
+  height: 60
+  icon: https://upload.wikimedia.org/wikipedia/commons/5/5b/Robustness_Diagram_Actor.svg
+}
+
+page: ${page-name}
+server: ${server-name}
+db: ${db-name} {
+  width: 100
+  height: 90
+  shape: cylinder
+}
+
+user -> page.p: Enter user's information, click save {class: text-black}
+page.p -> server.login: Send POST request to login {class: text-black}
+server.login -> db.findOne: Search for User {class: text-black}
+
+alt: {
+  class: frame
+  \[An error was thrown\]: {
+    server.login <- db.findOne: Throw error {class: return arrow}
+    page.p <- server.login: Return response with status code 500 {class: return arrow}
+    user <- page.p: Show error message "error in login user..." {class: return arrow}
+  }
+  \[No error was thrown\]: {
+    alt2: "alt" {
+      class: frame
+      \[User not found\]: {
+        server.login <- db.findOne: Return null {class: return arrow}
+        page.p <- server.login: Return response with status code 400 {class: return arrow}
+        user <- page.p: Show error message "Invalid username or password" {class: return arrow}
+      }
+      \[User found\]: {
+        alt3: "alt" {
+          class: frame
+          server.login <- db.findOne: Return User {class: return arrow}
+          \[No error was thrown\]: {
+            \[Username or password is wrong\]: {
+              page.p <- server.login: Return response with status code 400 {class: return arrow}
+              user <- page.p: Show error message "Invalid username or password" {class: return arrow}
+            }
+            \[Correct username and password\]: {
+              page.p <- server.login: Return response with status code 201 {class: return arrow}
+              user <- page.p: Redirect user to home page {class: return arrow}
+            }
+          }
+          \[An error was thrown\]: {
+            page.p <- server.login: Return response with status code 500 {class: return arrow}
+            user <- page.p: Show error message "error in login user..." {class: return arrow}
+          }
+        }
+      }
+    }
+  }
+}
